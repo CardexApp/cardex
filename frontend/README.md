@@ -1,5 +1,9 @@
+Created a frontend branch
+
 Utilising the designs and design scheme from the uploaded figma UI designs
 See link to UI designs here: https://www.figma.com/design/PUzWYWRxvog6XhxNRg9b3Y/CARDEX?node-id=0-1&t=vnASllbM7pia0BWc-1
+
+
 
 
 
