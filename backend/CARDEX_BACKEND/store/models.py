@@ -108,8 +108,8 @@ class CardDetails(models.Model):
     expiry_date = models.DateField()
     cvv = models.CharField(max_length=4)
 
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    guest_id = models.ForeignKey(GuestCustomer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    guest_customer = models.OneToOneField(GuestCustomer, related_name='card_details', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name_on_card} - ****{self.card_number[-4:]}"

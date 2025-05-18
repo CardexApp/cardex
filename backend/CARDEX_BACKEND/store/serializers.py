@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, CarType, Make, Order, Address, GuestCustomer
+from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -8,19 +8,37 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = ['id', 'postal_code', 'house_address', 'created_at']
         read_only_fields = ['id', 'created_at']
 
+class CardDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CardDetails
+        fields = [
+            'id',
+            'name_on_card',
+            'card_number',
+            'expiry_date',
+            'cvv',
+        ]
+        read_only_fields = ['id']
+
 
 class GuestCustomerSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
+    card_details = CardDetailsSerializer()
 
     class Meta:
         model = GuestCustomer
-        fields = ['id', 'first_name', 'last_name', 'address']
+        fields = ['id', 'first_name', 'last_name', 'address', 'card_details']
         read_only_fields = ['id']
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
+        card_data = validated_data.pop('card_details')
+
         address = Address.objects.create(**address_data)
         guest_customer = GuestCustomer.objects.create(address=address, **validated_data)
+        
+        CardDetails.objects.create(guest_customer=guest_customer, **card_data)
+
         return guest_customer
     
 class CarTypeSerializer(serializers.ModelSerializer):
@@ -54,8 +72,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         guest_customer_data = validated_data.pop('guest_customer')
-        address_data = guest_customer_data.pop('address')
-        address = Address.objects.create(**address_data)
-        guest_customer = GuestCustomer.objects.create(address=address, **guest_customer_data)
+        guest_customer_serializer = GuestCustomerSerializer(data=guest_customer_data)
+        guest_customer_serializer.is_valid(raise_exception=True)
+        guest_customer = guest_customer_serializer.save()
+    
         order = Order.objects.create(guest_customer=guest_customer, **validated_data)
         return order
