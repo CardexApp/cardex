@@ -7,7 +7,7 @@ import BENZ_5 from "../../src/assets/BENZ_5.avif";
 import LEXUS_1 from "../../src/assets/LEXUS_1.avif";
 import LEXUS_2 from "../../src/assets/LEXUS_2.avif";
 import LEXUS_3 from "../../src/assets/LEXUS_3.avif";
-import LEXUS_4 from "../assets/lEXUS_4.avif";
+import LEXUS_4 from "../../src/assets/LEXUS_4.avif";
 import LEXUS_5 from "../../src/assets/LEXUS_5.avif";
 import RANGE_1 from "../../src/assets/RANGE_1.avif";
 import RANGE_2 from "../../src/assets/RANGE_2.avif";
