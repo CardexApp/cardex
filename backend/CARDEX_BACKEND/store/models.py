@@ -100,3 +100,16 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.id}"
+
+#Card details
+class CardDetails(models.Model):
+    name_on_card = models.CharField(max_length=100)
+    card_number = models.CharField(max_length=16)
+    expiry_date = models.DateField()
+    cvv = models.CharField(max_length=4)
+
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    guest_id = models.ForeignKey(GuestCustomer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name_on_card} - ****{self.card_number[-4:]}"
