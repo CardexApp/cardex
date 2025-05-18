@@ -22,47 +22,21 @@ Admin Site:
     http://127.0.0.1:8000/admin/
 
 
-Creating Fixtures(So that we would be able to have thesame data in our database locally)
+## How to use the search endpoint for both searching and filtering
+
+    Search:
+    http://127.0.0.1:8000/api/products/search/?search=toyota
     
-
-    Step 1: Add Sample Data (in your local admin or with code)
-    Use the Django admin to add products, car types, etc. locally after running migrations.
-
-    Step 2: Create a fixtures folder
-    mkdir store/fixtures
-
-
-    Step 3: Export the Data
-    You can export data from any app or model using:
+    Order/Sort::
+    http://127.0.0.1:8000/api/products/search/?ordering=price -- (lowest to highest)
+    http://127.0.0.1:8000/api/products/search/?ordering=-price -- (highest to lowest)
     
-    `python manage.py dumpdata store > store/fixtures/initial_data.json`
+    Search & Order/Sort:
+    http://127.0.0.1:8000/api/products/search/?search=sedan&ordering=-model_year
 
-    * `store` is your app name
-    * This creates a JSON file with all the data from your app
-    * Save the file inside a `fixtures` folder in your app
-
-
-
-    Step 4: Commit That File to Git
-
-    Add and push `initial_data.json` like this:
-
-    `
-    git add store/fixtures/initial_data.json
-    git commit -m "Add fixture for sample data"
-    git push
-    `
-
-    Step 5: Other People Can Load It
-    Once your teammate pulls the project, they can:
-
-    `python manage.py migrate`
-    `python manage.py loaddata store/fixtures/initial_data.json`
-
-    This will **populate their local database** with the exact same data you exported — users, products, etc.
-
-
-    Summary
-    Export data  `python manage.py dumpdata store > store/fixtures/initial_data.json` 
-    Load data   `python manage.py loaddata store/fixtures/initial_data.json`         
-
+    Filter:
+    http://127.0.0.1:8000/api/products/search/?price=20000 → exact match
+    http://127.0.0.1:8000/api/products/search/?price__gte=10000&price__lte=30000 → price between 10k and 30k
+    http://127.0.0.1:8000/api/products/search/?car_type__name=Sedan → exact match for car type
+    http://127.0.0.1:8000/api/products/search/?make__name=Toyota → filter by make
+    http://127.0.0.1:8000/api/products/search/?make__name=Toyota&price=20000 → filter by make and price
