@@ -1,0 +1,62 @@
+.car-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.car-header-left {
+  flex: 1 1 60%;
+}
+
+.car-title {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.car-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.car-features span {
+  margin-right: 15px;
+  font-size: 13px;
+  background: #f1f1f1;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.car-header-right {
+  text-align: right;
+  flex: 1 1 35%;
+}
+
+.header-actions button {
+  margin-left: 10px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.car-price h2 {
+  color: #222;
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.make-offer h3 {
+  font-size: 14px;
+  color: #007bff;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}

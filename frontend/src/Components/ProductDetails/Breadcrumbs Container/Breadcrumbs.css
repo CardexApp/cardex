@@ -1,0 +1,14 @@
+.breadcrumbs {
+    font-size: 14px;
+    color: #888;
+    margin: 20px 0;
+  }
+  .breadcrumbs a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+  .breadcrumbs .current-page {
+    color: #333;
+    font-weight: bold;
+  }
+  

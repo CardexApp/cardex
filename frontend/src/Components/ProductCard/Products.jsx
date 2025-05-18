@@ -28,6 +28,7 @@
 
 // export default Products;
 
+import { Link } from "react-router-dom";
 import { data } from "../../assets/Data/Data";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -91,11 +92,13 @@ const Products = () => {
             {/* Row 3 */}
             <div className="productFooter">
               <span className="price">£{cardex.price.toLocaleString()}</span>
-              <button className="viewButton">View Details</button>
+              <Link to={`/car/${cardex.id}`} className="viewButton">
+                View Details
+              </Link>
             </div>
           </div>
         </div>
-      ))}
+      ))} 
     </div>
   );
 };

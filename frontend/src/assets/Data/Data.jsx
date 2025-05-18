@@ -24,7 +24,7 @@ export const data = [
     brand: "Toyota",
     model: 2017,
     fuelType: "Fuel",
-    carType: "SUV",
+    carType: "SUV V",
   },
   {
     id: 3,
