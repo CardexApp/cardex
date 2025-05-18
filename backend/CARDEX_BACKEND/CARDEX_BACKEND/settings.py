@@ -138,4 +138,4 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = './media/'
+MEDIA_ROOT = 'CARDEX_BACKEND/media/'
