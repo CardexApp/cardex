@@ -1,6 +1,5 @@
 from rest_framework import generics, filters
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Product, CarType, Order
 from .serializers import (
@@ -29,8 +28,14 @@ class CarTypeListView(generics.ListAPIView):
 class ProductSearchView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'description', 'mileage', 'model_year']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = {
+        'price': ['exact', 'gte', 'lte'],
+        'model_year': ['exact', 'gte', 'lte'],
+        'make__name': ['exact'],
+        'car_type__name': ['exact'],
+    }
+    search_fields = ['name', 'description', 'mileage', 'model_year', 'price', 'car_type__name']
     ordering_fields = ['price', 'model_year']
 
 # /api/guest-checkout/ POST
