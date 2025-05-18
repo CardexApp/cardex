@@ -30,7 +30,7 @@
 
 import { Link } from "react-router-dom";
 import { data } from "../../assets/Data/Data";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGauge,
@@ -39,9 +39,14 @@ import {
   faBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
+import { CartContext } from "../../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [product, setProduct] = useState([]);
+  const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     setProduct(data);
   }, []);
@@ -58,8 +63,14 @@ const Products = () => {
               className="productImage"
             />
             <div className="badge">Great Price</div>
-            <div className="bookmark">
-              <FontAwesomeIcon icon={faBookmark} />
+            <div
+              className="bookmark"
+              onClick={() => {
+                addToCart(cardex);
+                navigate("/cart");
+              }}
+            >
+              <FontAwesomeIcon icon={faBookmark}/>
             </div>
           </div>
 
