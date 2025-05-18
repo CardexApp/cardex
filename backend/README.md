@@ -37,6 +37,6 @@ Admin Site:
     Filter:
     http://127.0.0.1:8000/api/products/search/?price=20000 → exact match
     http://127.0.0.1:8000/api/products/search/?price__gte=10000&price__lte=30000 → price between 10k and 30k
-    http://127.0.0.1:8000/api/products/search/?car_type__name=Sedan → exact match for car type
+    http://127.0.0.1:8000/api/products/search/?car_type__name=sedan → exact match for car type
     http://127.0.0.1:8000/api/products/search/?make__name=Toyota → filter by make
     http://127.0.0.1:8000/api/products/search/?make__name=Toyota&price=20000 → filter by make and price
