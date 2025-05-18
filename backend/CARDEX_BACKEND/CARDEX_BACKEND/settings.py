@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-w&vnm8n3bx)-y^6ofeo=n5-p97yz8m1apmt3$y$opri!yj*hi0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["cardexbackend.eu.pythonanywhere.com"]
 
 # Application definition
 
