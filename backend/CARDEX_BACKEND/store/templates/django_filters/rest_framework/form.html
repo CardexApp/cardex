@@ -1,0 +1,9 @@
+<form method="get">
+    {% for field in filter.form %}
+        <div style="margin-bottom: 10px;">
+            {{ field.label_tag }}<br>
+            {{ field }}
+        </div>
+    {% endfor %}
+    <button type="submit">Search</button>
+</form>
