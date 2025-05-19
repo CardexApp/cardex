@@ -53,7 +53,10 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="userStatus">
-        <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+        <div className="searchWrapper">
+          <input className="searchInput" type="search" placeholder="Enter car name" />
+          <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} size="lg" />
+        </div>
         <div className="dropdown">
           <FontAwesomeIcon icon={faUserCircle} size="lg" />
           <div className="dropdownContent">
@@ -72,7 +75,11 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
           <p className="cartContent">10</p>
         </Link>
+<<<<<<< HEAD
         {/* <FontAwesomeIcon icon={faBars} size="lg" /> */}
+=======
+        <FontAwesomeIcon className="navBarMobileMenu" icon={faBars} size="lg" />
+>>>>>>> 04e95dff6563b6572718de3d35e1f4be9ef3178d
       </div>
     </div>
   );
