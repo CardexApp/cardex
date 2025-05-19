@@ -145,6 +145,11 @@ const CarInfoDetails = () => {
           </div>
         </div>
       </section>
+      <section>
+        <div className="">
+          <button className="btn btn-success px-4 py-2 fs-4">Buy now</button>
+        </div>
+      </section>
     </div>
   );
 };

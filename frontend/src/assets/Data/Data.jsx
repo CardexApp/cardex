@@ -6,7 +6,8 @@ export const data = [
     image: asset.TOYOTA_1,
     name: "Corolla",
     price: 12000,
-    description: "Corolla Hatchback makes your drive even mo...",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit.",
     mileage: "700",
     brand: "Toyota",
     model: 2023,

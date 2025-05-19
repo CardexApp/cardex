@@ -72,7 +72,7 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
           <p className="cartContent">10</p>
         </Link>
-        <FontAwesomeIcon icon={faBars} size="lg" />
+        {/* <FontAwesomeIcon icon={faBars} size="lg" /> */}
       </div>
     </div>
   );
