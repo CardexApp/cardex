@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navBar.css";
 import {
   faHome,
-  faBars,
+  // faBars,
   faUser,
   faBox,
   faSignOutAlt,
@@ -83,8 +83,8 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
           <p className="cartContent">10</p>
         </Link>
-        {/* <<<<<<< HEAD */}
-        // {/* <FontAwesomeIcon icon={faBars} size="lg" /> */}
+        {/* <<<<<<< HEAD
+         <FontAwesomeIcon icon={faBars} size="lg" /> */}
         {/* ======= */}
         {/* <FontAwesomeIcon className="navBarMobileMenu" icon={faBars} size="lg" /> */}
         {/* >>>>>>> 04e95dff6563b6572718de3d35e1f4be9ef3178d */}
