@@ -96,11 +96,11 @@ const Products = () => {
               </div>
               <div className="specItem">
                 <FontAwesomeIcon icon={faGasPump} />
-                <span>{cardex.fuelType}</span>
+                <span>{cardex.fuel_type}</span>
               </div>
               <div className="specItem">
                 <FontAwesomeIcon icon={faGear} />
-                <span>{cardex.carType}</span>
+                <span>{cardex.car_type.name}</span>
               </div>
             </div>
             <hr />
