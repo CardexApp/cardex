@@ -19,7 +19,7 @@ export const data = [
     name: "Avalon",
     price: 15000,
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit.",
+      "Toyota is always a great brand with enormous features a...",
     mileage: "1200",
     brand: "Toyota",
     model: 2017,

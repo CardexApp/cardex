@@ -29,7 +29,8 @@
 // export default Products;
 
 import { Link } from "react-router-dom";
-import { data } from "../../assets/Data/Data";
+// import { data } from "../../assets/Data/Data";
+import axios from "axios"
 import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -43,17 +44,21 @@ import { CartContext } from "../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 const Products = () => {
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setProduct(data);
+    axios
+      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error("Error fetching products:", err));
+    // setProduct(data);
   }, []);
 
   return (
     <div className="productGrid">
-      {product.map((cardex) => (
+      {products.map((cardex) => (
         <div key={cardex.id} className="productCard">
           {/* Top Image */}
           <div className="productImageContainer">
@@ -70,7 +75,7 @@ const Products = () => {
                 navigate("/cart");
               }}
             >
-              <FontAwesomeIcon icon={faBookmark}/>
+              <FontAwesomeIcon className="bookmarkIcon" icon={faBookmark} />
             </div>
           </div>
 
@@ -109,7 +114,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-      ))} 
+      ))}
     </div>
   );
 };
