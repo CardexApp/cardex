@@ -4,17 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { data } from "../../../assets/Data/Data";
 import { CartContext } from "../../../Context/CartContext";
 
-//FOr Dynamic data handling when the backend team updates their section
-// const { id } = useParams();
-// useEffect(() => {
-//   const selectedCar = data.find((car) => car.id === parseInt(id));
-//   setCarDetails(selectedCar);
-// }, [id]);
-
 const CarInfoDetails = () => {
   const { id } = useParams();
+  const [carDetails, setCarDetails] = useState(null); // should not be an empty array
 
-  const [carDetails, setCarDetails] = useState([]);
   useEffect(() => {
     const selectedCar = data.find((car) => car.id === parseInt(id));
     setCarDetails(selectedCar);
@@ -22,12 +15,13 @@ const CarInfoDetails = () => {
 
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
+
   const handleAddToCart = () => {
     addToCart(carDetails);
     navigate("/cart");
   };
 
-  if (!carDetails) return;
+  if (!carDetails) return null;
 
   return (
     <div>
@@ -37,30 +31,14 @@ const CarInfoDetails = () => {
           <h3>Car Overview</h3>
           <div className="overview-grid">
             <div>
-              <div>
-                <strong>Car Type:</strong> {carDetails.carType}
-              </div>
-              <div>
-                <strong>Mileage:</strong> {carDetails.mileage}
-              </div>
-              <div>
-                <strong>Fuel Type:</strong> {carDetails.fuelType}
-              </div>
-              <div>
-                <strong>Transmission:</strong> Automatic
-              </div>
-              <div>
-                <strong>Color:</strong> Silver
-              </div>
-              <div>
-                <strong>Drive Type:</strong> FWD
-              </div>
-              <div>
-                <strong>Doors:</strong> 4
-              </div>
-              <div>
-                <strong>Condition:</strong> New
-              </div>
+              <div><strong>Car Type:</strong> {carDetails.carType}</div>
+              <div><strong>Mileage:</strong> {carDetails.mileage}</div>
+              <div><strong>Fuel Type:</strong> {carDetails.fuelType}</div>
+              <div><strong>Transmission:</strong> Automatic</div>
+              <div><strong>Color:</strong> Silver</div>
+              <div><strong>Drive Type:</strong> FWD</div>
+              <div><strong>Doors:</strong> 4</div>
+              <div><strong>Condition:</strong> New</div>
             </div>
           </div>
         </section>
@@ -119,21 +97,11 @@ const CarInfoDetails = () => {
         <section className="section-block">
           <h3>Dimensions & Capacity</h3>
           <div className="dimension-grid">
-            <div>
-              <strong>Length:</strong> 4850mm
-            </div>
-            <div>
-              <strong>Width:</strong> 1820mm
-            </div>
-            <div>
-              <strong>Height:</strong> 1455mm
-            </div>
-            <div>
-              <strong>Boot Space:</strong> 500L
-            </div>
-            <div>
-              <strong>Fuel Tank:</strong> 60L
-            </div>
+            <div><strong>Length:</strong> 4850mm</div>
+            <div><strong>Width:</strong> 1820mm</div>
+            <div><strong>Height:</strong> 1455mm</div>
+            <div><strong>Boot Space:</strong> 500L</div>
+            <div><strong>Fuel Tank:</strong> 60L</div>
           </div>
         </section>
 
@@ -141,43 +109,25 @@ const CarInfoDetails = () => {
         <section className="section-block">
           <h3>Engine & Transmission</h3>
           <div className="dimension-grid">
-            <div>
-              <strong>Engine:</strong> 2.5L 4-Cylinder
-            </div>
-            <div>
-              <strong>Horsepower:</strong> 203 hp
-            </div>
-            <div>
-              <strong>Torque:</strong> 250 Nm
-            </div>
-            <div>
-              <strong>Transmission:</strong> 8-speed automatic
-            </div>
+            <div><strong>Engine:</strong> 2.5L 4-Cylinder</div>
+            <div><strong>Horsepower:</strong> 203 hp</div>
+            <div><strong>Torque:</strong> 250 Nm</div>
+            <div><strong>Transmission:</strong> 8-speed automatic</div>
           </div>
-<<<<<<< HEAD
-          <div>
-            <strong>Horsepower:</strong> 203 hp
+        </section>
+
+        {/* 6. Action Buttons */}
+        <section className="section-block">
+          <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
+            <button onClick={handleAddToCart} className="btn btn-primary px-4 py-2 fs-5">
+              Add to Cart
+            </button>
+            <button className="btn btn-success px-4 py-2 fs-5">
+              Buy Now
+            </button>
           </div>
-          <div>
-            <strong>Torque:</strong> 250 Nm
-          </div>
-          <div>
-            <strong>Transmission:</strong> 8-speed automatic
-          </div>
-        </div>
-      </section>
-      <section>
-        <div className="">
-          <button className="btn btn-success px-4 py-2 fs-4">Buy now</button>
-        </div>
-      </section>
-=======
         </section>
       </div>
-      <div className="addToCart">
-        <button onClick={handleAddToCart}>Add to cart</button>
-      </div>
->>>>>>> 04e95dff6563b6572718de3d35e1f4be9ef3178d
     </div>
   );
 };
