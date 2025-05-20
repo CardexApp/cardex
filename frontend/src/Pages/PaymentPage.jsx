@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PaymentPage = () => {
   const [step, setStep] = useState(1);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { subtotal, tax, insurance, total } = location.state || {
+    subtotal: 0,
+    tax: 0,
+    insurance: 0,
+    total: 0,
+  };
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,36 +24,21 @@ const PaymentPage = () => {
     cvv: "",
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     let formattedValue = value;
 
-
     if (name === "cardNumber") {
-      formattedValue = value
-        .replace(/\D/g, "")
-        .slice(0, 16)
-        .replace(/(.{4})/g, "$1 ")
-        .trim();
+      formattedValue = value.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
     }
-
 
     if (name === "expiry") {
-      formattedValue = value
-        .replace(/\D/g, "")
-        .slice(0, 4)
-        .replace(/^(\d{2})(\d{1,2})?/, (match, p1, p2) =>
-          p2 ? `${p1}/${p2}` : p1
-        );
+      formattedValue = value.replace(/\D/g, "").slice(0, 4).replace(/^(\d{2})(\d{1,2})?/, (match, p1, p2) =>
+        p2 ? `${p1}/${p2}` : p1
+      );
     }
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: formattedValue,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: formattedValue }));
   };
 
   const handleNext = (e) => {
@@ -53,154 +48,93 @@ const PaymentPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Payment Submitted:", formData);
-    toast.success("Payment Successful")
-    navigate("/orderDetails", { state: formData });
-  };
-
-  const containerStyle = {
-    padding: "2rem",
-    maxWidth: "500px",
-    margin: "2rem auto",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    boxShadow: "0 0 12px rgba(0, 0, 0, 0.05)",
-    backgroundColor: "#fff",
-    fontFamily: "Arial, sans-serif",
-  };
-
-  const labelStyle = {
-    display: "block",
-    marginBottom: "0.5rem",
-    fontWeight: "bold",
-  };
-
-  const inputStyle = {
-    width: "100%",
-    padding: "0.75rem",
-    marginBottom: "1.5rem",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
-  };
-
-  const buttonStyle = {
-    width: "100%",
-    padding: "0.75rem",
-    fontSize: "1rem",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  };
-
-  const headingStyle = {
-    textAlign: "center",
-    marginBottom: "1.5rem",
-    color: "#333",
+    toast.success("Payment Successful");
+    navigate("/orderDetails", {
+      state: {
+        ...formData,
+        subtotal,
+        tax,
+        insurance,
+        total,
+      },
+    });
   };
 
   return (
-    <div style={containerStyle}>
-      <h2 style={headingStyle}>Payment</h2>
+    <div style={{ padding: "2rem", maxWidth: "500px", margin: "auto" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>Payment</h2>
+
       {step === 1 ? (
         <form onSubmit={handleNext}>
-          <div>
-            <label style={labelStyle}>First Name:</label>
-            <input
-              style={inputStyle}
-              type="text"
-              name="firstName"
-              required
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="John"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>Last Name:</label>
-            <input
-              style={inputStyle}
-              type="text"
-              name="lastName"
-              required
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Doe"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>Postal Code:</label>
-            <input
-              style={inputStyle}
-              type="text"
-              name="postalCode"
-              required
-              value={formData.postalCode}
-              onChange={handleChange}
-              placeholder="X00 X00"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>Address:</label>
-            <textarea
-              style={inputStyle}
-              name="address"
-              required
-              rows="3"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="123 Main St, City"
-            />
-          </div>
-          <button type="submit" style={buttonStyle}>
-            Next
-          </button>
+          {['firstName', 'lastName', 'postalCode'].map((field) => (
+            <div key={field}>
+              <label>{field.replace(/([A-Z])/g, ' $1')}:</label>
+              <input
+                type="text"
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                required
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+            </div>
+          ))}
+          <label>Address:</label>
+          <textarea
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            required
+            rows="3"
+            style={{ width: "100%", marginBottom: "1.5rem" }}
+          />
+          <button type="submit" style={{ width: "100%" }}>Next</button>
         </form>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div>
-            <label style={labelStyle}>Card Number:</label>
-            <input
-              style={inputStyle}
-              type="text"
-              name="cardNumber"
-              required
-              maxLength="19"
-              value={formData.cardNumber}
-              onChange={handleChange}
-              placeholder="1234 5678 9012 3456"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>Expiry Date (MM/YY):</label>
-            <input
-              style={inputStyle}
-              type="text"
-              name="expiry"
-              required
-              value={formData.expiry}
-              onChange={handleChange}
-              placeholder="12/25"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>CVV:</label>
-            <input
-              style={inputStyle}
-              type="password"
-              name="cvv"
-              required
-              maxLength="3"
-              value={formData.cvv}
-              onChange={handleChange}
-              placeholder="123"
-            />
-          </div>
-          <button type="submit" style={buttonStyle}>
-            Pay Now
-          </button>
+          <label>Card Number:</label>
+          <input
+            type="text"
+            name="cardNumber"
+            value={formData.cardNumber}
+            onChange={handleChange}
+            required
+            maxLength="19"
+            placeholder="1234 5678 9012 3456"
+            style={{ width: "100%", marginBottom: "1rem" }}
+          />
+
+          <label>Expiry Date (MM/YY):</label>
+          <input
+            type="text"
+            name="expiry"
+            value={formData.expiry}
+            onChange={handleChange}
+            required
+            placeholder="12/25"
+            style={{ width: "100%", marginBottom: "1rem" }}
+          />
+
+          <label>CVV:</label>
+          <input
+            type="password"
+            name="cvv"
+            value={formData.cvv}
+            onChange={handleChange}
+            required
+            maxLength="3"
+            placeholder="123"
+            style={{ width: "100%", marginBottom: "1.5rem" }}
+          />
+
+          {/* Price Summary */}
+          <hr />
+          <p><strong>Subtotal:</strong> £{subtotal.toLocaleString()}</p>
+          <p><strong>Tax (20% VAT):</strong> £{tax.toLocaleString()}</p>
+          <p><strong>Insurance:</strong> £{insurance.toLocaleString()}</p>
+          <h3><strong>Total:</strong> £{total.toLocaleString()}</h3>
+
+          <button type="submit" style={{ width: "100%", marginTop: "1.5rem" }}>Pay Now</button>
         </form>
       )}
     </div>

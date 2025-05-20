@@ -72,6 +72,7 @@ const Products = () => {
               <div
                 className="bookmark"
                 onClick={() => {
+                  console.log("Bookmarked - ID:", cardex.id); 
                   addToCart(cardex);
                   navigate("/cart");
                 }}

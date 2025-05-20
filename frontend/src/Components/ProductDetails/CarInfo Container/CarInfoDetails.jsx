@@ -25,11 +25,13 @@ const CarInfoDetails = () => {
   const navigate = useNavigate();
 
   const handleAddToCart = () => {
+    console.log("Added to cart - ID:", carDetails.id); // ✅ Log ID
     addToCart(carDetails);
     navigate("/cart");
   };
 
   const handleBuyNow = () => {
+    console.log("Buy Now clicked - ID:", carDetails.id); // ✅ Log ID
     addToCart(carDetails);
     navigate("/payment");
   };
@@ -179,7 +181,12 @@ const CarInfoDetails = () => {
             >
               Add to Cart
             </button>
-            <button className="btn btn-success px-4 py-2 fs-5">Buy Now</button>
+            <button
+              onClick={handleBuyNow}
+              className="btn btn-success px-4 py-2 fs-5"
+            >
+              Buy Now
+            </button>
           </div>
         </section>
       </div>
