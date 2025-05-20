@@ -7,6 +7,7 @@ import {
   faGasPump,
   faGear,
   faBookmark,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
 import { CartContext } from "../../Context/CartContext";

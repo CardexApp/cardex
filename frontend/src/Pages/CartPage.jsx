@@ -11,7 +11,9 @@ const CartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
+  const subtotal = Number(
+    cartItems.reduce((acc, item) => acc + Number(item.price), 0)
+  );
   const tax = subtotal * TAX_RATE;
   const insurance = cartItems.length * INSURANCE_PER_CAR;
   const total = subtotal + tax + insurance;
@@ -45,7 +47,6 @@ const CartPage = () => {
               gap: "1.5rem",
             }}
           >
-           
             <div>
               <img
                 src={item.image}
@@ -54,7 +55,6 @@ const CartPage = () => {
               />
             </div>
 
-            
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
               <h3>
                 {item.brand} {item.name} {item.model}
@@ -81,7 +81,6 @@ const CartPage = () => {
                 </p>
               </div>
 
-             
               <div
                 className="d-flex flex-column justify-content-end"
                 style={{
@@ -91,17 +90,16 @@ const CartPage = () => {
                 }}
               >
                 <p>
-                  <strong>Subtotal:</strong> £{subtotal.toLocaleString()}
+                  <strong>Subtotal:</strong> £{subtotal.toFixed(2)}
                 </p>
                 <p>
-                  <strong>Tax (20% VAT):</strong> £{tax.toLocaleString()}
+                  <strong>Tax (20% VAT):</strong> £{tax.toFixed(2)}
                 </p>
                 <p>
-                  <strong>Estimated Insurance:</strong> £
-                  {insurance.toLocaleString()}
+                  <strong>Estimated Insurance:</strong> £{insurance.toFixed(2)}
                 </p>
                 <h3>
-                  <strong>Total:</strong> £{total.toLocaleString()}
+                  <strong>Total:</strong> £{total.toFixed(2)}
                 </h3>
 
                 <button

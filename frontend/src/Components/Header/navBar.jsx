@@ -53,7 +53,7 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="userStatus">
-        <div className="searchWrapper">
+        {/* <div className="searchWrapper">
           <input
             className="searchInput"
             type="search"
@@ -64,7 +64,7 @@ const NavBar = () => {
             icon={faMagnifyingGlass}
             size="lg"
           />
-        </div>
+        </div> */}
         <div className="dropdown">
           <FontAwesomeIcon icon={faUserCircle} size="lg" />
           <div className="dropdownContent">

@@ -210,14 +210,14 @@
 
 .searchProductContainer {
   display: flex;
-  justify-content: right;
+  justify-content: center;
   margin: 20px 0;
 }
 
 .searchProductInput {
-  width: 25%;
+  width: 40%;
   padding: 12px 16px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   font-size: 16px;
 }
