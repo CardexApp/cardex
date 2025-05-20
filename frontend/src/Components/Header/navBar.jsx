@@ -57,7 +57,7 @@ const NavBar = () => {
           <input
             className="searchInput"
             type="search"
-            placeholder="Enter car name"
+            placeholder="Search CarDex"
           />
           <FontAwesomeIcon
             className="searchIcon"

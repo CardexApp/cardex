@@ -7,7 +7,6 @@
 
 .productCard {
   display: flex;
-
   width: 100%;
   flex-direction: column;
   border-radius: 16px;
@@ -109,11 +108,6 @@
   cursor: pointer;
   font-size: 14px;
 }
-/* display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-    padding: 24px;
-  } */
 
 .productCard {
   width: 100%;
@@ -211,4 +205,18 @@
   cursor: pointer;
   font-size: 14px;
   text-decoration: none;
+}
+
+.searchProductContainer {
+  display: flex;
+  justify-content: right;
+  margin: 20px 0;
+}
+
+.searchProductInput {
+  width: 25%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }

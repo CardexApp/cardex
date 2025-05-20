@@ -1,37 +1,56 @@
-.car-info-details {
+.carInfoDetails {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.section-block h3 {
-  font-size: 18px;
+.sectionBlock h3 {
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 10px;
   color: #222;
   border-bottom: 1px solid #eee;
   padding-bottom: 5px;
 }
 
-.overview-grid,
-.dimension-grid {
+.overviewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* left and right columns */
+  gap: 16px;
+  align-items: start;
+}
+
+.overviewDetails {
+  display: grid;
+  row-gap: 10px;
+}
+
+.overviewImage {
+  width: 700px;
+  /* max-width: 400px; */
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.dimensionGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 10px;
   column-gap: 20px;
 }
 
-.features-columns {
+.featuresColumns {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-.features-columns h4 {
+.featuresColumns h4 {
   font-size: 16px;
   margin-bottom: 5px;
 }
 
-.features-columns ul {
+.featuresColumns ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -50,6 +69,6 @@
   transition: background-color 0.2s ease;
 }
 
-.addToCart :hover{
-    background-color: #0056b3;
+.addToCart :hover {
+  background-color: #0056b3;
 }
