@@ -21,6 +21,11 @@ const CarInfoDetails = () => {
     navigate("/cart");
   };
 
+  const handleBuyNow = () => {
+    addToCart(carDetails);
+    navigate("/payment");
+  };
+
   if (!carDetails) return null;
 
   return (
@@ -31,14 +36,30 @@ const CarInfoDetails = () => {
           <h3>Car Overview</h3>
           <div className="overview-grid">
             <div>
-              <div><strong>Car Type:</strong> {carDetails.carType}</div>
-              <div><strong>Mileage:</strong> {carDetails.mileage}</div>
-              <div><strong>Fuel Type:</strong> {carDetails.fuelType}</div>
-              <div><strong>Transmission:</strong> Automatic</div>
-              <div><strong>Color:</strong> Silver</div>
-              <div><strong>Drive Type:</strong> FWD</div>
-              <div><strong>Doors:</strong> 4</div>
-              <div><strong>Condition:</strong> New</div>
+              <div>
+                <strong>Car Type:</strong> {carDetails.carType}
+              </div>
+              <div>
+                <strong>Mileage:</strong> {carDetails.mileage}
+              </div>
+              <div>
+                <strong>Fuel Type:</strong> {carDetails.fuelType}
+              </div>
+              <div>
+                <strong>Transmission:</strong> Automatic
+              </div>
+              <div>
+                <strong>Color:</strong> Silver
+              </div>
+              <div>
+                <strong>Drive Type:</strong> FWD
+              </div>
+              <div>
+                <strong>Doors:</strong> 4
+              </div>
+              <div>
+                <strong>Condition:</strong> New
+              </div>
             </div>
           </div>
         </section>
@@ -97,11 +118,21 @@ const CarInfoDetails = () => {
         <section className="section-block">
           <h3>Dimensions & Capacity</h3>
           <div className="dimension-grid">
-            <div><strong>Length:</strong> 4850mm</div>
-            <div><strong>Width:</strong> 1820mm</div>
-            <div><strong>Height:</strong> 1455mm</div>
-            <div><strong>Boot Space:</strong> 500L</div>
-            <div><strong>Fuel Tank:</strong> 60L</div>
+            <div>
+              <strong>Length:</strong> 4850mm
+            </div>
+            <div>
+              <strong>Width:</strong> 1820mm
+            </div>
+            <div>
+              <strong>Height:</strong> 1455mm
+            </div>
+            <div>
+              <strong>Boot Space:</strong> 500L
+            </div>
+            <div>
+              <strong>Fuel Tank:</strong> 60L
+            </div>
           </div>
         </section>
 
@@ -109,20 +140,34 @@ const CarInfoDetails = () => {
         <section className="section-block">
           <h3>Engine & Transmission</h3>
           <div className="dimension-grid">
-            <div><strong>Engine:</strong> 2.5L 4-Cylinder</div>
-            <div><strong>Horsepower:</strong> 203 hp</div>
-            <div><strong>Torque:</strong> 250 Nm</div>
-            <div><strong>Transmission:</strong> 8-speed automatic</div>
+            <div>
+              <strong>Engine:</strong> 2.5L 4-Cylinder
+            </div>
+            <div>
+              <strong>Horsepower:</strong> 203 hp
+            </div>
+            <div>
+              <strong>Torque:</strong> 250 Nm
+            </div>
+            <div>
+              <strong>Transmission:</strong> 8-speed automatic
+            </div>
           </div>
         </section>
 
         {/* 6. Action Buttons */}
         <section className="section-block">
           <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
-            <button onClick={handleAddToCart} className="btn btn-primary px-4 py-2 fs-5">
+            <button
+              onClick={handleAddToCart}
+              className="btn btn-primary px-4 py-2 fs-5"
+            >
               Add to Cart
             </button>
-            <button className="btn btn-success px-4 py-2 fs-5">
+            <button
+              onClick={handleBuyNow}
+              className="btn btn-success px-4 py-2 fs-5"
+            >
               Buy Now
             </button>
           </div>

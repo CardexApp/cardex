@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
+import { useLocation } from "react-router-dom";
 
 const TAX_RATE = 0.2; // 20% VAT
 const INSURANCE_PER_CAR = 500; // Flat estimate
@@ -8,6 +9,7 @@ const INSURANCE_PER_CAR = 500; // Flat estimate
 const CartPage = () => {
   const { cartItems } = useContext(CartContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
   const tax = subtotal * TAX_RATE;
@@ -15,7 +17,14 @@ const CartPage = () => {
   const total = subtotal + tax + insurance;
 
   const handleProceedToPayment = () => {
-    navigate("/payment");
+    navigate("/payment", {
+      state: {
+        subtotal,
+        tax,
+        insurance,
+        total,
+      },
+    });
   };
 
   return (
@@ -36,16 +45,16 @@ const CartPage = () => {
               gap: "1.5rem",
             }}
           >
-            {/* Image on the left */}
+           
             <div>
               <img
                 src={item.image}
                 alt={item.name}
-                style={{ width: "550px", height:"450px", borderRadius: "8px" }}
+                style={{ width: "550px", height: "450px", borderRadius: "8px" }}
               />
             </div>
 
-            {/* Description and price info */}
+            
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
               <h3>
                 {item.brand} {item.name} {item.model}
@@ -58,14 +67,23 @@ const CartPage = () => {
               </p>
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem" }}>
-                <p><strong>Price:</strong> £{item.price.toLocaleString()}</p>
-                <p><strong>Mileage:</strong> {item.mileage} Miles</p>
-                <p><strong>Fuel Type:</strong> {item.fuelType}</p>
-                <p><strong>Car Type:</strong> {item.carType}</p>
+                <p>
+                  <strong>Price:</strong> £{item.price.toLocaleString()}
+                </p>
+                <p>
+                  <strong>Mileage:</strong> {item.mileage} Miles
+                </p>
+                <p>
+                  <strong>Fuel Type:</strong> {item.fuelType}
+                </p>
+                <p>
+                  <strong>Car Type:</strong> {item.carType}
+                </p>
               </div>
 
-              {/* Subtotal section below */}
-              <div className="d-flex flex-column justify-content-end"
+             
+              <div
+                className="d-flex flex-column justify-content-end"
                 style={{
                   marginTop: "2rem",
                   paddingTop: "1rem",

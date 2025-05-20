@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const PaymentPage = () => {
   const [step, setStep] = useState(1);
@@ -20,20 +21,20 @@ const PaymentPage = () => {
 
     let formattedValue = value;
 
-    // Format card number (4-digit spacing)
+
     if (name === "cardNumber") {
       formattedValue = value
-        .replace(/\D/g, "") // Remove all non-digits
-        .slice(0, 16) // Limit to 16 digits
-        .replace(/(.{4})/g, "$1 ") // Add space after every 4 digits
+        .replace(/\D/g, "")
+        .slice(0, 16)
+        .replace(/(.{4})/g, "$1 ")
         .trim();
     }
 
-    // Format expiry MM/YY
+
     if (name === "expiry") {
       formattedValue = value
-        .replace(/\D/g, "") // Remove non-digits
-        .slice(0, 4) // Limit to 4 digits
+        .replace(/\D/g, "")
+        .slice(0, 4)
         .replace(/^(\d{2})(\d{1,2})?/, (match, p1, p2) =>
           p2 ? `${p1}/${p2}` : p1
         );
@@ -53,8 +54,8 @@ const PaymentPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Payment Submitted:", formData);
-    alert("Payment Successful!");
-    navigate("/");
+    toast.success("Payment Successful")
+    navigate("/orderDetails", { state: formData });
   };
 
   const containerStyle = {
@@ -138,7 +139,7 @@ const PaymentPage = () => {
               required
               value={formData.postalCode}
               onChange={handleChange}
-              placeholder="12345"
+              placeholder="X00 X00"
             />
           </div>
           <div>
