@@ -7,7 +7,7 @@ import DealerCard from "./DealerCard";
 import FinancingCalculator from "./FinancingCalculator";
 import ReviewsSection from "./ReviewsSection";
 import RelatedListings from "./RelatedListings";
-import "./CarDetailsPage.css"; // CSS file for layout/styling
+import "./CarDetailsPage.css"; 
 
 const CarDetailsPage = () => {
   return (

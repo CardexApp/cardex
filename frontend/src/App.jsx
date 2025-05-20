@@ -8,10 +8,13 @@ import { CartProvider } from "./Context/CartContext.jsx";
 import CartPage from "./Pages/CartPage.jsx";
 import CarInfoDetails from "./Components/ProductDetails/CarInfo Container/CarInfoDetails.jsx";
 import PaymentPage from "./Pages/PaymentPage.jsx";
+import { ToastContainer } from "react-toastify";
+import OrderDetails from "./Pages/OrderDetails.jsx";
 
 function App() {
   return (
     <CartProvider>
+      <ToastContainer/>
       <div className="App">
         <NavBar />
         <Routes>
@@ -19,6 +22,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/listings" element={<Products />} />
+          <Route path="/orderDetails" element={<OrderDetails />} />
           <Route path="/car/:id" element={<CarInfoDetails />} />
         </Routes>
       </div>

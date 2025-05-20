@@ -29,6 +29,11 @@ const CarInfoDetails = () => {
     navigate("/cart");
   };
 
+  const handleBuyNow = () => {
+    addToCart(carDetails);
+    navigate("/payment");
+  };
+
   if (!carDetails) return null;
 
   return (
@@ -65,11 +70,38 @@ const CarInfoDetails = () => {
               </div>
             </div>
             <div>
+<<<<<<< HEAD
+              <div>
+                <strong>Car Type:</strong> {carDetails.carType}
+              </div>
+              <div>
+                <strong>Mileage:</strong> {carDetails.mileage}
+              </div>
+              <div>
+                <strong>Fuel Type:</strong> {carDetails.fuelType}
+              </div>
+              <div>
+                <strong>Transmission:</strong> Automatic
+              </div>
+              <div>
+                <strong>Color:</strong> Silver
+              </div>
+              <div>
+                <strong>Drive Type:</strong> FWD
+              </div>
+              <div>
+                <strong>Doors:</strong> 4
+              </div>
+              <div>
+                <strong>Condition:</strong> New
+              </div>
+=======
               <img
                 className="overviewImage"
                 src={carDetails.image}
                 alt={`${carDetails.brand} ${carDetails.name}`}
               />
+>>>>>>> 98e0d9b59a8d1f525297c4c755e04ec54495c038
             </div>
           </div>
         </section>
@@ -127,7 +159,11 @@ const CarInfoDetails = () => {
         {/* 4. Dimensions */}
         <section className="sectionBlock">
           <h3>Dimensions & Capacity</h3>
+<<<<<<< HEAD
+          <div className="dimension-grid">
+=======
           <div className="dimensionGrid">
+>>>>>>> 98e0d9b59a8d1f525297c4c755e04ec54495c038
             <div>
               <strong>Length:</strong> 4850mm
             </div>
@@ -149,7 +185,11 @@ const CarInfoDetails = () => {
         {/* 5. Engine */}
         <section className="sectionBlock">
           <h3>Engine & Transmission</h3>
+<<<<<<< HEAD
+          <div className="dimension-grid">
+=======
           <div className="dimensionGrid">
+>>>>>>> 98e0d9b59a8d1f525297c4c755e04ec54495c038
             <div>
               <strong>Engine:</strong> 2.5L 4-Cylinder
             </div>
@@ -174,7 +214,16 @@ const CarInfoDetails = () => {
             >
               Add to Cart
             </button>
+<<<<<<< HEAD
+            <button
+              onClick={handleBuyNow}
+              className="btn btn-success px-4 py-2 fs-5"
+            >
+              Buy Now
+            </button>
+=======
             <button className="btn btn-success px-4 py-2 fs-5">Buy Now</button>
+>>>>>>> 98e0d9b59a8d1f525297c4c755e04ec54495c038
           </div>
         </section>
       </div>
