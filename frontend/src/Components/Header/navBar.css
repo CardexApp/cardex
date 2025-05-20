@@ -10,7 +10,6 @@
   justify-content: space-between;
   padding: 4px 16px;
   margin: 0;
-  width: 100%;
 }
 
 .brand {
@@ -33,7 +32,9 @@
 
 .menuList {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 24px;
   padding: 0;
   margin: 0;
@@ -72,6 +73,35 @@
   gap: 16px;
   color: #fefefe;
   position: relative;
+}
+
+.searchWrapper {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  border-radius: 24px;
+}
+
+.searchInput {
+  height: fit-content;
+  padding: 4px;
+  border-radius: 4px;
+  padding: 4px 8px 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 200px;
+}
+
+.searchIcon {
+  position: absolute;
+  background-color: #fefefe;
+  margin: 0 8px;
+  color: #333;
+  right: 0;
+  top: 50%;
+  color: #333;
+  transform: translateY(-50%);
+  
 }
 
 .dropdown {
@@ -120,4 +150,8 @@
 
 .relative p {
   font-size: 10px;
+}
+
+.navBarMobileMenu {
+  display: none;
 }

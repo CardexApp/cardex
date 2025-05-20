@@ -1,101 +1,124 @@
-// import { data } from "../../assets/Data/Data";
-// import { useState, useEffect } from "react";
-
-// const Products = () => {
-//   const [product, setProduct] = useState([]);
-//   useEffect(() => {
-//     setProduct(data);
-//   }, []);
-
-//   return (
-//     <div>
-//       {product.map((cardex) => (
-//         <div key={cardex.id}>
-//           <img src={cardex.image} alt={cardex.name} />
-//           <p>{cardex.name}</p>
-//           <p>{cardex.price}</p>
-//           <p>{cardex.description}</p>
-//           <p>{cardex.mileage}</p>
-//           <p>{cardex.brand}</p>
-//           <p>{cardex.model}</p>
-//           <p>{cardex.fuelType}</p>
-//           <p>{cardex.carType}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Products;
-
-import { data } from "../../assets/Data/Data";
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGauge,
   faGasPump,
   faGear,
   faBookmark,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
+import { CartContext } from "../../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
-  const [product, setProduct] = useState([]);
+  // use state for product display
+  const [products, setProducts] = useState([]);
+  // use state for search/ filter
+  const [search, setSearch] = useState("");
+  // use context for product cart
+  const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    setProduct(data);
+    axios
+      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error("Error fetching products:", err));
   }, []);
 
+  // Filter products logic
+  const filteredProducts = products.filter((car) => {
+    const term = search.toLowerCase();
+    return (
+      car.brand?.toLowerCase().includes(term) ||
+      "" ||
+      car.name?.toLowerCase().includes(term) ||
+      "" ||
+      car.model?.toLowerCase().includes(term) ||
+      "" ||
+      car.fuel_type?.toLowerCase().includes(term) ||
+      "" ||
+      car.car_type?.name?.toLowerCase().includes(term) ||
+      ""
+    );
+  });
+
   return (
-    <div className="productGrid">
-      {product.map((cardex) => (
-        <div key={cardex.id} className="productCard">
-          {/* Top Image */}
-          <div className="productImageContainer">
-            <img
-              src={cardex.image}
-              alt={cardex.name}
-              className="productImage"
-            />
-            <div className="badge">Great Price</div>
-            <div className="bookmark">
-              <FontAwesomeIcon icon={faBookmark} />
+    <div>
+      {/* Search Bar */}
+      <div className="searchProductContainer">
+        <input
+          type="text"
+          placeholder="Search by brand, model, fuel type..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="searchProductInput"
+        />
+      </div>
+
+      <div className="productGrid">
+        {filteredProducts.map((cardex) => (
+          <div key={cardex.id} className="productCard">
+            {/* Top Image */}
+            <div className="productImageContainer">
+              <img
+                src={cardex.image}
+                alt={cardex.name}
+                className="productImage"
+              />
+              <div className="badge">Great Price</div>
+              <div
+                className="bookmark"
+                onClick={() => {
+                  console.log("Bookmarked - ID:", cardex.id); 
+                  addToCart(cardex);
+                  navigate("/cart");
+                }}
+              >
+                <FontAwesomeIcon className="bookmarkIcon" icon={faBookmark} />
+              </div>
+            </div>
+
+            {/* Lower Content */}
+            <div className="productContent">
+              <div className="productHeader">
+                {/* For large data with unique entries of brand, name and model */}
+
+                {/* <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p> */}
+
+                <p className="productTitle"> {cardex.name}</p>
+
+                <p className="productDescription">{cardex.description}</p>
+              </div>
+              <hr />
+              <div className="productSpecs">
+                <div className="specItem">
+                  <FontAwesomeIcon icon={faGauge} />
+                  <span>{cardex.mileage} Miles</span>
+                </div>
+                <div className="specItem">
+                  <FontAwesomeIcon icon={faGasPump} />
+                  <span>{cardex.fuel_type}</span>
+                </div>
+                <div className="specItem">
+                  <FontAwesomeIcon icon={faGear} />
+                  <span>{cardex.car_type.name}</span>
+                </div>
+              </div>
+              <hr />
+              <div className="productFooter">
+                <span className="price">£{cardex.price.toLocaleString()}</span>
+                <Link to={`/car/${cardex.id}`} className="viewButton">
+                  View Details
+                </Link>
+              </div>
             </div>
           </div>
-
-          {/* Lower Content */}
-          <div className="productContent">
-            {/* Row 1 */}
-            <div className="productHeader">
-              <p className="productTitle">{`${cardex.brand} ${cardex.name} ${cardex.model}`}</p>
-              <p className="productDescription">{cardex.description}</p>
-            </div>
-            <hr />
-
-            {/* Row 2 */}
-            <div className="productSpecs">
-              <div className="specItem">
-                <FontAwesomeIcon icon={faGauge} />
-                <span>{cardex.mileage} Miles</span>
-              </div>
-              <div className="specItem">
-                <FontAwesomeIcon icon={faGasPump} />
-                <span>{cardex.fuelType}</span>
-              </div>
-              <div className="specItem">
-                <FontAwesomeIcon icon={faGear} />
-                <span>{cardex.carType}</span>
-              </div>
-            </div>
-            <hr />
-
-            {/* Row 3 */}
-            <div className="productFooter">
-              <span className="price">£{cardex.price.toLocaleString()}</span>
-              <button className="viewButton">View Details</button>
-            </div>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
