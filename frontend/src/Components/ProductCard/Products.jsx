@@ -83,7 +83,12 @@ const Products = () => {
             {/* Lower Content */}
             <div className="productContent">
               <div className="productHeader">
-                <p className="productTitle">{`${cardex.brand} ${cardex.name} ${cardex.model}`}</p>
+                {/* For large data with unique entries of brand, name and model */}
+
+                {/* <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p> */}
+
+                <p className="productTitle"> {cardex.name}</p>
+
                 <p className="productDescription">{cardex.description}</p>
               </div>
               <hr />
