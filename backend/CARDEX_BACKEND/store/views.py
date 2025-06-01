@@ -1,12 +1,19 @@
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.auth.models import User
 
 from .models import Product, CarType, Order
 from .serializers import (
     ProductSerializer,
     CarTypeSerializer,
-    OrderSerializer
+    OrderSerializer,
+    RegisterSerializer,
 )
+
+# /api/register/ POST
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
 
 # /api/products/ GET
 class ProductListView(generics.ListAPIView):

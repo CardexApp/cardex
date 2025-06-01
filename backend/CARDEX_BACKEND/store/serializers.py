@@ -1,6 +1,29 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails
 
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password']
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email has already been used.")
+        return value
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            username=validated_data['email'], # we're using email as username
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        return user
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
