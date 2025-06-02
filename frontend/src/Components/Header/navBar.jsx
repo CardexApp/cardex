@@ -51,11 +51,11 @@ const NavBar = () => {
           </p>
           <hr className="hrTag" />
         </NavLink>
-        <NavLink to="/login" className="navLink">
+        {/* <NavLink to="/login" className="navLink">
           <p>
             Login
           </p>
-        </NavLink>
+        </NavLink> */}
       </ul>
       <div className="userStatus">
         {/* <div className="searchWrapper">
@@ -73,15 +73,15 @@ const NavBar = () => {
         <div className="dropdown">
           <FontAwesomeIcon icon={faUserCircle} size="lg" />
           <div className="dropdownContent">
-            <Link to="/profile">
-              <FontAwesomeIcon icon={faUser} /> My Profile
+            <Link to="/login">
+              <FontAwesomeIcon icon={faUser} /> Login
             </Link>
             <Link to="/orders">
               <FontAwesomeIcon icon={faBox} /> Orders
             </Link>
-            <Link to="/logout">
+            {/* <Link to="/logout">
               <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-            </Link>
+            </Link> */}
           </div>
         </div>
         <Link to="/cart" className="relative">
