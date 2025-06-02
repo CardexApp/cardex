@@ -92,10 +92,10 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cardexbackend',
-        'USER': 'faisalsherif',  # Same as shown in the psql prompt before
-        'PASSWORD': '',  # Leave empty if using local trust auth (Postgres.app default)
-        'HOST': 'localhost',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',  # Same as shown in the psql prompt before
+        'PASSWORD': 'npg_BRJf6e1noMrq',  # Leave empty if using local trust auth (Postgres.app default)
+        'HOST': 'ep-crimson-truth-ab866ypv-pooler.eu-west-2.aws.neon.tech',
         'PORT': '5432',
     }
 }
