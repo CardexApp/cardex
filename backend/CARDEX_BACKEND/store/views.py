@@ -2,12 +2,13 @@ from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User
 
-from .models import Product, CarType, Order
+from .models import Product, CarType, Order, Cart
 from .serializers import (
     ProductSerializer,
     CarTypeSerializer,
     OrderSerializer,
     RegisterSerializer,
+    CartSerializer,
 )
 
 # /api/register/ POST
@@ -49,3 +50,13 @@ class ProductSearchView(generics.ListAPIView):
 # /api/guest-checkout/ POST
 class GuestCheckoutView(generics.CreateAPIView):
     serializer_class = OrderSerializer
+
+class CartListCreateView(generics.ListCreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            serializer.save()
