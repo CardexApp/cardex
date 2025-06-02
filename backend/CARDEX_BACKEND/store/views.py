@@ -41,8 +41,9 @@ class ProductSearchView(generics.ListAPIView):
         'model_year': ['exact', 'gte', 'lte'],
         'make__name': ['exact'],
         'car_type__name': ['exact'],
+        'transmission': ['exact'],
     }
-    search_fields = ['name', 'description', 'mileage', 'model_year', 'price', 'car_type__name']
+    search_fields = ['name', 'description', 'mileage', 'model_year', 'price', 'car_type__name', 'transmission']
     ordering_fields = ['price', 'model_year']
 
 # /api/guest-checkout/ POST

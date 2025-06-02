@@ -38,7 +38,7 @@ class GuestCustomer(models.Model):
 # Car type
 class CarType(models.Model):
     CAR_CHOICES = [
-        ('SUV', 'SUV'),
+        ('suv', 'SUV'),
         ('sedan', 'Sedan'),
         ('hatchback', 'Hatchback'),
         ('pickup_truck', 'Pickup Truck'),
@@ -76,6 +76,11 @@ class Product(models.Model):
         ('hydrogen', 'Hydrogen')
     ]
 
+    CONDITION = [
+        ('new', 'New'),
+        ('used', 'Used')
+    ]
+
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -86,6 +91,7 @@ class Product(models.Model):
     fuel_type = models.CharField(max_length=10, choices=FUEL_CHOICES)
     car_type = models.ForeignKey(CarType, on_delete=models.CASCADE)
     make = models.ForeignKey(Make, on_delete=models.CASCADE)
+    condition = models.CharField(max_length=10, choices=CONDITION)
 
     def __str__(self):
         return self.name
