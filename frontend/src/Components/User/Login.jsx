@@ -1,12 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
+import "./Login.css"
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const loginSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        {username, password,}
+      )
+
+      localStorage.setItem("token", res.data.token);
+      navigate("/");
+    } catch (err) {
+      setError ("Invalid username or password");
+    }
+  }
+
+
   return (
-    <div>
-      PRINCE OSEI
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ea officia consequuntur sapiente quidem ab nam eligendi. Officiis necessitatibus, iure fugit at praesentium velit vero distinctio quisquam, consectetur, quam ratione sunt laboriosam porro nam sapiente adipisci numquam natus tempora ut illo! Autem et, inventore eligendi repellendus amet explicabo pariatur earum quam illum nihil nostrum corporis rerum hic sed praesentium officiis? Molestiae aliquid temporibus aut iusto commodi debitis eum ducimus quis?</p>
+    <div className='loginContainer'>
+        <h2 className='loginTitle'>Welcome To Cardex</h2>
+        <p>Please Login to continue or SignUp to create an account</p>
+        <div className='loginInput'>
+            <img src="" alt="user avatar" className='loginAvatar' />
+            <form onSubmit={loginSubmit}>
+              <input type="text" placeholder=' Enter Username' className='loginUser' value={username} onChange={(e) => setUsername(e.target.value)} required/>
+              <input type="password" placeholder='Enter password' className='loginPass' value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <div className='loginRecover'><input type="checkbox" /> Remember me
+              <span className='loginForgotPass'>Forgot Password</span>
+              </div>
+
+              {error && <p className='errorText'>{error}</p>}
+              <button type='submit' className='loginSubmit'>Submit</button>
+            </form>
+        </div>
     </div>
   )
+  
 }
 
 export default Login;
