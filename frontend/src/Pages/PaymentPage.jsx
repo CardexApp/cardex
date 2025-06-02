@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { CartContext } from "../Context/CartContext";
 
 const PaymentPage = () => {
   const [step, setStep] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
+  const { cartItems } = useContext(CartContext); // Access cart items
 
   const { subtotal, tax, insurance, total } = location.state || {
     subtotal: 0,
@@ -58,23 +61,65 @@ const PaymentPage = () => {
     if (!month || !year || month < 1 || month > 12) return false;
 
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // 0-based
-    const currentYear = currentDate.getFullYear() % 100; // get last 2 digits
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear() % 100;
 
     return (
       year > currentYear || (year === currentYear && month >= currentMonth)
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!isExpiryValid(formData.expiry)) {
-      toast.error("Card expiry date is invalid or expired");
-      return;
-    }
+  if (!isExpiryValid(formData.expiry)) {
+    toast.error("Card expiry date is invalid or expired (use MM/YY)");
+    return;
+  }
 
-    toast.success("Payment Successful");
+  // Convert MM/YY to YYYY-MM-DD format
+  const [month, yearShort] = formData.expiry.split("/");
+  const year = `20${yearShort}`;
+  const formattedExpiry = `${year}-${month.padStart(2, "0")}-01`;
+
+  // Assuming you allow only 1 item in cart:
+  if (cartItems.length !== 1) {
+    toast.error("Only one item can be checked out at a time.");
+    return;
+  }
+
+  const selectedProductId = cartItems[0].id;
+
+  const payload = {
+    guest_customer: {
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      address: {
+        house_address: formData.address,
+        postal_code: formData.postalCode,
+      },
+      card_details: {
+        name_on_card: `${formData.firstName} ${formData.lastName}`,
+        card_number: formData.cardNumber.replace(/\s/g, ""),
+        expiry_date: formattedExpiry,
+        cvv: formData.cvv,
+      },
+    },
+    product: selectedProductId, // not a list!
+    subtotal,
+    tax,
+    insurance,
+    total,
+  };
+
+  try {
+    const response = await axios.post(
+      "https://cardexbackend.eu.pythonanywhere.com/api/guest-checkout/",
+      payload
+    );
+
+    toast.success("Payment Successful!");
+
     navigate("/orderDetails", {
       state: {
         ...formData,
@@ -82,9 +127,16 @@ const PaymentPage = () => {
         tax,
         insurance,
         total,
+        orderId: response.data?.order_id || null,
       },
     });
-  };
+  } catch (error) {
+    console.error("Checkout failed:", error.response?.data || error.message);
+    toast.error("Payment failed. Please check your details and try again.");
+  }
+};
+
+
 
   return (
     <div style={{ padding: "2rem", maxWidth: "500px", margin: "auto" }}>
