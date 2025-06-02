@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -145,7 +146,8 @@ const Products = () => {
                 onClick={() => {
                   console.log("Bookmarked - ID:", cardex.id);
                   addToCart(cardex);
-                  navigate("/cart");
+                  toast.success("Product added to cart")
+                  // navigate("/cart");
                 }}
               >
                 <FontAwesomeIcon className="bookmarkIcon" icon={faBookmark} />

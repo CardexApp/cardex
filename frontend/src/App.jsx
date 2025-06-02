@@ -10,6 +10,7 @@ import CarInfoDetails from "./Components/ProductDetails/CarInfo Container/CarInf
 import PaymentPage from "./Pages/PaymentPage.jsx";
 import { ToastContainer } from "react-toastify";
 import OrderDetails from "./Pages/OrderDetails.jsx";
+import LoginPage from "./Pages/LoginPage.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<LoginPage />}/>
           <Route path="/cart" element={<CartPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/listings" element={<Products />} />
