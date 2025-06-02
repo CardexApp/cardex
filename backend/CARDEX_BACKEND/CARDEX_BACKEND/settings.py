@@ -89,6 +89,17 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cardexbackend',
+        'USER': 'faisalsherif',  # Same as shown in the psql prompt before
+        'PASSWORD': '',  # Leave empty if using local trust auth (Postgres.app default)
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
