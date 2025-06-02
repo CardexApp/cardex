@@ -6,14 +6,20 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const loginSubmit = async(e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        {username, password},
+        {username, password,}
       )
+
+      localStorage.setItem("token", res.data.token);
+      navigate("/");
+    } catch (err) {
+      setError ("Invalid username or password");
     }
   }
 
@@ -24,13 +30,15 @@ const Login = () => {
         <p>Please Login to continue or SignUp to create an account</p>
         <div className='loginInput'>
             <img src="" alt="user avatar" className='loginAvatar' />
-            <form onSubmit={loginSubmit} action="">
-              <input type="text" placeholder=' Enter Username' className='loginUser' />
-              <input type="password" placeholder='Enter password' className='loginPass' />
+            <form onSubmit={loginSubmit}>
+              <input type="text" placeholder=' Enter Username' className='loginUser' value={username} onChange={(e) => setUsername(e.target.value)} required/>
+              <input type="password" placeholder='Enter password' className='loginPass' value={password} onChange={(e) => setPassword(e.target.value)} required />
               <div className='loginRecover'><input type="checkbox" /> Remember me
               <span className='loginForgotPass'>Forgot Password</span>
               </div>
-              <button className='loginSubmit'>Submit</button>
+
+              {error && <p className='errorText'>{error}</p>}
+              <button type='submit' className='loginSubmit'>Submit</button>
             </form>
         </div>
     </div>
