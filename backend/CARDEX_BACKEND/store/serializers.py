@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails
+from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, Cart
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -101,3 +101,20 @@ class OrderSerializer(serializers.ModelSerializer):
     
         order = Order.objects.create(guest_customer=guest_customer, **validated_data)
         return order
+    
+class CartSerializer(serializers.ModelSerializer):  
+    guest_customer = GuestCustomerSerializer()
+
+    class Meta:
+        model = Cart  # Assuming Cart is similar to Order
+        fields = ['id', 'product', 'guest_customer', 'user', 'created_at']
+        read_only_fields = ['id', 'created_at', 'user']
+
+    def create(self, validated_data):
+        guest_customer_data = validated_data.pop('guest_customer')
+        guest_customer_serializer = GuestCustomerSerializer(data=guest_customer_data)
+        guest_customer_serializer.is_valid(raise_exception=True)
+        guest_customer = guest_customer_serializer.save()
+    
+        cart = Cart.objects.create(guest_customer=guest_customer, **validated_data)  # Assuming Cart is similar to Order
+        return cart

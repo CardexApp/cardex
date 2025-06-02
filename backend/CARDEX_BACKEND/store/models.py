@@ -106,6 +106,16 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.id}"
+    
+# Cart
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    guest_customer = models.ForeignKey(GuestCustomer, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order #{self.id}"
 
 #Card details
 class CardDetails(models.Model):
