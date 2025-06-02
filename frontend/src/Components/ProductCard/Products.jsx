@@ -8,7 +8,7 @@ import {
   faGasPump,
   faGear,
   faBookmark,
-  faMagnifyingGlass,
+  // faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
 import { CartContext } from "../../Context/CartContext";
@@ -26,8 +26,10 @@ const Products = () => {
   // use state for Model filtering
   const [selectedModelYear, setSelectedModelYear] = useState("");
   // use state for Price filtering
-  const [selectedPrice, setSelectedPrice] = useState(100000); // Max price limit
-  const [selectedCondition, setSelectedCondition] = useState(""); // "New" or "Used"
+  const [selectedPrice, setSelectedPrice] = useState(100000);
+  // use state for Condition filtering
+  const [selectedCondition, setSelectedCondition] = useState("");
+  // use state for Transmission filtering
   const [selectedTransmission, setSelectedTransmission] = useState("");
 
   // use context for product cart
@@ -45,17 +47,17 @@ const Products = () => {
   const filteredProducts = products.filter((car) => {
     const term = search.toLowerCase();
 
-    const matchesSearch =
-      car.make?.name.toLowerCase().includes(term) ||
+    const filterSearch =
+      car.make.name?.toLowerCase().includes(term) ||
       car.name?.toLowerCase().includes(term) ||
       car.model_year?.toLowerCase().includes(term) ||
       car.fuel_type?.toLowerCase().includes(term) ||
-      car.car_type?.name?.toLowerCase().includes(term) ||
+      car.car_type.name?.toLowerCase().includes(term) ||
       car.transmission?.toLowerCase().includes(term) ||
       car.brand?.toLowerCase().includes(term) ||
       car.model?.toLowerCase().includes(term);
 
-    const matchesFilters =
+    const filteredResult =
       (!selectedMake || car.make?.name === selectedMake) &&
       (!selectedCarType || car.car_type?.name === selectedCarType) &&
       (!selectedModelYear || car.model_year === selectedModelYear) &&
@@ -63,7 +65,7 @@ const Products = () => {
       (!selectedTransmission || car.transmission === selectedTransmission) &&
       (!selectedPrice || Number(car.price) <= selectedPrice);
 
-    return matchesSearch && matchesFilters;
+    return filterSearch && filteredResult;
   });
 
   return (
@@ -84,7 +86,7 @@ const Products = () => {
           <option value="">All Brands</option>
           <option value="Toyota">Toyota</option>
           <option value="Range Rover">Range Rover</option>
-          <option value="Mercedes">Mercedes</option>
+          <option value="Mercedes Benz">Mercedes</option>
           <option value="Lexus">Lexus</option>
           <option value="Tesla">Tesla</option>
         </select>
@@ -92,10 +94,10 @@ const Products = () => {
         <select onChange={(e) => setSelectedCarType(e.target.value)}>
           <option value="">All Types</option>
           <option value="SUV">SUV</option>
-          <option value="Sedan">Sedan</option>
-          <option value="Coupe">Coupe</option>
-          <option value="Hatchback">Hatchback</option>
-          <option value="Convertible">Convertible</option>
+          <option value="sedan">Sedan</option>
+          <option value="coupe">Coupe</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="convertible">Convertible</option>
         </select>
 
         <select onChange={(e) => setSelectedModelYear(e.target.value)}>
@@ -108,14 +110,14 @@ const Products = () => {
 
         <select onChange={(e) => setSelectedTransmission(e.target.value)}>
           <option value="">All Transmission</option>
-          <option value="Manual">Manual</option>
-          <option value="Automatic">Automatic</option>
+          <option value="manual">Manual</option>
+          <option value="automatic">Automatic</option>
         </select>
 
         <select onChange={(e) => setSelectedCondition(e.target.value)}>
           <option value="">All Conditions</option>
-          <option value="New">New</option>
-          <option value="Used">Used</option>
+          <option value="new">New</option>
+          <option value="used">Used</option>
         </select>
 
         <input
@@ -157,9 +159,9 @@ const Products = () => {
               <div className="productHeader">
                 {/* For large data with unique entries of brand, name and model */}
 
-                {/* <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p> */}
+                <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p>
 
-                <p className="productTitle"> {cardex.name}</p>
+                {/* <p className="productTitle"> {cardex.name}</p> */}
 
                 <p className="productDescription">{cardex.description}</p>
               </div>
