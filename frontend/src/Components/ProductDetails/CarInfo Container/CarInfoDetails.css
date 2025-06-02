@@ -1,59 +1,148 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .carInfoDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.sectionBlock h3 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  padding: 0 120px;
+  background-color: #fff;
   color: #222;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
-
-.overviewGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* left and right columns */
-  gap: 16px;
-  align-items: start;
 }
 
-.overviewDetails {
+.breadcrumbs {
+  display: flex;
+  margin: 24px 0 12px;
+}
+
+.breadcrumbsSeparator {
+  margin: 0 4px;
+}
+
+.breadcrumbsActive {
+  color: blue;
+}
+
+.heading {
   display: grid;
-  row-gap: 10px;
+  text-align: left;
+  gap: 8px;
+  width: 660px;
 }
 
-.overviewImage {
-  width: 700px;
-  /* max-width: 400px; */
-  border-radius: 8px;
-  object-fit: cover;
+.heading h1 {
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 36px;
 }
 
-.dimensionGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 10px;
-  column-gap: 20px;
+.heading p {
+  font-weight: 400;
+  font-size: 15px;
 }
 
-.featuresColumns {
+.hero {
+  margin: 24px 0;
+}
+
+.banner {
+  margin: 24px 0;
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  align-items: center;
 }
 
-.featuresColumns h4 {
-  font-size: 16px;
-  margin-bottom: 5px;
+.banner .features {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.featuresColumns ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.banner .featuresbtn {
+  background-color: aqua;
+  padding: 4px 12px;
+  border-radius: 16px;
+}
+
+.banner .CTA {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.banner .ctabtn {
+  padding: 4px 12px;
+  border: 1px solid #a88;
+  border-radius: 16px;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.media {
+  position: relative;
+  display: inline-block;
+  width: 90%;
+}
+
+.media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+}
+
+.media label {
+  display: flex;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  font-weight: 700;
+  background-color: #fafafa;
+  padding: 2px 8px;
+  border-radius: 16px;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.rightSideBar {
+  display: grid;
+  grid-row: inherit;
+  gap: 24px;
+}
+
+.rightSideBar .buy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid;
+  border-radius: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.rightSideBar .price {
+  font-size: 24px;
+}
+
+.rightSideBar .priceSymbol {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.checkout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rightSideBar .buyNow {
+  background-color: aliceblue;
 }
 
 .addToCart {
@@ -71,4 +160,177 @@
 
 .addToCart :hover {
   background-color: #0056b3;
+}
+
+.rightSideBar .dealer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid;
+  border-radius: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.productDetails {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 48px;
+  margin: 12px 0;
+}
+
+.carDetails {
+  margin: 12px 0;
+}
+
+.specifications h2 {
+  text-align: left;
+}
+
+.carOverview {
+  display: flex;
+  gap: 48px;
+}
+
+.carOverview h4 {
+  font-size: 16px;
+}
+
+.leftColumn {
+  flex: 1;
+}
+.rightColumn {
+  flex: 1;
+}
+
+.specList {
+  margin: 12px 0;
+  padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.specName {
+  display: flex;
+}
+
+.carDescription {
+  margin: 12px 0 8px;
+}
+
+.carDescription h3 {
+  font-size: 24px;
+  text-align: left;
+}
+.carDescription p {
+  font-size: 16px;
+  line-height: 24px;
+  text-align: justify;
+}
+
+.description button {
+  padding: 4px 12px;
+}
+
+.carDetails .features {
+  margin: 24px 0;
+}
+
+.featuresTitle {
+  font-size: 24px;
+  text-align: left;
+}
+
+.featuresTable {
+  width: 100%;
+}
+
+.features td {
+  padding: 8px 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.features .tableHead {
+  font-weight: 700;
+  text-align: start;
+  text-align: start;
+  padding: 12px 0;
+}
+
+.dimensions {
+  margin: 48px 0;
+}
+
+.dimensionsTitle {
+  font-size: 24px;
+  text-align: left;
+}
+
+.dimensionsTable {
+  display: flex;
+  width: 100%;
+}
+
+.dimensionsTable .firstTable {
+  flex: 1;
+}
+.dimensionsTable .secondTable {
+  flex: 1;
+}
+
+.dimensions td {
+  padding: 12px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.dimensionsTable th {
+  text-align: start;
+}
+
+.engine {
+  margin: 48px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.engineTitle {
+  font-size: 24px;
+  /* text-align: left; */
+}
+
+.engineTable {
+  display: flex;
+  width: 100%;
+}
+
+.engineTable .firstTable {
+  flex: 1;
+}
+
+.engineTable .secondTable {
+  flex: 1;
+}
+
+.engineTable th {
+  text-align: start;
+}
+
+.mapbtn {
+  padding: 4px 12px;
+}
+
+.map {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.map h3 {
+  text-align: left;
 }

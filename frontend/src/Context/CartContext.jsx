@@ -6,12 +6,17 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (item) => {
-    setCartItems([item]); // Only one item at a time as per your use case
+    setCartItems((prev) => [...prev, item]);
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+
