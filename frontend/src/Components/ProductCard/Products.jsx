@@ -7,7 +7,7 @@ import {
   faGasPump,
   faGear,
   faBookmark,
-  faMagnifyingGlass,
+  // faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
 import { CartContext } from "../../Context/CartContext";
@@ -115,8 +115,8 @@ const Products = () => {
 
         <select onChange={(e) => setSelectedCondition(e.target.value)}>
           <option value="">All Conditions</option>
-          <option value="New">New</option>
-          <option value="Used">Used</option>
+          <option value="new">New</option>
+          <option value="used">Used</option>
         </select>
 
         <input
@@ -157,9 +157,9 @@ const Products = () => {
               <div className="productHeader">
                 {/* For large data with unique entries of brand, name and model */}
 
-                {/* <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p> */}
+                <p className="productTitle">{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</p>
 
-                <p className="productTitle"> {cardex.name}</p>
+                {/* <p className="productTitle"> {cardex.name}</p> */}
 
                 <p className="productDescription">{cardex.description}</p>
               </div>
