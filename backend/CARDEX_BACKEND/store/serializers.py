@@ -82,7 +82,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'image', 'name', 'price', 'description', 'mileage',
-            'model_year', 'transmission', 'fuel_type', 'car_type', 'make'
+            'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 'condition'
         ]
 
 class OrderSerializer(serializers.ModelSerializer):
