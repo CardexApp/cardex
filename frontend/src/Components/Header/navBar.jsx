@@ -51,11 +51,11 @@ const NavBar = () => {
           </p>
           <hr className="hrTag" />
         </NavLink>
-        <NavLink to="/login" className="navLink">
+        {/* <NavLink to="/login" className="navLink">
           <p>
             Login
           </p>
-        </NavLink>
+        </NavLink> */}
       </ul>
       <div className="userStatus">
         {/* <div className="searchWrapper">
