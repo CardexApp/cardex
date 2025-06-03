@@ -4,6 +4,17 @@ Base URL: `https://cardexbackend.eu.pythonanywhere.com`
 
 ## Endpoints
 
+### 🔹 Register/SignUp
+
+- `POST /api/register/`  
+  Create an account.
+
+- `POST /api/login/`  
+  Log into your account.
+
+- `POST /api/token/refresh`  
+  Refreh you Access token.
+
 ### 🔹 Products
 
 - `GET /api/products/`  
