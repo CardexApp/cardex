@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "cardexbackend.eu.pythonanywhere.com",
-    "127.0.0.1"
+    "127.0.0.1",
+    "cardex-xq9p.onrender.com"
     ]
 
 # Application definition
