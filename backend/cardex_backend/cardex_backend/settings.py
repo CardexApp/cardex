@@ -30,7 +30,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "cardexbackend.eu.pythonanywhere.com",
     "127.0.0.1",
-    "cardex-xq9p.onrender.com",
     "sparkling-chelsae-cardex-cd058300.koyeb.app"
     ]
 
