@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails
+from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -101,3 +101,47 @@ class OrderSerializer(serializers.ModelSerializer):
     
         order = Order.objects.create(guest_customer=guest_customer, **validated_data)
         return order
+
+# CartItem serializer
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = ['id', 'product', 'quantity']
+
+# Cart serializer
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'created_at', 'items']
+        read_only_fields = ['id', 'user', 'created_at']
+
+# For adding items to cart
+class AddToCartSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+    def validate_product_id(self, value):
+        if not Product.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Product does not exist.")
+        return value
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        product_id = self.validated_data['product_id']
+        quantity = self.validated_data['quantity']
+
+        # Get or create cart
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        # Check if item already in cart
+        item, created = CartItem.objects.get_or_create(cart=cart, product_id=product_id)
+        if not created:
+            item.quantity += quantity
+        else:
+            item.quantity = quantity
+        item.save()
+        return item

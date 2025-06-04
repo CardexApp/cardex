@@ -107,6 +107,23 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id}"
 
+# Cart model - represents one cart per user
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # One cart per user
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Cart"
+
+# CartItem model - products inside the cart
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
+
 #Card details
 class CardDetails(models.Model):
     name_on_card = models.CharField(max_length=100)
