@@ -12,11 +12,14 @@ const Login = () => {
   const loginSubmit = async(e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const res = await axios.post("https://cardexbackend.eu.pythonanywhere.com/api/login/",
+
         {username, password,}
       )
 
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("accessToken", res.data.access);
+      localStorage.setItem("refreshToken", res.data.refresh);
+
       navigate("/");
     } catch (err) {
       setError ("Invalid username or password");

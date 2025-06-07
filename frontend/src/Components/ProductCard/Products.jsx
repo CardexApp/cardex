@@ -37,11 +37,26 @@ const Products = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      navigate("/login"); 
+    }
+
     axios
-      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/")
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
+      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((res) => {setProducts(res.data)
+        })
+
+        .catch((err) => {
+          console.error("Error fetching products:", err);
+          toast.error ("Failed to load products. Please log in again")
+});
+}, []);
 
   // Filter products logic
   const filteredProducts = products.filter((car) => {
@@ -131,6 +146,11 @@ const Products = () => {
       </div>
 
       <div className="productGrid">
+        {filteredProducts.length === 0 &&(
+          <div>
+            <p>No matching products found</p>
+          </div>
+        )}
         {filteredProducts.map((cardex) => (
           <div key={cardex.id} className="productCard">
             {/* Top Image */}

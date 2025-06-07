@@ -1,5 +1,5 @@
 import asset from "../../assets/asset";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navBar.css";
 import {
@@ -12,11 +12,17 @@ import {
   faInfoCircle,
   faEnvelope,
   faUserCircle,
-  faMagnifyingGlass,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const logoutSubmit = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/");
+  };
+
   return (
     <div className="navBar">
       <div className="brand">
@@ -26,50 +32,33 @@ const NavBar = () => {
       <ul className="menuList">
         <NavLink to="/" className="navLink">
           <p>
-            <FontAwesomeIcon icon={faHome} /> HOME
+           HOME
           </p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/listings" className="navLink">
           <p>
-            <FontAwesomeIcon icon={faCar} />
             LISTINGS
           </p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/about" className="navLink">
           <p>
-            <FontAwesomeIcon icon={faInfoCircle} />
             ABOUT
           </p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/contact" className="navLink">
           <p>
-            <FontAwesomeIcon icon={faEnvelope} />
             CONTACT
           </p>
           <hr className="hrTag" />
         </NavLink>
         {/* <NavLink to="/login" className="navLink">
-          <p>
-            Login
-          </p>
+          <p>Login</p>
         </NavLink> */}
       </ul>
       <div className="userStatus">
-        {/* <div className="searchWrapper">
-          <input
-            className="searchInput"
-            type="search"
-            placeholder="Search CarDex"
-          />
-          <FontAwesomeIcon
-            className="searchIcon"
-            icon={faMagnifyingGlass}
-            size="lg"
-          />
-        </div> */}
         <div className="dropdown">
           <FontAwesomeIcon icon={faUserCircle} size="lg" />
           <div className="dropdownContent">
@@ -79,9 +68,9 @@ const NavBar = () => {
             <Link to="/orders">
               <FontAwesomeIcon icon={faBox} /> Orders
             </Link>
-            {/* <Link to="/logout">
+            <button onClick={logoutSubmit}>
               <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-            </Link> */}
+            </button>
           </div>
         </div>
         <Link to="/cart" className="relative">
