@@ -1,5 +1,11 @@
 /* Text-size styles */
 :root {
+
+  --font-family:"Poppins-Bold", Helvetica;
+
+  --background-display-large: 96px;
+  --background-display-medium: 84px;
+  --background-display-small: 72px;
   --display--large: 68px;
   --display--medium: 40px;
   --display--small: 36px;
@@ -50,7 +56,8 @@
   --secondary-color: #263238; /* Graphite 20 */
   --neutral-color: #f5f5f5; /* Gray 100 */
   --accent-color: #ff7043; /* Deep Orange 40 */
-  --background-color: #ffffff; /* White 100 */
+  --background-color1: #ffffff; /* White 100 */
+  --background-color2: #F6FAF8; /* White 100 */
 
   /* Text colors */
   --text-primary-color: #263238;
