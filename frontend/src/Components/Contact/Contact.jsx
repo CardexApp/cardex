@@ -32,8 +32,8 @@ const Contact = () => {
             <div className="info-icon">✉️</div>
             <h3>Write To Us</h3>
             <p>Fill out our form and we will contact you within 24 hours.</p>
-            <p>Emails: customer@exclusive.com</p>
-            <p>Emails: support@exclusive.com</p>
+            <p>Emails: customer@cardex.com</p>
+            <p>Emails: support@cardex.com</p>
           </div>
         </div>
 
