@@ -1,6 +1,6 @@
 # Cardex Backend API (For frontend)
 
-Base URL: `https://cardexbackend.eu.pythonanywhere.com`
+Base URL: `https://sparkling-chelsae-cardex-cd058300.koyeb.app/`
 
 ## Endpoints
 
@@ -37,7 +37,7 @@ Base URL: `https://cardexbackend.eu.pythonanywhere.com`
 ### 🔹 Search, Sort, and Filter Guide
 
 **Base Endpoint:**
-- `GET https://cardexbackend.eu.pythonanywhere.com/api/products/search/`
+- `GET https://sparkling-chelsae-cardex-cd058300.koyeb.app/products/search/`
 
 This endpoint supports search, ordering, and filtering through query parameters. Below are examples and descriptions of how to use it:
 
@@ -138,4 +138,4 @@ Admin Site:
     http://127.0.0.1:8000/api/products/search/?make__name=Toyota → filter by make
     http://127.0.0.1:8000/api/products/search/?make__name=Toyota&price=20000 → filter by make and price
 
-https://cardexbackend.eu.pythonanywhere.com/api/products/
+https://sparkling-chelsae-cardex-cd058300.koyeb.app/

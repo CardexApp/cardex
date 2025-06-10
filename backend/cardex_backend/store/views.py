@@ -14,7 +14,46 @@ from .serializers import (
     CartSerializer, 
     AddToCartSerializer,
     CartItemSerializer,
+    AdminRegisterSerializer,
+    # AdminTokenObtainPairSerializer
 )
+
+from django.contrib.auth import authenticate
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token  # or use JWT
+from .permissions import IsSuperUser  # import the custom permission
+# from rest_framework_simplejwt.views import TokenObtainPairView
+
+# class AdminTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = AdminTokenObtainPairSerializer
+
+
+class AdminRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminRegisterSerializer
+    permission_classes = [IsSuperUser]  # only superusers can register admins
+
+
+# class AdminLoginView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         username = request.data.get("username")
+#         password = request.data.get("password")
+
+#         user = authenticate(username=username, password=password)
+
+#         if user and user.is_staff:
+#             token, created = Token.objects.get_or_create(user=user)
+#             return Response({
+#                 "token": token.key,
+#                 "user_id": user.id,
+#                 "username": user.username,
+#                 "is_staff": user.is_staff
+#             }, status=status.HTTP_200_OK)
+#         return Response({"error": "Invalid credentials or not admin"}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 # /api/register/ POST
 class RegisterView(generics.CreateAPIView):

@@ -2,7 +2,38 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
 
+# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
+# # Admin/Super Admin Login serializer
+# class AdminTokenObtainPairSerializer(TokenObtainPairSerializer):
+#     def validate(self, attrs):
+#         data = super().validate(attrs)
+#         if not self.user.is_staff:
+#             raise serializers.ValidationError("User is not an admin.")
+#         data['username'] = self.user.username
+#         data['is_staff'] = self.user.is_staff
+#         data['user_id'] = self.user.id
+#         data['is_superuser'] = self.user.is_superuser
+#         return data
+
+
+# Admin registration serializer
+class AdminRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        user.is_staff = True  # Mark as admin
+        user.save()
+        return user
+
+
+# User registration serializer
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -25,12 +56,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+# Address serializer
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = ['id', 'postal_code', 'house_address', 'created_at']
         read_only_fields = ['id', 'created_at']
 
+# Card details serializer
 class CardDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CardDetails
@@ -43,7 +76,7 @@ class CardDetailsSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id']
 
-
+# Guest customer serializer
 class GuestCustomerSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
     card_details = CardDetailsSerializer()

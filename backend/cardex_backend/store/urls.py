@@ -11,6 +11,8 @@ from .views import (
     UserCartView,
     AddToCartView,
     RemoveFromCartView,
+    # AdminTokenObtainPairView,
+    AdminRegisterView,
 )
 
 urlpatterns = [
@@ -25,4 +27,9 @@ urlpatterns = [
     path('cart/', UserCartView.as_view(), name='user-cart'),
     path('cart/add/', AddToCartView.as_view(), name='add-to-cart'),
     path('cart/remove/<int:product_id>/', RemoveFromCartView.as_view(), name='remove-from-cart'),
-]
+#     path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
+#     path('admin/register/', AdminRegisterView.as_view(), name='admin-register'),
+    # path('admin/login/', AdminTokenObtainPairView.as_view(), name='admin-login'),
+    path('admin/login/', TokenObtainPairView.as_view(), name='admin-login'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('admin/register/', AdminRegisterView.as_view(), name='admin-register')]
