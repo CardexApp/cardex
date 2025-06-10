@@ -1,38 +1,193 @@
-.App {
-  text-align: center;
+/* Text-size styles */
+:root {
+
+  --font-family:"Poppins-Bold", Helvetica;
+
+  --background-display-large: 96px;
+  --background-display-medium: 84px;
+  --background-display-small: 72px;
+  --display--large: 68px;
+  --display--medium: 40px;
+  --display--small: 36px;
+  --headline--large: 34px;
+  --headline--medium: 32px;
+  --headline--small: 24px;
+  --title-1--large: 28px;
+  --title-1--medium: 22px;
+  --title-1-small: 16px;
+  --title-2--large: 20px;
+  --title-2--medium: 18px;
+  --title-2--small: 14px;
+  --body--large: 16px;
+  --body--medium: 14px;
+  --body--small: 12px;
+  --label--large: 14px;
+  --label--medium: 12px;
+  --label--small: 11px;
+  --label--regular: 11px;
+  --title-3--small: 14px;
+  --title-2--large--bold: 20px;
+  --title-2--medium--bold: 18px;
+  --headline--medium--bold: 30px;
+
+  /* Effect styles */
+  --shadow: 44px;
+  --icon-effect: 66px;
+  --ticket: 0px 2px 8px rgba(0, 0, 0, 0.25);
+  --card-2: 0px 2px 8px rgba(204, 204, 204, 0.25);
+  --okem--sys--light--bg-blur--200: ;
+  --okem--sys--light--bg-blur--100: ;
+
+  --elevation---shadow-02: 0px 0px 2px rgba(0, 0, 0, 0.12),
+    0px 1px 2px rgba(0, 0, 0, 0.14);
+  --elevation---shadow-04: 0px 0px 2px rgba(0, 0, 0, 0.12),
+    0px 2px 4px rgba(0, 0, 0, 0.14);
+  --elevation---shadow-08: 0px 0px 2px rgba(0, 0, 0, 0.12),
+    0px 4px 8px rgba(0, 0, 0, 0.14);
+  --elevation---shadow-16: 0px 0px 2px rgba(0, 0, 0, 0.12),
+    0px 8px 16px rgba(0, 0, 0, 0.14);
+  --elevation---shadow-28: 0px 0px 8px rgba(0, 0, 0, 0.2),
+    0px 14px 28.799999237060547px rgba(0, 0, 0, 0.24);
+  --elevation---shadow-64: 0px 0px 8px rgba(0, 0, 0, 0.2),
+    0px 32px 64px rgba(0, 0, 0, 0.24);
+
+  /*========== Color Styles ==========*/
+  --primary-color: #009688; /* Teal 40 */
+  --secondary-color: #263238; /* Graphite 20 */
+  --neutral-color: #f5f5f5; /* Gray 100 */
+  --accent-color: #ff7043; /* Deep Orange 40 */
+  --background-color1: #ffffff; /* White 100 */
+  --background-color2: #F6FAF8; /* White 100 */
+
+  /* Text colors */
+  --text-primary-color: #263238;
+  --text-secondary-color: #455a64;
+  --text-tertiary-color: #b0bec5;
+
+  /* Primary color scheme */
+  --cardex_ref_light_primary_teal_0_E0F2F1: rgba(224, 242, 241, 1);
+  --cardex_ref_light_primary_teal_5_B2DFDB: rgba(178, 223, 219, 1);
+  --cardex_ref_light_primary_teal_10_80CBC4: rgba(128, 203, 196, 1);
+  --cardex_ref_light_primary_teal_20_4DB6AC: rgba(77, 182, 172, 1);
+  --cardex_ref_light_primary_teal_30_26A69A: rgba(38, 166, 154, 1);
+  --cardex_ref_light_primary_teal_40_009688: rgba(0, 150, 136, 1);
+  --cardex_ref_light_primary_teal_50_00897B: rgba(0, 137, 123, 1);
+  --cardex_ref_light_primary_teal_60_00796B: rgba(0, 121, 107, 1);
+  --cardex_ref_light_primary_teal_70_00695C: rgba(0, 105, 92, 1);
+  --cardex_ref_light_primary_teal_80_004D40: rgba(0, 77, 64, 1);
+  --cardex_ref_light_primary_teal_90_A7FFEB: rgba(167, 255, 235, 1);
+  --cardex_ref_light_primary_teal_95_64FFDA: rgba(100, 255, 218, 1);
+  --cardex_ref_light_primary_teal_99_1DE9B6: rgba(29, 233, 182, 1);
+  --cardex_ref_light_primary_teal_100_00BFA5: rgba(0, 191, 165, 1);
+
+  /* Secondary color scheme */
+  --cardex_ref_light_secondary_graphite_0_000000: rgba(0, 0, 0, 1);
+  --cardex_ref_light_secondary_graphite_5_111111: rgba(17, 17, 17, 1);
+  --cardex_ref_light_secondary_graphite_10_1B1F21: rgba(27, 31, 33, 1);
+  --cardex_ref_light_secondary_graphite_20_263238: rgba(38, 50, 56, 1);
+  --cardex_ref_light_secondary_graphite_30_37474F: rgba(55, 71, 79, 1);
+  --cardex_ref_light_secondary_graphite_40_455A64: rgba(69, 90, 100, 1);
+  --cardex_ref_light_secondary_graphite_50_607D8B: rgba(96, 125, 139, 1);
+  --cardex_ref_light_secondary_graphite_60_78909C: rgba(120, 144, 156, 1);
+  --cardex_ref_light_secondary_graphite_70_90A4AE: rgba(144, 164, 174, 1);
+  --cardex_ref_light_secondary_graphite_80_B0BEC5: rgba(176, 190, 197, 1);
+  --cardex_ref_light_secondary_graphite_90_CFD8DC: rgba(207, 216, 220, 1);
+  --cardex_ref_light_secondary_graphite_95_ECEFF1: rgba(236, 239, 241, 1);
+  --cardex_ref_light_secondary_graphite_99_FAFBFB: rgba(250, 251, 251, 1);
+  --cardex_ref_light_secondary_graphite_100_FFFFFF: rgba(255, 255, 255, 1);
+
+  /* ========== Button Color ==========*/
+  /* Primary Button - Accent Based*/
+  --button-primary-default-color: #ff7043; /* Accent */
+  --button-primary-hover-color: #ff5722; /* Slightly deeper orange */
+  --button-primary-active-color: #e64a19; /* Even deeper orange (pressed) */
+  --button-primary-pressed-color: #d84315; /* Deepest on long press */
+  --button-primary-disabled-color: #ffab91; /* Muted orange (disabled) */
+
+  /* Secondary Button - Primary and Teal Based */
+  --button-secondary-default-color: #009688; /* Teal 500 */
+  --button-secondary-hover-color: #00796b; /* Slightly deeper teal */
+  --button-secondary-active-color: #00695c; /* Deeper teal (pressed) */
+  --button-secondary-pressed-color: #004d40; /* Deepest teal */
+  --button-secondary-disabled-color: #80cbc4; /* Muted teal */
+
+  /* Tertiary Button - Graphite Based */
+  --button-tertiary-default-color: #263238; /* Graphite */
+  --button-tertiary-hover-color: rgba(38, 50, 56, 0.1);
+  --button-tertiary-active-color: rgba(38, 50, 56, 0.2);
+  --button-tertiary-pressed-color: rgba(38, 50, 56, 0.3); /* Pressed */
+  --button-tertiary-disabled-color: rgba(38, 50, 56, 0.05);
+
+  /* ==========Button Text Color ==========*/
+  /* Text color for button primary and secondary */
+  --button-primary-text-color: #ffffff;
+  --button-secondary-text-color: #ffffff;
+  --button-primary-text-disabled-color: rgba(255, 255, 255, 0.7);
+  /* Tertiary button */
+  --button-tertiary-text-color: #263238; /* Graphite */
+  --button-tertiary-text-disabled-color: rgba(38, 50, 56, 0.4);
+
+  /*========== Box Shadow ==========*/
+  /* Primary Button Elevation */
+  --button-primary-elevation-default: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  --button-primary-elevation-hover: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  --button-primary-elevation-active: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  --button-primary-elevation-pressed: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  --button-primary-elevation-disabled: none;
+
+  /* Secondary Button Elevation */
+  --button-secondary-elevation-default: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  --button-secondary-elevation-hover: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  --button-secondary-elevation-active: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  --button-secondary-elevation-pressed: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  --button-secondary-elevation-disabled: none;
+
+  /* Tertiary Button Elevation */
+  --button-tertiary-elevation-default: none;
+  --button-tertiary-elevation-hover: none;
+  --button-tertiary-elevation-active: none;
+  --button-tertiary-elevation-pressed: none;
+  --button-tertiary-elevation-disabled: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
+  color: var(--text-primary-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.subtitle,
+.meta,
+.small-heading {
+  color: var(--text-secondary-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.disabled-text,
+.caption {
+  color: var(--text-tertiary-color);
 }
 
-.App-link {
-  color: #61dafb;
+.dropShadow {
+  backdrop-filter: blur(22px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Iconeffect {
+  backdrop-filter: blur(4px);
+}
+.Ticket {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+}
+.Card2 {
+  box-shadow: 0px 2px 8px rgba(204, 204, 204, 0.25);
+}
+.Okem__sys__light__bgBlur__200 {
+  backdrop-filter: blur(100px);
+}
+.Okem__sys__light__bgBlur__100 {
+  backdrop-filter: blur(50px);
 }
