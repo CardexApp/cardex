@@ -78,24 +78,80 @@ const Home = () => {
     <!-- Car cards grid --> */}
       </section>
 
-      {/* <!-- HIGHLIGHTED CARS --> */}
-      <section className="highlighted-cars">
-        <div className="highlight-card jeep">
-          <h3>Jeep Wrengle</h3>
-          <p>Lorem ipsum dolor sit amet consectetur...</p>
-          <button>Read More</button>
+      {/* <!-- HIGHLIGHTS --> */}
+      <section className="grid">
+        <div className="trending">
+          <div className="trendingImage"></div>
+          <div className="trendingDetails">
+            <h4>Porsche-2025</h4>
+            <h2>Feel The Power of Porsche</h2>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis
+              unde, quae recusandae ipsam reiciendis molestiae. Ratione dolorum
+              ipsum, magnam, tempore debitis dicta soluta consectetur optio
+              delectus velit, sequi adipisci voluptatibus!
+            </p>
+            <button className="read-more">Read More</button>
+          </div>
         </div>
-        <div className="highlight-card nissan">
-          <h3>Nissan RT 20</h3>
-          <p>Lorem ipsum dolor sit amet consectetur...</p>
-          <button>Read More</button>
+        <div className="trending">
+          <div className="trendingDetails red">
+            <h4>Porsche-2025</h4>
+            <h2>Feel The Power of Porsche</h2>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis
+              unde, quae recusandae ipsam reiciendis molestiae. Ratione dolorum
+              ipsum, magnam, tempore debitis dicta soluta consectetur optio
+              delectus velit, sequi adipisci voluptatibus!
+            </p>
+            <button className="read-more red">Read More</button>
+          </div>
+          <div className="trendingImage"></div>
         </div>
       </section>
 
       {/* <!-- RETURN SPECIAL --> */}
       <section className="return-special">
-        <h2>Our Return Special For You</h2>
-        {/* <!-- Return car cards --> */}
+        <div>
+          <h2>Our Return Special For You</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam
+            rerum libero alias, reprehenderit nihil quibusdam
+          </p>
+        </div>
+        <div className="col1">
+          <img
+            src="https://images.pexels.com/photos/337909/pexels-photo-337909.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt=""
+          />
+          <h2>Lexus RX350</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
+            explicabo cumque voluptatem?
+          </p>
+        </div>
+        <div className="col2">
+          <img
+            src="https://images.pexels.com/photos/337909/pexels-photo-337909.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt=""
+          />
+          <h2>Lexus RX450</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
+            explicabo cumque voluptatem?
+          </p>
+        </div>
+        <div className="col3">
+          <img
+            src="https://images.pexels.com/photos/337909/pexels-photo-337909.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt=""
+          />
+          <h2>Lexus RX300</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
+            explicabo cumque voluptatem?
+          </p>
+        </div>
       </section>
 
       {/* <!-- FAQ --> */}
