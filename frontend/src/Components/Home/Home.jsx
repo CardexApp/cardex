@@ -2,7 +2,7 @@ import "./Home.css";
 
 const Home = () => {
   return (
-    <div>
+    <div className="general">
       {/* <!-- HERO SECTION --> */}
       <section className="hero">
         <div className="vertical-text">Shop Cardex</div>

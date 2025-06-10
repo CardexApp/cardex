@@ -1,10 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 /* styles.css */
+*{
+  margin: 0;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   color: #263238;
+}
+
+.general {
+  margin: 0;
+  padding: 0;
 }
 
 .hero {
