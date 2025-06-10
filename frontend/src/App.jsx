@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import OrderDetails from "./Pages/OrderDetails.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
+import AboutPage from "./Pages/AboutPage.jsx";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           />
           <Route path="/orderDetails" element={<OrderDetails />} />
           <Route path="/car/:id" element={<CarInfoDetails />} />
+          <Route path="/about" element={<AboutPage/>} />
         </Routes>
       </div>
     </CartProvider>
