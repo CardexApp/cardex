@@ -1,6 +1,29 @@
 from rest_framework import serializers
-from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails
+from django.contrib.auth.models import User
+from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
 
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password']
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email has already been used.")
+        return value
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            username=validated_data['email'], # we're using email as username
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        return user
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,7 +82,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'image', 'name', 'price', 'description', 'mileage',
-            'model_year', 'transmission', 'fuel_type', 'car_type', 'make'
+            'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 'condition'
         ]
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -78,3 +101,47 @@ class OrderSerializer(serializers.ModelSerializer):
     
         order = Order.objects.create(guest_customer=guest_customer, **validated_data)
         return order
+
+# CartItem serializer
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = ['id', 'product', 'quantity']
+
+# Cart serializer
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'created_at', 'items']
+        read_only_fields = ['id', 'user', 'created_at']
+
+# For adding items to cart
+class AddToCartSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+    def validate_product_id(self, value):
+        if not Product.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Product does not exist.")
+        return value
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        product_id = self.validated_data['product_id']
+        quantity = self.validated_data['quantity']
+
+        # Get or create cart
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        # Check if item already in cart
+        item, created = CartItem.objects.get_or_create(cart=cart, product_id=product_id)
+        if not created:
+            item.quantity += quantity
+        else:
+            item.quantity = quantity
+        item.save()
+        return item
