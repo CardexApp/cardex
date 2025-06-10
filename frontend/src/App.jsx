@@ -13,6 +13,7 @@ import OrderDetails from "./Pages/OrderDetails.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
+import ContactPage from "./Pages/ContactPage.jsx";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/orderDetails" element={<OrderDetails />} />
           <Route path="/car/:id" element={<CarInfoDetails />} />
           <Route path="/about" element={<AboutPage/>} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </div>
     </CartProvider>
