@@ -10,6 +10,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   padding: 4px 48px;
   background-color: #242424;
+  z-index: 1;
   /* position: fixed;
   z-index: 1; */
 }
@@ -60,6 +61,7 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 4px;
+  color: #fff;
 }
 
 .hrTag {
@@ -71,11 +73,11 @@ body {
   border-radius: 0 0 8px 8px;
 }
 
-.navLink.active{
+.navLink.active {
   background-color: #555;
 }
 
-.navLink.active .hrTag{
+.navLink.active .hrTag {
   opacity: 1;
 }
 
@@ -97,7 +99,6 @@ body {
   color: #fefefe;
   position: relative;
 }
-
 
 .dropdown {
   position: relative;
