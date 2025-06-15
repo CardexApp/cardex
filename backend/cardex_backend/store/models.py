@@ -136,3 +136,16 @@ class CardDetails(models.Model):
 
     def __str__(self):
         return f"{self.name_on_card} - ****{self.card_number[-4:]}"
+    
+    
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    review = models.TextField()
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])  # out of 5
+
+    class Meta:
+        unique_together = ('user', 'product')  # Optional: one review per user per product
+
+    def __str__(self):
+        return f"Review by {self.user.username} for {self.product.name} ({self.rating}/5)"
