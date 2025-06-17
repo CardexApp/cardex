@@ -24,12 +24,22 @@ class AdminRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+        fields = ['password', 'email', 'first_name', 'last_name']
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email has already been used.")
+        return value
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        user.is_staff = True  # Mark as admin
-        user.save()
+        user = User.objects.create_user(
+        first_name=validated_data['first_name'],
+        last_name=validated_data['last_name'],
+        username=validated_data['email'], # we're using email as username
+        email=validated_data['email'],
+        password=validated_data['password'],
+        is_staff=True  # Mark as admin
+        )
         return user
 
 
@@ -108,15 +118,38 @@ class MakeSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class ProductSerializer(serializers.ModelSerializer):
-    car_type = CarTypeSerializer(read_only=True)
-    make = MakeSerializer(read_only=True)
+    car_type = serializers.PrimaryKeyRelatedField(queryset=CarType.objects.all()) 
+    make = serializers.PrimaryKeyRelatedField(queryset=Make.objects.all())
 
     class Meta:
         model = Product
         fields = [
             'id', 'image', 'name', 'price', 'description', 'mileage',
-            'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 'condition'
+            'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 
+            'condition'
         ]
+
+    # To show related details when retrieving:
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['car_type'] = {
+            "id": instance.car_type.id,
+            "name": instance.car_type.name
+        }
+        ret['make'] = {
+            "id": instance.make.id,
+            "name": instance.make.name
+        }
+        return ret
+
+class ProductAdminSerializer(ProductSerializer):
+    status = serializers.SerializerMethodField()
+
+    class Meta(ProductSerializer.Meta):
+        fields = ProductSerializer.Meta.fields + ['status', 'quantity']
+
+    def get_status(self, obj):
+        return obj.stock_status()
 
 class OrderSerializer(serializers.ModelSerializer):
     guest_customer = GuestCustomerSerializer()

@@ -92,9 +92,18 @@ class Product(models.Model):
     car_type = models.ForeignKey(CarType, on_delete=models.CASCADE)
     make = models.ForeignKey(Make, on_delete=models.CASCADE)
     condition = models.CharField(max_length=10, choices=CONDITION)
+    quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
+    
+    def stock_status(self):
+        if self.quantity == 0:
+            return "Out of Stock"
+        elif self.quantity < 5:
+            return "Low Stock"
+        else:
+            return "In Stock"
 
 
 # Order

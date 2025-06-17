@@ -1,7 +1,7 @@
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,44 +15,15 @@ from .serializers import (
     AddToCartSerializer,
     CartItemSerializer,
     AdminRegisterSerializer,
-    # AdminTokenObtainPairSerializer
+    ProductAdminSerializer
 )
 
-from django.contrib.auth import authenticate
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.authtoken.models import Token  # or use JWT
 from .permissions import IsSuperUser  # import the custom permission
-# from rest_framework_simplejwt.views import TokenObtainPairView
-
-# class AdminTokenObtainPairView(TokenObtainPairView):
-#     serializer_class = AdminTokenObtainPairSerializer
-
 
 class AdminRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = AdminRegisterSerializer
-    permission_classes = [IsSuperUser]  # only superusers can register admins
-
-
-# class AdminLoginView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request):
-#         username = request.data.get("username")
-#         password = request.data.get("password")
-
-#         user = authenticate(username=username, password=password)
-
-#         if user and user.is_staff:
-#             token, created = Token.objects.get_or_create(user=user)
-#             return Response({
-#                 "token": token.key,
-#                 "user_id": user.id,
-#                 "username": user.username,
-#                 "is_staff": user.is_staff
-#             }, status=status.HTTP_200_OK)
-#         return Response({"error": "Invalid credentials or not admin"}, status=status.HTTP_401_UNAUTHORIZED)
+    permission_classes = [IsAuthenticated, IsSuperUser]  # only superusers can register admins
 
 
 # /api/register/ POST
@@ -131,3 +102,16 @@ class RemoveFromCartView(generics.DestroyAPIView):
             return Response({"message": "Item removed from cart."}, status=status.HTTP_200_OK)
         except (Cart.DoesNotExist, CartItem.DoesNotExist):
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
+        
+# All viewsets for admin
+
+# class StandardResultsSetPagination(pagination.LimitOffsetPagination):
+#     default_limit = 20
+#     max_limit = 100
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductAdminSerializer
+    permission_classes = [permissions.IsAdminUser]  # only admin can access
+    # pagination_class = StandardResultsSetPagination
+    filterset_fields = ['condition', 'fuel_type']
