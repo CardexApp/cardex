@@ -15,7 +15,8 @@ from .views import (
     RemoveFromCartView,
     # AdminTokenObtainPairView,
     AdminRegisterView,
-    ProductViewSet
+    ProductViewSet,
+    OrderViewSet
 )
 
 urlpatterns = [
@@ -26,7 +27,6 @@ urlpatterns = [
     path('products/<int:id>/', ProductDetailView.as_view(), name='product-detail'),
     path('car-types/', CarTypeListView.as_view(), name='car-types'),
     path('products/search/', ProductSearchView.as_view(), name='product-search'),
-    # path('guest-checkout/', GuestCheckoutView.as_view(), name='guest-checkout'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('orders/', OrderView.as_view(), name='order-list'),
     path('cart/', UserCartView.as_view(), name='user-cart'),
@@ -36,4 +36,6 @@ urlpatterns = [
     path('admin/register/', AdminRegisterView.as_view(), name='admin-register'),
     path('admin/products/', ProductViewSet.as_view({'get': 'list', 'post': 'create'}), name='admin-products-list'),
     path('admin/products/<int:pk>/', ProductViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-products-detail'),
+    path('admin/orders/', OrderViewSet.as_view({'get': 'list'}), name='admin-orders-list'),
+    path('admin/orders/<int:pk>/', OrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
     ]

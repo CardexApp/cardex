@@ -108,10 +108,17 @@ class Product(models.Model):
 
 # Order
 class Order(models.Model):
+
+    STATUS_CHOICES = [
+        ('processing', 'Processing'),
+        ('dispatched', 'Dispatched'),
+        ('delivered', 'Delivered'),
+    ]
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # guest_customer = models.ForeignKey(GuestCustomer, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

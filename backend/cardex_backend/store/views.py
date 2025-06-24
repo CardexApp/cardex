@@ -143,8 +143,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     # pagination_class = StandardResultsSetPagination
     filterset_fields = ['condition', 'fuel_type']
 
-# class OrderViewSet(viewsets.ModelViewSet):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-#     permission_classes = [permissions.IsAdminUser]
-#     pagination_class = StandardResultsSetPagination
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAdminUser]
+    # pagination_class = StandardResultsSetPagination
+    filterset_fields = ['status', 'user', 'product']
