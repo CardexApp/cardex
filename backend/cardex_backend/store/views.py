@@ -84,13 +84,13 @@ class CheckoutView(generics.CreateAPIView):
 
 # View to retrieve the user's order
 # /api/order/ GET
-class OrderView(generics.RetrieveAPIView):
+class OrderView(generics.ListAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        order, created = Order.objects.get_or_create(user=self.request.user)
-        return order
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).order_by('-created_at')
 
 
 # View to retrieve the user's cart
