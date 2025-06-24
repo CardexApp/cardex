@@ -62,9 +62,36 @@ class ProductSearchView(generics.ListAPIView):
     search_fields = ['name', 'description', 'mileage', 'model_year', 'price', 'car_type__name', 'transmission']
     ordering_fields = ['price', 'model_year']
 
-# /api/guest-checkout/ POST
-class GuestCheckoutView(generics.CreateAPIView):
+# # /api/guest-checkout/ POST
+# class GuestCheckoutView(generics.CreateAPIView):
+#     serializer_class = OrderSerializer
+
+# View to handle user checkout
+# /api/checkout/ POST
+class CheckoutView(generics.CreateAPIView):
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        return Response({
+            "message": "Order successfully",
+            "order": OrderSerializer(order).data
+        }, status=status.HTTP_201_CREATED)
+
+
+# View to retrieve the user's order
+# /api/order/ GET
+class OrderView(generics.RetrieveAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        order, created = Order.objects.get_or_create(user=self.request.user)
+        return order
+
 
 # View to retrieve the user's cart
 class UserCartView(generics.RetrieveAPIView):
@@ -115,3 +142,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]  # only admin can access
     # pagination_class = StandardResultsSetPagination
     filterset_fields = ['condition', 'fuel_type']
+
+# class OrderViewSet(viewsets.ModelViewSet):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+#     permission_classes = [permissions.IsAdminUser]
+#     pagination_class = StandardResultsSetPagination

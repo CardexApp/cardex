@@ -109,8 +109,9 @@ class Product(models.Model):
 # Order
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    guest_customer = models.ForeignKey(GuestCustomer, on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    # guest_customer = models.ForeignKey(GuestCustomer, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -137,11 +138,11 @@ class CartItem(models.Model):
 class CardDetails(models.Model):
     name_on_card = models.CharField(max_length=100)
     card_number = models.CharField(max_length=16)
-    expiry_date = models.DateField()
+    expiry_date = models.CharField(max_length=5) 
     cvv = models.CharField(max_length=4)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    guest_customer = models.OneToOneField(GuestCustomer, related_name='card_details', on_delete=models.CASCADE, null=True, blank=True)
+    # guest_customer = models.OneToOneField(GuestCustomer, related_name='card_details', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name_on_card} - ****{self.card_number[-4:]}"

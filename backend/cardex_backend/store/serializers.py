@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.db import transaction
 from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
 
 # from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -87,25 +88,25 @@ class CardDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 # Guest customer serializer
-class GuestCustomerSerializer(serializers.ModelSerializer):
-    address = AddressSerializer()
-    card_details = CardDetailsSerializer()
+# class GuestCustomerSerializer(serializers.ModelSerializer):
+#     address = AddressSerializer()
+#     card_details = CardDetailsSerializer()
 
-    class Meta:
-        model = GuestCustomer
-        fields = ['id', 'first_name', 'last_name', 'address', 'card_details']
-        read_only_fields = ['id']
+#     class Meta:
+#         model = GuestCustomer
+#         fields = ['id', 'first_name', 'last_name', 'address', 'card_details']
+#         read_only_fields = ['id']
 
-    def create(self, validated_data):
-        address_data = validated_data.pop('address')
-        card_data = validated_data.pop('card_details')
+#     def create(self, validated_data):
+#         address_data = validated_data.pop('address')
+#         card_data = validated_data.pop('card_details')
 
-        address = Address.objects.create(**address_data)
-        guest_customer = GuestCustomer.objects.create(address=address, **validated_data)
+#         address = Address.objects.create(**address_data)
+#         guest_customer = GuestCustomer.objects.create(address=address, **validated_data)
         
-        CardDetails.objects.create(guest_customer=guest_customer, **card_data)
+#         CardDetails.objects.create(guest_customer=guest_customer, **card_data)
 
-        return guest_customer
+#         return guest_customer
     
 class CarTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -152,20 +153,38 @@ class ProductAdminSerializer(ProductSerializer):
         return obj.stock_status()
 
 class OrderSerializer(serializers.ModelSerializer):
-    guest_customer = GuestCustomerSerializer()
+    address = AddressSerializer()
+    card_details = CardDetailsSerializer(write_only=True)
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
 
     class Meta:
         model = Order
-        fields = ['id', 'product', 'guest_customer', 'user', 'created_at']
+        fields = ['id', 'product', 'user', 'created_at', 'address', 'card_details']
         read_only_fields = ['id', 'created_at', 'user']
 
     def create(self, validated_data):
-        guest_customer_data = validated_data.pop('guest_customer')
-        guest_customer_serializer = GuestCustomerSerializer(data=guest_customer_data)
-        guest_customer_serializer.is_valid(raise_exception=True)
-        guest_customer = guest_customer_serializer.save()
+        request = self.context['request']
+        user = request.user
+
+        if not user or not user.is_authenticated:
+            raise serializers.ValidationError("User must be authenticated to place an order.")
     
-        order = Order.objects.create(guest_customer=guest_customer, **validated_data)
+        address_data = validated_data.pop('address')
+        card_data = validated_data.pop('card_details')
+        product = validated_data.pop('product')
+
+        if product.quantity <= 0:
+            raise serializers.ValidationError("This product is out of stock.")
+
+        with transaction.atomic():
+            # Decrease stock
+            product.quantity -= 1
+            product.save()
+
+            address = Address.objects.create(**address_data)
+            order = Order.objects.create(address=address, user=user, product=product, **validated_data)
+        
+            CardDetails.objects.create(user=user, **card_data)
         return order
 
 # CartItem serializer
