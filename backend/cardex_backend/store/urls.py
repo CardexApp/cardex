@@ -11,6 +11,7 @@ from .views import (
     UserCartView,
     AddToCartView,
     RemoveFromCartView,
+    ReviewCreateView,
 )
 
 urlpatterns = [
@@ -24,5 +25,7 @@ urlpatterns = [
     path('guest-checkout/', GuestCheckoutView.as_view(), name='guest-checkout'),
     path('cart/', UserCartView.as_view(), name='user-cart'),
     path('cart/add/', AddToCartView.as_view(), name='add-to-cart'),
-    path('cart/remove/<int:product_id>/', RemoveFromCartView.as_view(), name='remove-from-cart'),
+    path('cart/remove/<int:product_id>/',
+         RemoveFromCartView.as_view(), name='remove-from-cart'),
+    path('reviews/', ReviewCreateView.as_view(), name='review-create'),
 ]
