@@ -113,6 +113,7 @@ class Order(models.Model):
         ('processing', 'Processing'),
         ('dispatched', 'Dispatched'),
         ('delivered', 'Delivered'),
+        ('returned', 'Returned'),
     ]
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

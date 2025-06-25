@@ -1,23 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.contrib.auth.hashers import check_password
 from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
-
-# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-
-# # Admin/Super Admin Login serializer
-# class AdminTokenObtainPairSerializer(TokenObtainPairSerializer):
-#     def validate(self, attrs):
-#         data = super().validate(attrs)
-#         if not self.user.is_staff:
-#             raise serializers.ValidationError("User is not an admin.")
-#         data['username'] = self.user.username
-#         data['is_staff'] = self.user.is_staff
-#         data['user_id'] = self.user.id
-#         data['is_superuser'] = self.user.is_superuser
-#         return data
-
 
 # Admin registration serializer
 class AdminRegisterSerializer(serializers.ModelSerializer):
@@ -66,6 +51,84 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        read_only_fields = ['first_name', 'last_name', 'email']
+
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if User.objects.filter(email=value).exclude(pk=user.pk).exists():
+            raise serializers.ValidationError("Email is already in use by another account.")
+        return value
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('email', instance.email)  # keep username = email
+        instance.save()
+        return instance
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not check_password(value, user.password):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+
+    def validate_new_password(self, value):
+        # Add any password validation rules here if needed
+        if len(value) < 8:
+            raise serializers.ValidationError("New password must be at least 8 characters.")
+        return value
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['new_password'])
+        user.save()
+        return user
+
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'is_staff', 'is_superuser']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
 
 # Address serializer
 class AddressSerializer(serializers.ModelSerializer):

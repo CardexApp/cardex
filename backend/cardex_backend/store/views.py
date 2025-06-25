@@ -15,7 +15,11 @@ from .serializers import (
     AddToCartSerializer,
     CartItemSerializer,
     AdminRegisterSerializer,
-    ProductAdminSerializer
+    ProductAdminSerializer,
+    UserProfileUpdateSerializer,
+    PasswordChangeSerializer,
+    UserProfileSerializer,
+    AdminUserSerializer
 )
 
 from .permissions import IsSuperUser  # import the custom permission
@@ -30,6 +34,40 @@ class AdminRegisterView(generics.CreateAPIView):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+
+class UserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class PasswordChangeView(generics.UpdateAPIView):
+    serializer_class = PasswordChangeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        first_name = request.user.first_name or "User"
+
+        return Response(
+            {"message": f"{first_name}, your password has been changed successfully."},
+            status=status.HTTP_200_OK
+        )
+
 
 # /api/products/ GET
 class ProductListView(generics.ListAPIView):
@@ -149,3 +187,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     # pagination_class = StandardResultsSetPagination
     filterset_fields = ['status', 'user', 'product']
+
+class AdminUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = AdminUserSerializer
+    permission_classes = [permissions.IsAdminUser]
+    # pagination_class = StandardResultsSetPaginationS
