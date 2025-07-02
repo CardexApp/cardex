@@ -206,6 +206,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "name": instance.make.name
         }
         return ret
+    
+    def get_status(self, obj):
+        return obj.stock_status()
 
 class ProductAdminSerializer(ProductSerializer):
     status = serializers.SerializerMethodField()
