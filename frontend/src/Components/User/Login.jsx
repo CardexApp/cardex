@@ -12,8 +12,7 @@ const Login = () => {
   const loginSubmit = async(e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://cardexbackend.eu.pythonanywhere.com/api/login/",
-
+      const res = await axios.post("https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/login",
         {username, password,}
       )
 
@@ -34,7 +33,7 @@ const Login = () => {
         <div className='loginInput'>
             <img src="" alt="user avatar" className='loginAvatar' />
             <form onSubmit={loginSubmit}>
-              <input type="text" placeholder=' Enter Username' className='loginUser' value={username} onChange={(e) => setUsername(e.target.value)} required/>
+              <input type="text" placeholder='Enter Username' className='loginUser' value={username} onChange={(e) => setUsername(e.target.value)} required/>
               <input type="password" placeholder='Enter password' className='loginPass' value={password} onChange={(e) => setPassword(e.target.value)} required />
               <div className='loginRecover'><input type="checkbox" /> Remember me
               <span className='loginForgotPass'>Forgot Password</span>

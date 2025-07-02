@@ -14,6 +14,7 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
+import Register from "./Components/User/Register/Register.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route
