@@ -19,7 +19,8 @@ from .serializers import (
     UserProfileUpdateSerializer,
     PasswordChangeSerializer,
     UserProfileSerializer,
-    AdminUserSerializer
+    AdminUserSerializer,
+    ReturnRequestSerializer
 )
 
 from .permissions import IsSuperUser  # import the custom permission
@@ -129,6 +130,14 @@ class OrderView(generics.ListAPIView):
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user).order_by('-created_at')
+    
+class ReturnRequestView(generics.UpdateAPIView):
+    serializer_class = ReturnRequestSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only allow updating the user's own orders
+        return Order.objects.filter(user=self.request.user)
 
 
 # View to retrieve the user's cart

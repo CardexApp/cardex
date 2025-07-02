@@ -113,7 +113,9 @@ class Order(models.Model):
         ('processing', 'Processing'),
         ('dispatched', 'Dispatched'),
         ('delivered', 'Delivered'),
-        ('returned', 'Returned'),
+        ('return_requested', 'Return request initiated'),
+        ('return_accepted', 'Return request accepted'),
+        ('return_denied', 'Return request denied'),
     ]
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -123,7 +125,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Order #{self.id}"
+        return f"Order #{self.id} - {self.get_status_display()}"
 
 # Cart model - represents one cart per user
 class Cart(models.Model):

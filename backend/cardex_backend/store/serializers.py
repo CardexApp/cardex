@@ -249,6 +249,18 @@ class OrderSerializer(serializers.ModelSerializer):
         
             CardDetails.objects.create(user=user, **card_data)
         return order
+    
+# serializers.py
+class ReturnRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']  # Only allow updating this field
+
+    def validate_status(self, value):
+        if value != 'Return request initiated':
+            raise serializers.ValidationError("You can only request a return.")
+        return value
+
 
 # CartItem serializer
 class CartItemSerializer(serializers.ModelSerializer):
