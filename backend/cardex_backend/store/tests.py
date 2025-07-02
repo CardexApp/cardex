@@ -55,3 +55,24 @@ class JWTExtraAuthTest(APITestCase):
             refresh_url, {"refresh": refresh_token})
         self.assertEqual(refresh_response.status_code, status.HTTP_200_OK)
         self.assertIn('access', refresh_response.data)
+
+
+class UserRegistrationTest(APITestCase):
+    def test_user_registration(self):
+        url = reverse('register')
+        data = {
+            "email": "testnewuser@example.com",
+            "password": "Testpass123!",
+            "password2": "Testpass123!",
+            "first_name": "Test",
+            "last_name": "User"
+        }
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("email", response.data)
+        self.assertEqual(response.data["email"], data["email"])
+        self.assertIn("first_name", response.data)
+        self.assertEqual(response.data["first_name"], data["first_name"])
+        self.assertIn("last_name", response.data)
+        self.assertEqual(response.data["last_name"], data["last_name"])
