@@ -184,13 +184,14 @@ class MakeSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     car_type = serializers.PrimaryKeyRelatedField(queryset=CarType.objects.all()) 
     make = serializers.PrimaryKeyRelatedField(queryset=Make.objects.all())
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = [
             'id', 'image', 'name', 'price', 'description', 'mileage',
             'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 
-            'condition'
+            'condition', 'status'
         ]
 
     # To show related details when retrieving:
