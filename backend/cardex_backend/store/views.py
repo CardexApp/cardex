@@ -5,7 +5,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product, CarType, Order, Cart, CartItem
+from .models import Product, CarType, Order, Cart, CartItem, Review
 from .serializers import (
     ProductSerializer,
     CarTypeSerializer,
@@ -14,7 +14,8 @@ from .serializers import (
     CartSerializer,
     AddToCartSerializer,
     CartItemSerializer,
-    ReviewCreateSerializer
+    ReviewCreateSerializer,
+    ReviewSerializer,
 )
 
 # /api/register/ POST
@@ -69,6 +70,13 @@ class ProductSearchView(generics.ListAPIView):
 class ReviewCreateView(generics.CreateAPIView):
     serializer_class = ReviewCreateSerializer
     permission_classes = [IsAuthenticated]
+
+class ProductReviewListView(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        product_id = self.kwargs['id']
+        return Review.objects.filter(product_id=product_id)
 
 # /api/guest-checkout/ POST
 
