@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.overview {
+  display: grid;
+  padding: 0 48px;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
+.adminMenu {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.adminDashBoard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}

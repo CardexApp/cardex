@@ -1,6 +1,25 @@
 import "./Home.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const Home = () => {
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get(
+          "https://cardexbackend.eu.pythonanywhere.com/api/products/"
+        );
+        setCars(response.data);
+      } catch (error) {
+        console.error("Error fetching cars");
+      }
+    };
+
+    fetchCars();
+  }, []);
+
   return (
     <div className="general">
       {/* <!-- HERO SECTION --> */}
@@ -108,6 +127,16 @@ const Home = () => {
           </div>
           <div className="trendingImage"></div>
         </div>
+      </section>
+
+      <section className="model">
+        {cars.map((cardex) => (
+          <div className="modelHeading">
+            <h2>{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</h2>
+            <h2>Hello</h2>
+            <button>View All</button>
+          </div>
+        ))}
       </section>
 
       {/* <!-- RETURN SPECIAL --> */}

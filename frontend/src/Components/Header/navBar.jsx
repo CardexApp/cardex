@@ -3,14 +3,14 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navBar.css";
 import {
-  faHome,
+  // faHome,
   // faBars,
   faUser,
   faBox,
   faSignOutAlt,
-  faCar,
-  faInfoCircle,
-  faEnvelope,
+  // faCar,
+  // faInfoCircle,
+  // faEnvelope,
   faUserCircle,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
@@ -54,6 +54,12 @@ const NavBar = () => {
           </p>
           <hr className="hrTag" />
         </NavLink>
+        <NavLink to="/admin" className="navLink">
+          <p>
+            Admin
+          </p>
+          <hr className="hrTag" />
+        </NavLink>
         {/* <NavLink to="/login" className="navLink">
           <p>Login</p>
         </NavLink> */}
@@ -75,7 +81,7 @@ const NavBar = () => {
         </div>
         <Link to="/cart" className="relative">
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
-          <p className="cartContent">10</p>
+          <p className="cartContent">{}</p>
         </Link>
         {/* <<<<<<< HEAD
          <FontAwesomeIcon icon={faBars} size="lg" /> */}
