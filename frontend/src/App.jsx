@@ -16,6 +16,7 @@ import AboutPage from "./Pages/AboutPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
+import Dashboard from "./Components/Admin/Dashboard.jsx";
 
 function App() {
   return (
@@ -38,10 +39,13 @@ function App() {
             }
           />
           <Route path="/orderDetails" element={<OrderDetails />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/car/:id" element={<CarInfoDetails />} />
-          <Route path="/about" element={<AboutPage/>} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+
+          {/* Admin */}
+          <Route path="/admin" element={<Admin />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Routes>
       </div>
     </CartProvider>
