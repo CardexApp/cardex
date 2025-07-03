@@ -15,6 +15,7 @@ import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
+import Admin from "./Components/Admin/Admin.jsx";
 
 function App() {
   return (
