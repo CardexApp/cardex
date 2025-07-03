@@ -71,6 +71,9 @@ const NavBar = () => {
             <Link to="/login">
               <FontAwesomeIcon icon={faUser} /> Login
             </Link>
+            <Link to="/register">
+              <FontAwesomeIcon icon={faUser} /> Register
+            </Link>
             <Link to="/orders">
               <FontAwesomeIcon icon={faBox} /> Orders
             </Link>

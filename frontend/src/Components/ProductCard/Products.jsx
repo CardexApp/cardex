@@ -44,7 +44,7 @@ const Products = () => {
     }
 
     axios
-      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/", {
+      .get("https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/products", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
