@@ -1,4 +1,5 @@
 import "./Admin.css";
+import { Fragment } from "react";
 import asset from "../../assets/asset";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,6 +53,65 @@ const icons = [
     icon: <FontAwesomeIcon icon={faTruckFast} size="2x" />,
     alt: "Deliveries",
     p: "Status",
+  },
+];
+
+const data = [
+  {
+    id: "1",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Okem",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
+  },
+  {
+    id: "2",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Rosemary",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
+  },
+  {
+    id: "3",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Mariya",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
+  },
+
+  {
+    id: "4",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Prince",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
+  },
+
+  {
+    id: "5",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Faisal",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
+  },
+  {
+    id: "6",
+    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    name: "Johnpaul",
+    address: "Aston University",
+    dateOfPurchase: "24/01/2025",
+    status: "In Transit",
+    price: "$23564.69",
   },
 ];
 
@@ -149,23 +209,45 @@ const Admin = () => {
                 <h3>Customer order</h3>
                 <FontAwesomeIcon icon={faRotate} />
               </div>
+
               <div className="customerTable">
-                <div className="customerProfile">
-                  <FontAwesomeIcon className="customerDP" icon={faUser} />
-                  <h4 className="customerName">Name</h4>
+                <div>
+                  <h4>Profile</h4>
                 </div>
-                <div className="customerAddress">
+                <div>
                   <h4>Address</h4>
                 </div>
-                <div className="orderDate">
-                  <h4>Date of Purchase</h4>
+                <div>
+                  <h4>Purchase Date</h4>
                 </div>
-                <div className="CustomerStatus">
+                <div>
                   <h4>Status</h4>
                 </div>
-                <div className="priceOfGoods">
-                  <h4>Prices</h4>
+                <div>
+                  <h4>Price</h4>
                 </div>
+
+                {/* Data rows */}
+                {data.map((row) => (
+                  <Fragment key={row.id}>
+                    <div className="customerProfile">
+                      {row.avatar}
+                      <p className="customerName">{row.name}</p>
+                    </div>
+                    <div className="customerAddress">
+                      <p>{row.address}</p>
+                    </div>
+                    <div className="orderDate">
+                      <p>{row.dateOfPurchase}</p>
+                    </div>
+                    <div className="CustomerStatus">
+                      <p>{row.status}</p>
+                    </div>
+                    <div className="priceOfGoods">
+                      <p>{row.price}</p>
+                    </div>
+                  </Fragment>
+                ))}
               </div>
             </div>
             <div className="adminDetails">

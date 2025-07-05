@@ -169,22 +169,24 @@
 }
 
 .customerTable {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 100%;
   padding: 0 8px;
+  align-items: flex-start;
+  text-align: center;
 }
 
 .customerTable h4 {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .customerProfile {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .adminDetails {
