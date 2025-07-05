@@ -46,6 +46,7 @@ function App() {
           {/* Admin */}
           <Route path="/admin" element={<Admin />} />
           <Route path="dashboard" element={<Dashboard />} />
+          
         </Routes>
       </div>
     </CartProvider>

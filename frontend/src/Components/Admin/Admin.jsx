@@ -1,6 +1,15 @@
 import "./Admin.css";
+import asset from "../../assets/asset";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  TotalRevenue,
+  DateDisplay,
+  ActiveUsers,
+  TotalUsers,
+  PaidInvoice,
+  FundsReceived,
+} from "./Reusables";
 
 import {
   faArrowRightArrowLeft,
@@ -8,47 +17,46 @@ import {
   faHomeUser,
   faMagnifyingGlass,
   faTruckFast,
-  
 } from "@fortawesome/free-solid-svg-icons";
-// import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const icons = [
   {
     id: 1,
     icon: <FontAwesomeIcon icon={faHomeUser} size="2x" />,
     alt: "Home",
-    p: "Home"
+    p: "Home",
   },
   {
     id: 2,
     icon: <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />,
     alt: "Search",
-        p: "Search"
+    p: "Search",
   },
   {
     id: 3,
     icon: <FontAwesomeIcon icon={faArrowRightArrowLeft} size="2x" />,
     alt: "Processing",
-        p: "Orders"
+    p: "Analytics",
   },
 
   {
     id: 4,
     icon: <FontAwesomeIcon icon={faEnvelope} size="2x" />,
     alt: "Messages",
-        p: "Mails"
+    p: "Mails",
   },
   {
     id: 5,
     icon: <FontAwesomeIcon icon={faTruckFast} size="2x" />,
     alt: "Deliveries",
-        p: "Status"
+    p: "Status",
   },
 ];
 
 export const AdminMenu = () => {
   return (
     <div>
+      {/* Admin Side Menu */}
       <section className="adminMenu">
         <Link className="adminLink" to="/dashboard">
           Dashboard
@@ -71,61 +79,71 @@ export const AdminMenu = () => {
       </section>
     </div>
   );
-}
+};
 
 export const AdminStatus = () => {
-    return (
-      <div>
-        <section className="adminStatus">
-          {/* Top part */}
-          <div className="adminProfile">
-            <div className="adminAvatar">
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
-            </div>
-            <h2>Admin name</h2>
-            <h3>Cars Posted</h3>
-            <h3>Cars Sold</h3>
+  return (
+    <div>
+      <section className="adminStatus">
+        {/* Top part */}
+        <div className="adminProfile">
+          <div className="adminAvatar">
+            <p>Lorem ipsum dolor sit amet consectetur.</p>
           </div>
+          <h2>Admin name</h2>
+          <h3>Cars Posted</h3>
+          <h3>Cars Sold</h3>
+        </div>
 
-          {/* Bottom part */}
-          <div className="userProfile">
-            <div className="userAvatar">
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
-            </div>
-            <h2>User name</h2>
-            <h3>Cars Bought</h3>
-            <h3>Cars Returned</h3>
+        {/* Bottom part */}
+        <div className="userProfile">
+          <div className="userAvatar">
+            <p>Lorem ipsum dolor sit amet consectetur.</p>
           </div>
-        </section>
-      </div>
-    );
-}
+          <h2>User name</h2>
+          <h3>Cars Bought</h3>
+          <h3>Cars Returned</h3>
+        </div>
+      </section>
+    </div>
+  );
+};
 
 const Admin = () => {
   return (
     <div className="landingPage">
+      <div className="navAdmin">
+        <div className="icon">
+          <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
+        </div>
+        <div className="dashBoard">
+          <h3>Admin Page</h3> <DateDisplay />
+        </div>
+        <div className="services">
+          <p>Search</p>
+          <p>Notification</p>
+          <p>Profile</p>
+        </div>
+      </div>
+
+      {/* Main Area */}
+
       <div className="overview">
         {/* Left section - Menu */}
-       <AdminMenu />
+        <AdminMenu />
 
         {/* Mid-section Overview */}
         <section className="adminDashBoard">
-          <div className="totalOrders">
-            <div>
-              <p>273 sold</p>
-            </div>
-            <div>
-              <p>Processing</p>
-            </div>
-            <div>
-              <p>Delivered</p>
-            </div>
-            <div>
-              <p>Return request</p>
-            </div>
-            <div>
-              <p>Dispatched</p>
-            </div>
+          <div className="quickInfo">
+            <TotalRevenue />
+            <ActiveUsers />
+            <TotalUsers />
+          </div>
+
+          {/* Details */}
+          <div className="adminDetails">
+            <PaidInvoice />
+            <FundsReceived />
           </div>
         </section>
 
