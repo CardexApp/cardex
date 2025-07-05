@@ -17,6 +17,8 @@ import {
   faHomeUser,
   faMagnifyingGlass,
   faTruckFast,
+  faRotate,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const icons = [
@@ -132,7 +134,7 @@ const Admin = () => {
         {/* Left section - Menu */}
         <AdminMenu />
 
-        {/* Mid-section Overview */}
+        {/* Mid-section Top Overview */}
         <section className="adminDashBoard">
           <div className="quickInfo">
             <TotalRevenue />
@@ -140,10 +142,36 @@ const Admin = () => {
             <TotalUsers />
           </div>
 
-          {/* Details */}
-          <div className="adminDetails">
-            <PaidInvoice />
-            <FundsReceived />
+          {/* Mid-section Bottom Overview */}
+          <div className="adminView">
+            <div className="customers">
+              <div className="customerHeading">
+                <h3>Customer order</h3>
+                <FontAwesomeIcon icon={faRotate} />
+              </div>
+              <div className="customerTable">
+                <div className="customerProfile">
+                  <FontAwesomeIcon className="customerDP" icon={faUser} />
+                  <h4 className="customerName">Name</h4>
+                </div>
+                <div className="customerAddress">
+                  <h4>Address</h4>
+                </div>
+                <div className="orderDate">
+                  <h4>Date of Purchase</h4>
+                </div>
+                <div className="CustomerStatus">
+                  <h4>Status</h4>
+                </div>
+                <div className="priceOfGoods">
+                  <h4>Prices</h4>
+                </div>
+              </div>
+            </div>
+            <div className="adminDetails">
+              <PaidInvoice />
+              <FundsReceived />
+            </div>
           </div>
         </section>
 
