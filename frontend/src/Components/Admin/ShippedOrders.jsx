@@ -1,5 +1,5 @@
-import { Fragment } from "react";
 import "./Styles/Customers.css";
+import { Fragment } from "react";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,9 +7,11 @@ import {
   faEye,
   faFileInvoice,
 } from "@fortawesome/free-solid-svg-icons";
+import { useOrders } from "../../Context/OrdersContext";
 
-const ShippedOrders = ({ orders }) => {
-  // Guard against undefined orders
+const ShippedOrders = () => {
+  const { orders } = useOrders();
+
   if (!orders || !Array.isArray(orders)) {
     return (
       <div className="customersPage">
