@@ -1,5 +1,5 @@
 import "./Admin.css";
-import { Fragment } from "react";
+import "./Styles/Dock.css";
 import asset from "../../assets/asset";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,8 +19,6 @@ import {
   faHomeUser,
   faMagnifyingGlass,
   faTruckFast,
-  faRotate,
-  faUser,
   faBell,
   faChalkboardUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -57,65 +55,6 @@ const icons = [
     icon: <FontAwesomeIcon icon={faTruckFast} size="2x" />,
     alt: "Deliveries",
     p: "Status",
-  },
-];
-
-const data = [
-  {
-    id: "1",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Okem",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
-  },
-  {
-    id: "2",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Rosemary",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
-  },
-  {
-    id: "3",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Mariya",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
-  },
-
-  {
-    id: "4",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Prince",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
-  },
-
-  {
-    id: "5",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Faisal",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
-  },
-  {
-    id: "6",
-    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
-    name: "Johnpaul",
-    address: "Aston University",
-    dateOfPurchase: "24/01/2025",
-    status: "In Transit",
-    price: "$23564.69",
   },
 ];
 
@@ -175,6 +114,19 @@ export const AdminStatus = () => {
   );
 };
 
+export const Dock =() => {
+  return (
+    <div className="dock">
+      {icons.map((icon) => (
+        <div key={icon.id} className="dock-icon">
+          {icon.icon}
+          <p className="dock-label">{icon.p}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const Admin = () => {
   return (
     <div className="landingPage">
@@ -230,13 +182,8 @@ const Admin = () => {
       </div>
 
       {/* Dock */}
-      <div className="dock">
-        {icons.map((icon) => (
-          <div key={icon.id} className="dock-icon">
-            {icon.icon}
-            <p className="dock-label">{icon.p}</p>
-          </div>
-        ))}
+      <div>
+       <Dock />
       </div>
     </div>
   );

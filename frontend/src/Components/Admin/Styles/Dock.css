@@ -1,0 +1,49 @@
+
+/* Bottom dock */
+
+.dock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 24px;
+    color: rgba(14, 48, 98, 0.9);
+    /* background: rgba(255, 255, 255, 0.1); */
+    background-color: #f0f0f0;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    gap: 24px;
+    z-index: 10px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .dock-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .dock-icon:hover {
+    transform: scale(1.6) translateY(-20%);
+  }
+  
+  .dock-label {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-size: 9px;
+    margin: 0;
+    padding-top: 0.2px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 4px;
+  }
+  
+  .dock-icon:hover .dock-label {
+    opacity: 1;
+  }
+  

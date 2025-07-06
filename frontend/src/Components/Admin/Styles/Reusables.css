@@ -1,0 +1,154 @@
+
+.dashCards {
+    padding: 12px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-weight: 600;
+    /* max-width: 250px; */
+  }
+  
+  .dashCards .dashTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .dashCards .totalAmount {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .dashCards .info {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .dashCards .info p {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  /* Paid Invoice and Funds Received */
+  
+.invoiceContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .paidInvoice {
+    align-self: flex-start;
+    background-color: #f5f5f5;
+    max-width: 250px;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .paidInvoice p {
+    font-size: 12px;
+  }
+  
+  .detailAmount {
+    display: inline-flex;
+    align-items: baseline;
+  }
+  
+  .detailAmount p {
+    display: inline-flex;
+    align-items: baseline;
+    font-weight: 700;
+    font-size: 18px;
+  }
+  
+  /* SearchBar */
+
+  
+/* SearchBar */
+.searchWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    position: relative;
+  }
+  
+  .searchContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    padding: 8px 16px;
+    transition: width 0.4s ease;
+    width: 200px;
+    overflow: hidden;
+  }
+  
+  .searchContainer.expanded {
+    width: 300px;
+  }
+  
+  .searchContainer input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: #000;
+    font-size: 16px;
+    padding-right: 32px; /* space for icon */
+  }
+  
+  .bubbles {
+    display: flex;
+    gap: 0;
+    opacity: 0;
+    transform: translateX(-10px) scale(0.8);
+    transition: opacity 0.5s ease,
+      transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), gap 0.4s ease;
+  }
+  
+  .bubbles.show {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    gap: 8px;
+    margin-left: 4px;
+  }
+  
+  .bubble {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 100%;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .bubble:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  .searchIconButton {
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    background-color: #fff;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+    color: #000;
+  }
+  
+  .searchIconButton:hover {
+    color: #333; /* slightly darker on hover */
+  }
+  
