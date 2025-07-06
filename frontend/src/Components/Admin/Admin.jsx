@@ -62,7 +62,7 @@ const icons = [
 const data = [
   {
     id: "1",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Okem",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -71,7 +71,7 @@ const data = [
   },
   {
     id: "2",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Rosemary",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -80,7 +80,7 @@ const data = [
   },
   {
     id: "3",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Mariya",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -90,7 +90,7 @@ const data = [
 
   {
     id: "4",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Prince",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -100,7 +100,7 @@ const data = [
 
   {
     id: "5",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Faisal",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -109,7 +109,7 @@ const data = [
   },
   {
     id: "6",
-    avatar: <FontAwesomeIcon className="customerDP" icon={faUser} />,
+    avatar: <FontAwesomeIcon className="fontIcon" icon={faUser} />,
     name: "Johnpaul",
     address: "Aston University",
     dateOfPurchase: "24/01/2025",
@@ -188,9 +188,13 @@ const Admin = () => {
           </h4>
         </div>
         <div className="services">
-          <SearchBar />
-          <FontAwesomeIcon icon={faBell} />
-          <FontAwesomeIcon icon={faChalkboardUser} />
+          <div className="adminSearch">
+            <SearchBar />
+          </div>
+          <div className="notifiers">
+            <FontAwesomeIcon className="fontIcon" icon={faBell} />
+            <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
+          </div>
         </div>
       </div>
 

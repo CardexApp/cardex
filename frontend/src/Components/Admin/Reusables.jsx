@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
+import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSort,
@@ -8,6 +9,7 @@ import {
   faFileInvoice,
   faSpinner,
   faWallet,
+  faSearch,
   faArrowDownWideShort,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -111,16 +113,44 @@ export const FundsReceived = () => {
 
 export const SearchBar = () => {
   const [expanded, setExpanded] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+
+   const handleSearch = async () => {
+     if (query.trim() === "") {
+       console.log("Empty search query");
+       return;
+     }
+
+     try {
+       const response = await axios.get(
+         `/api/products?search=${encodeURIComponent(query)}`
+       );
+       console.log("Search results:", response.data);
+       setResults(response.data);
+     } catch (error) {
+       console.error("Search error:", error);
+     }
+   };
 
   return (
     <div className="searchWrapper">
       <div className={`searchContainer ${expanded ? "expanded" : ""}`}>
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search products..."
+          value={query}
           onFocus={() => setExpanded(true)}
           onBlur={() => setExpanded(false)}
+          onChange={(e) => setQuery(e.target.value)}
         />
+        <button
+          className="searchIconButton"
+          onClick={handleSearch}
+          type="button"
+        >
+          <FontAwesomeIcon icon={faSearch} />
+        </button>
       </div>
 
       <div className={`bubbles ${expanded ? "show" : ""}`}>
