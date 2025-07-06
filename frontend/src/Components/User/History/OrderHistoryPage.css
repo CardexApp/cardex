@@ -1,0 +1,32 @@
+.orderHistoryPage {
+  max-width: 800px;
+  margin: 32px auto;
+  padding: 24px;
+}
+
+.orderHistoryPage h2 {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.orderCard {
+  background: #fafafa;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.orderCard h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.orderCard ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.orderCard li {
+  padding: 4px 0;
+}
