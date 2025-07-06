@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import "./Styles/Customers.css"
+import "./Styles/Customers.css";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,6 +9,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const ShippedOrders = ({ orders }) => {
+  // Guard against undefined orders
+  if (!orders || !Array.isArray(orders)) {
+    return (
+      <div className="customersPage">
+        <AdminMenu />
+        <div className="customersContent">
+          <h2>Shipped Orders</h2>
+          <p>Loading or no orders available...</p>
+        </div>
+        <Dock />
+      </div>
+    );
+  }
+
   const shippedOrders = orders.filter((o) => o.status === "Shipped");
 
   return (
@@ -30,36 +44,40 @@ const ShippedOrders = ({ orders }) => {
           </div>
 
           <div className="customerTableBody">
-            {shippedOrders.map((order) => (
-              <Fragment key={order.id}>
-                <div>{order.id}</div>
-                <div className="userInfo">
-                  <FontAwesomeIcon className="avatar" icon={faUser} />
-                  <div className="nameEmail">
-                    <p>{order.name}</p>
-                    <p className="subText">{order.email}</p>
+            {shippedOrders.length > 0 ? (
+              shippedOrders.map((order) => (
+                <Fragment key={order.id}>
+                  <div>{order.id}</div>
+                  <div className="userInfo">
+                    <FontAwesomeIcon className="avatar" icon={faUser} />
+                    <div className="nameEmail">
+                      <p>{order.name}</p>
+                      <p className="subText">{order.email}</p>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  {order.items.map((item, idx) => (
-                    <p key={idx}>
-                      {item.productName} ({item.sku}) x {item.quantity}
-                    </p>
-                  ))}
-                </div>
-                <div>{order.dateOfPurchase}</div>
-                <div>{order.status}</div>
-                <div>{order.totalPrice}</div>
-                <div className="actions">
-                  <button title="View">
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
-                  <button title="Invoice">
-                    <FontAwesomeIcon icon={faFileInvoice} />
-                  </button>
-                </div>
-              </Fragment>
-            ))}
+                  <div>
+                    {order.items.map((item, idx) => (
+                      <p key={idx}>
+                        {item.productName} ({item.sku}) x {item.quantity}
+                      </p>
+                    ))}
+                  </div>
+                  <div>{order.dateOfPurchase}</div>
+                  <div>{order.status}</div>
+                  <div>{order.totalPrice}</div>
+                  <div className="actions">
+                    <button title="View">
+                      <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    <button title="Invoice">
+                      <FontAwesomeIcon icon={faFileInvoice} />
+                    </button>
+                  </div>
+                </Fragment>
+              ))
+            ) : (
+              <p>No shipped orders found.</p>
+            )}
           </div>
         </div>
       </div>

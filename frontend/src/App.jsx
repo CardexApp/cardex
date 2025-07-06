@@ -16,42 +16,45 @@ import ContactPage from "./Pages/ContactPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
 import DynamicCategoryPage from "./Components/DynamicCategory/DynamicCategoryPage.jsx";
+import { OrdersProvider } from "./Context/OrdersContext.jsx";
 
 function App() {
   return (
-    <CartProvider>
-      <ToastContainer />
-      <div className="App">
-        <NavBar />
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Homepage />} />
-          <Route
-            path="/category/:categoryName"
-            element={<DynamicCategoryPage />}
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route
-            path="/listings"
-            element={
-              <ProtectedRoute>
-                <Products />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/orderDetails" element={<OrderDetails />} />
-          <Route path="/car/:id" element={<CarInfoDetails />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+    <OrdersProvider>
+      <CartProvider>
+        <ToastContainer />
+        <div className="App">
+          <NavBar />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Homepage />} />
+            <Route
+              path="/category/:categoryName"
+              element={<DynamicCategoryPage />}
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route
+              path="/listings"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/orderDetails" element={<OrderDetails />} />
+            <Route path="/car/:id" element={<CarInfoDetails />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
-          {/* Admin routes handled internally */}
-          <Route path="/admin/*" element={<Admin />} />
-        </Routes>
-      </div>
-    </CartProvider>
+            {/* Admin routes handled internally */}
+            <Route path="/admin/*" element={<Admin />} />
+          </Routes>
+        </div>
+      </CartProvider>
+    </OrdersProvider>
   );
 }
 
