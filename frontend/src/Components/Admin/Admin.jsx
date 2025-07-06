@@ -24,6 +24,7 @@ import {
   faBell,
   faChalkboardUser,
 } from "@fortawesome/free-solid-svg-icons";
+import Customers from "./Customers";
 
 const icons = [
   {
@@ -214,56 +215,7 @@ const Admin = () => {
 
           {/* Mid-section Bottom Overview */}
           <div className="adminView">
-            <div className="customers">
-              <div className="customerHeading">
-                <h3>Customer Order</h3>
-                <FontAwesomeIcon icon={faRotate} />
-              </div>
-
-              {/* List of customers in database */}
-              <div className="customerTableWrapper">
-                <div className="customerTableHeader">
-                  <div>
-                    <h4>Customer Name</h4>
-                  </div>
-                  <div>
-                    <h4>Address</h4>
-                  </div>
-                  <div>
-                    <h4>Purchase Date</h4>
-                  </div>
-                  <div>
-                    <h4>Status</h4>
-                  </div>
-                  <div>
-                    <h4>Price</h4>
-                  </div>
-                </div>
-
-                <div className="customerTableBody">
-                  {data.map((row) => (
-                    <Fragment key={row.id}>
-                      <div className="customerProfile">
-                        {row.avatar}
-                        <p className="customerName">{row.name}</p>
-                      </div>
-                      <div className="customerAddress">
-                        <p>{row.address}</p>
-                      </div>
-                      <div className="orderDate">
-                        <p>{row.dateOfPurchase}</p>
-                      </div>
-                      <div className="CustomerStatus">
-                        <p>{row.status}</p>
-                      </div>
-                      <div className="priceOfGoods">
-                        <p>{row.price}</p>
-                      </div>
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <Customers />
 
             {/* Admin Details */}
             <div className="adminDetails">

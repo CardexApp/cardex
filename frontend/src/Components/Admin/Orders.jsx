@@ -1,13 +1,13 @@
 import { AdminMenu } from "./Admin"
 import Customers from "./Customers";
 
-const Dashboard = () => {
+const Orders = () => {
   return (
     <div className="dashBoard">
       <AdminMenu />
       {/* Dashboard tiles */}
-      <div className="details"><Customers /></div>      
+      <div className="details"><Customers /></div>
     </div>
   );
 }
-export default Dashboard
+export default Orders;

@@ -17,6 +17,7 @@ import ContactPage from "./Pages/ContactPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
 import Dashboard from "./Components/Admin/Dashboard.jsx";
+import Customers from "./Components/Admin/Customers.jsx";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           {/* Admin */}
           <Route path="/admin" element={<Admin />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="customers" element={<Customers />} />
           
         </Routes>
       </div>
