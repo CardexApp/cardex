@@ -1,105 +1,112 @@
 .inventoryOverview {
-    display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
-    padding: 8px 48px;
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
+  padding: 8px 48px;
 }
 
 .inventoryPage {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    font-family: sans-serif;
-  }
-  
-  .inventoryHeader {
-    margin-bottom: 16px;
-  }
-  
-  .inventoryHeader h1 {
-    font-size: 24px;
-    margin-bottom: 8px;
-  }
-  
-  .inventoryHeader p {
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .searchBar {
-    margin-top: 8px;
-    display: flex;
-    justify-content: end;
-    gap: 4px;
-  }
-  
-  .search-bar input {
-    flex: 1;
-    padding: 4px 8px;
-  }
-  
-  .search-bar button {
-    padding: 4px 8px;
-  }
-  
-  .inventoryContent {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 16px;
-  }
-  
-  .turnover {
-    grid-column: span 2;
-    background: #f0f4f8;
-    padding: 16px;
-    border-radius: 4px;
-  }
-  
-  .turnoverChart {
-    height: 150px;
-    background: #e0e0e0;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #333;
-  }
-  
-  .warehouse, .accuracy {
-    background: #f0f4f8;
-    padding: 16px;
-    border-radius: 4px;
-    text-align: center;
-  }
-  
-  .gauge {
-    margin-top: 8px;
-    background: #e0e0e0;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .salesTable {
-    grid-column: 1 / -1;
-    background: #f0f4f8;
-    padding: 16px;
-    border-radius: 4px;
-  }
-  
-  .salesTable table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .salesTable th, .salesTable td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    text-align: left;
-  }
-  
-  .salesTable th {
-    background: #e0e0e0;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  font-family: sans-serif;
+}
+
+.inventoryHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.inventoryHeader h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.inventoryHeader p {
+  font-size: 14px;
+  color: #555;
+}
+
+.searchBar {
+  margin-top: 8px;
+  display: flex;
+  justify-content: end;
+  gap: 4px;
+}
+
+.searchBar input {
+  flex: 1;
+  padding: 4px 8px;
+}
+
+.searchBar button {
+  padding: 4px 8px;
+}
+
+.inventoryContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 16px;
+}
+
+.turnover {
+  grid-column: span 2;
+  background: #f0f4f8;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.turnoverChart {
+  height: 150px;
+  background: #e0e0e0;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #333;
+}
+
+.warehouse,
+.accuracy {
+  background: #f0f4f8;
+  padding: 16px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.gauge {
+  margin-top: 8px;
+  background: #e0e0e0;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alerts li {
+  list-style: none;
+}
+
+.salesTable {
+  grid-column: 1 / -1;
+  background: #f0f4f8;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.salesTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.salesTable th,
+.salesTable td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.salesTable th {
+  background: #e0e0e0;
+}
