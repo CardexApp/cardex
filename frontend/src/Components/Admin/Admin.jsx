@@ -10,6 +10,7 @@ import {
   TotalUsers,
   PaidInvoice,
   FundsReceived,
+  SearchBar,
 } from "./Reusables";
 
 import {
@@ -20,6 +21,8 @@ import {
   faTruckFast,
   faRotate,
   faUser,
+  faBell,
+  faChalkboardUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const icons = [
@@ -179,12 +182,15 @@ const Admin = () => {
           <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
         </div>
         <div className="dashBoard">
-          <h3>Admin Page</h3> <DateDisplay />
+          <h3>Admin Page</h3>
+          <h4>
+            <DateDisplay />
+          </h4>
         </div>
         <div className="services">
-          <p>Search</p>
-          <p>Notification</p>
-          <p>Profile</p>
+          <SearchBar />
+          <FontAwesomeIcon icon={faBell} />
+          <FontAwesomeIcon icon={faChalkboardUser} />
         </div>
       </div>
 
@@ -206,50 +212,56 @@ const Admin = () => {
           <div className="adminView">
             <div className="customers">
               <div className="customerHeading">
-                <h3>Customer order</h3>
+                <h3>Customer Order</h3>
                 <FontAwesomeIcon icon={faRotate} />
               </div>
 
-              <div className="customerTable">
-                <div>
-                  <h4>Profile</h4>
-                </div>
-                <div>
-                  <h4>Address</h4>
-                </div>
-                <div>
-                  <h4>Purchase Date</h4>
-                </div>
-                <div>
-                  <h4>Status</h4>
-                </div>
-                <div>
-                  <h4>Price</h4>
+              {/* List of customers in database */}
+              <div className="customerTableWrapper">
+                <div className="customerTableHeader">
+                  <div>
+                    <h4>Customer Name</h4>
+                  </div>
+                  <div>
+                    <h4>Address</h4>
+                  </div>
+                  <div>
+                    <h4>Purchase Date</h4>
+                  </div>
+                  <div>
+                    <h4>Status</h4>
+                  </div>
+                  <div>
+                    <h4>Price</h4>
+                  </div>
                 </div>
 
-                {/* Data rows */}
-                {data.map((row) => (
-                  <Fragment key={row.id}>
-                    <div className="customerProfile">
-                      {row.avatar}
-                      <p className="customerName">{row.name}</p>
-                    </div>
-                    <div className="customerAddress">
-                      <p>{row.address}</p>
-                    </div>
-                    <div className="orderDate">
-                      <p>{row.dateOfPurchase}</p>
-                    </div>
-                    <div className="CustomerStatus">
-                      <p>{row.status}</p>
-                    </div>
-                    <div className="priceOfGoods">
-                      <p>{row.price}</p>
-                    </div>
-                  </Fragment>
-                ))}
+                <div className="customerTableBody">
+                  {data.map((row) => (
+                    <Fragment key={row.id}>
+                      <div className="customerProfile">
+                        {row.avatar}
+                        <p className="customerName">{row.name}</p>
+                      </div>
+                      <div className="customerAddress">
+                        <p>{row.address}</p>
+                      </div>
+                      <div className="orderDate">
+                        <p>{row.dateOfPurchase}</p>
+                      </div>
+                      <div className="CustomerStatus">
+                        <p>{row.status}</p>
+                      </div>
+                      <div className="priceOfGoods">
+                        <p>{row.price}</p>
+                      </div>
+                    </Fragment>
+                  ))}
+                </div>
               </div>
             </div>
+
+            {/* Admin Details */}
             <div className="adminDetails">
               <PaidInvoice />
               <FundsReceived />

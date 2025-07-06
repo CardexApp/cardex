@@ -1,6 +1,20 @@
 import dayjs from "dayjs";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowTrendUp, faDollarSign, faFileInvoice, faSpinner, faWallet } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSort,
+  faArrowTrendUp,
+  faDollarSign,
+  faFileInvoice,
+  faSpinner,
+  faWallet,
+  faArrowDownWideShort,
+} from "@fortawesome/free-solid-svg-icons";
+
+export const DateDisplay = () => {
+  const now = dayjs();
+  return <p>{now.format("DD-MM-YYYY")}</p>;
+};
 
 export const TotalRevenue = () => {
   return (
@@ -95,9 +109,28 @@ export const FundsReceived = () => {
   );
 };
 
-export const DateDisplay = () => {
-  const now = dayjs();
+export const SearchBar = () => {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <p>{now.format("DD-MM-YYYY")}</p>
+    <div className="searchWrapper">
+      <div className={`searchContainer ${expanded ? "expanded" : ""}`}>
+        <input
+          type="text"
+          placeholder="Search"
+          onFocus={() => setExpanded(true)}
+          onBlur={() => setExpanded(false)}
+        />
+      </div>
+
+      <div className={`bubbles ${expanded ? "show" : ""}`}>
+        <button className="bubble">
+          <FontAwesomeIcon icon={faArrowDownWideShort} />
+        </button>
+        <button className="bubble">
+          <FontAwesomeIcon icon={faSort} />
+        </button>
+      </div>
+    </div>
   );
 };
