@@ -159,7 +159,7 @@ const Admin = () => {
         </div>
         <div className="services">
           <div className="adminSearch">
-            <SearchBar />
+            <SearchBar placeholder="Search Cardex" type="text" />
           </div>
           <div className="notifiers">
             <FontAwesomeIcon className="fontIcon" icon={faBell} />

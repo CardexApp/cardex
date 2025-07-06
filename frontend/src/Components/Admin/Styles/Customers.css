@@ -25,20 +25,6 @@
   font-weight: 700;
 }
 
-.addButton {
-  background-color: #0e3062;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.addButton:hover {
-  background-color: #174a89;
-}
-
 .customerTableWrapper {
   display: grid;
   grid-template-rows: auto 1fr; /* header + body */
@@ -96,7 +82,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .actions button {
@@ -122,4 +108,24 @@
 
 .customerTableBody::-webkit-scrollbar-thumb:hover {
   background-color: #aaa;
+}
+
+.button {
+  margin-top: 12px;
+  display: flex;
+  justify-content: end;
+}
+
+.addButton {
+  background-color: #0e3062;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.addButton:hover {
+  background-color: #174a89;
 }

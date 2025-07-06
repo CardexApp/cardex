@@ -81,7 +81,7 @@ const InventoryPage = () => {
         <div className="inventoryPage">
           <header className="inventoryHeader">
             <h2>Inventory Management</h2>
-            <SearchBar />
+            <SearchBar placeholder="Search Inventory" type="text" />
           </header>
 
           <main className="inventoryContent">

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import "./Styles/Reusables.css"
+import "./Styles/Reusables.css";
 import { useState } from "react";
-import axios from "axios"
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSort,
@@ -13,6 +13,7 @@ import {
   faSearch,
   faArrowDownWideShort,
 } from "@fortawesome/free-solid-svg-icons";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 export const DateDisplay = () => {
   const now = dayjs();
@@ -112,34 +113,34 @@ export const FundsReceived = () => {
   );
 };
 
-export const SearchBar = () => {
+export const SearchBar = ({ placeholder = "Search...", type = "text" }) => {
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
-   const handleSearch = async () => {
-     if (query.trim() === "") {
-       console.log("Empty search query");
-       return;
-     }
+  const handleSearch = async () => {
+    if (query.trim() === "") {
+      console.log("Empty search query");
+      return;
+    }
 
-     try {
-       const response = await axios.get(
-         `/api/products?search=${encodeURIComponent(query)}`
-       );
-       console.log("Search results:", response.data);
-       setResults(response.data);
-     } catch (error) {
-       console.error("Search error:", error);
-     }
-   };
+    try {
+      const response = await axios.get(
+        `/api/products?search=${encodeURIComponent(query)}`
+      );
+      console.log("Search results:", response.data);
+      setResults(response.data);
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  };
 
   return (
     <div className="searchWrapper">
       <div className={`searchContainer ${expanded ? "expanded" : ""}`}>
         <input
-          type="text"
-          placeholder="Search products..."
+          type={type}
+          placeholder={placeholder}
           value={query}
           onFocus={() => setExpanded(true)}
           onBlur={() => setExpanded(false)}

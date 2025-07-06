@@ -91,10 +91,11 @@ const Customers = () => {
       <div className="customersContent">
         <div className="customersHeader">
           <h2>Customer Orders</h2>
-          <SearchBar onSearch={setSearchTerm} />
-          <button className="addButton" onClick={handleAdd}>
-            <FontAwesomeIcon icon={faPlus} /> Add Customer Order
-          </button>
+          <SearchBar
+            type="text"
+            placeholder="Search Customers"
+            onSearch={setSearchTerm}
+          />
         </div>
 
         <div className="customerTableWrapper">
@@ -149,6 +150,11 @@ const Customers = () => {
               </Fragment>
             ))}
           </div>
+        </div>
+        <div className="button">
+          <button className="addButton" onClick={handleAdd}>
+            <FontAwesomeIcon icon={faPlus} /> Add Customer Order
+          </button>
         </div>
       </div>
 
