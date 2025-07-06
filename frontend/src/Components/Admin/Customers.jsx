@@ -1,4 +1,4 @@
-import "./Admin";
+import "./Styles/Customers.css";
 import { Fragment } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

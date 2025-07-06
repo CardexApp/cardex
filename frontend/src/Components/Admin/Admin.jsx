@@ -19,14 +19,12 @@ import {
   faHomeUser,
   faBoxes,
   faUserGroup,
-  faMagnifyingGlass,
   faTruckFast,
   faBell,
   faChalkboardUser,
   faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
 import Customers from "./Customers";
-import Dashboard from "./Dashboard";
 
 const icons = [
   {
