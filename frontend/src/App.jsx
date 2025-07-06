@@ -1,4 +1,3 @@
-// import {LOGO} from './logo.svg';
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import NavBar from "./Components/Header/navBar.jsx";
@@ -16,9 +15,6 @@ import AboutPage from "./Pages/AboutPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
-import Dashboard from "./Components/Admin/Dashboard.jsx";
-import Customers from "./Components/Admin/Customers.jsx";
-import InventoryPage from "./Components/Admin/Inventory.jsx";
 import DynamicCategoryPage from "./Components/DynamicCategory/DynamicCategoryPage.jsx";
 
 function App() {
@@ -28,12 +24,12 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Homepage />} />
           <Route
             path="/category/:categoryName"
             element={<DynamicCategoryPage />}
           />
-
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/cart" element={<CartPage />} />
@@ -51,11 +47,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
 
-          {/* Admin */}
-          <Route path="/admin" element={<Admin />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="customers" element={<Customers />} />
-          <Route path="inventory" element={<InventoryPage />} />
+          {/* Admin routes handled internally */}
+          <Route path="/admin/*" element={<Admin />} />
         </Routes>
       </div>
     </CartProvider>
