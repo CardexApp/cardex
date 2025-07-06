@@ -17,69 +17,88 @@ import {
   faArrowRightArrowLeft,
   faEnvelope,
   faHomeUser,
+  faBoxes,
+  faUserGroup,
   faMagnifyingGlass,
   faTruckFast,
   faBell,
   faChalkboardUser,
+  faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
 import Customers from "./Customers";
+import Dashboard from "./Dashboard";
 
 const icons = [
   {
     id: 1,
     icon: <FontAwesomeIcon icon={faHomeUser} size="2x" />,
-    alt: "Home",
-    p: "Home",
+    p: "Dashboard",
+    to: "/dashboard",
   },
   {
     id: 2,
-    icon: <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />,
-    alt: "Search",
-    p: "Search",
+    icon: <FontAwesomeIcon icon={faBoxes} size="2x" />,
+    p: "Inventory",
+    to: "/inventory",
   },
   {
     id: 3,
-    icon: <FontAwesomeIcon icon={faArrowRightArrowLeft} size="2x" />,
-    alt: "Processing",
-    p: "Analytics",
+    icon: <FontAwesomeIcon icon={faUserGroup} size="2x" />,
+    p: "Customers",
+    to: "/customers",
   },
-
   {
     id: 4,
-    icon: <FontAwesomeIcon icon={faEnvelope} size="2x" />,
-    alt: "Messages",
-    p: "Mails",
+    icon: <FontAwesomeIcon icon={faTruckFast} size="2x" />,
+    p: "Orders",
+    to: "/orders", // lead to an overview with tabs or sub-filters
   },
   {
     id: 5,
-    icon: <FontAwesomeIcon icon={faTruckFast} size="2x" />,
-    alt: "Deliveries",
-    p: "Status",
+    icon: <FontAwesomeIcon icon={faArrowRightArrowLeft} size="2x" />,
+    p: "Returns",
+    to: "/returns",
+  },
+  {
+    id: 6,
+    icon: <FontAwesomeIcon icon={faFlagCheckered} size="2x" />,
+    p: "Reports",
+    to: "/reports",
   },
 ];
+
 
 export const AdminMenu = () => {
   return (
     <div>
       {/* Admin Side Menu */}
       <section className="adminMenu">
-        <Link className="adminLink" to="/dashboard">
+        <Link to="/dashboard" className="adminLink">
           Dashboard
         </Link>
-        <Link to="/orders" className="adminLink">
-          Orders
+        <Link to="/inventory" className="adminLink">
+          Inventory
         </Link>
-        <Link to="/returns" className="adminLink">
-          Returns
+        <Link to="/customers" className="adminLink">
+          Customers
         </Link>
-        <Link to="/orders" className="adminLink">
-          Processing
+        <Link to="/orders/pending" className="adminLink">
+          Pending Orders
         </Link>
-        <Link to="/querries" className="adminLink">
-          Deliveries
+        <Link to="/orders/processing" className="adminLink">
+          Processing Orders
         </Link>
-        <Link to="/profile" className="adminLink">
-          Inventories
+        <Link to="/orders/shipped" className="adminLink">
+          Shipped Orders
+        </Link>
+        <Link to="/orders/delivered" className="adminLink">
+          Delivered Orders
+        </Link>
+        <Link to="/returns/requests" className="adminLink">
+          Return Requests
+        </Link>
+        <Link to="/returns/confirmed" className="adminLink">
+          Confirmed Returns
         </Link>
       </section>
     </div>
@@ -118,10 +137,10 @@ export const Dock =() => {
   return (
     <div className="dock">
       {icons.map((icon) => (
-        <div key={icon.id} className="dock-icon">
+        <Link to={icon.to} key={icon.id} className="dock-icon">
           {icon.icon}
           <p className="dock-label">{icon.p}</p>
-        </div>
+        </Link>
       ))}
     </div>
   );
