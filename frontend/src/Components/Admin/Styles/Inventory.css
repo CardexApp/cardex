@@ -84,9 +84,29 @@
   justify-content: center;
 }
 
-.alerts li {
-  list-style: none;
-}
+.alerts {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  
+  .alertsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .alerts li {
+    list-style: none;
+    flex: 0 0 calc(12.5% - 4px);
+    padding: 4px 8px;
+    background: #f0f4f8;
+    border-radius: 4px;
+    text-align: start;
+  }
+  
 
 .salesTable {
   grid-column: 1 / -1;
@@ -109,4 +129,79 @@
 
 .salesTable th {
   background: #e0e0e0;
+}
+
+/* 🔹 Add New Products */
+.addProduct {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  grid-column: 1 / -1;
+  background: #f9fbfc;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.addProduct h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.addProduct input {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addProduct button {
+  padding: 8px 16px;
+  background: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addProduct button:hover {
+  background: #005fa3;
+}
+
+.inputList {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+}
+
+/* 🔹 Action buttons for inventory rows */
+.salesTable button {
+  padding: 4px 8px;
+  margin-right: 4px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.salesTable button:first-child {
+  background: #0077cc;
+}
+
+.salesTable button:first-child:hover {
+  background: #005fa3;
+}
+
+.salesTable button:last-child {
+  background: #cc0000;
+}
+
+.salesTable button:last-child:hover {
+  background: #990000;
 }

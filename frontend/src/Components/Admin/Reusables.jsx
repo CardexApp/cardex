@@ -113,7 +113,14 @@ export const FundsReceived = () => {
   );
 };
 
-export const SearchBar = ({ placeholder = "Search...", type = "text" }) => {
+export const SearchBar = ({
+  placeholder = "Search...",
+  type = "text",
+  value,
+  onChange,
+  onSortNameOrId,
+  onSortPrice,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -141,14 +148,18 @@ export const SearchBar = ({ placeholder = "Search...", type = "text" }) => {
         <input
           type={type}
           placeholder={placeholder}
-          value={query}
+          value={value}
           onFocus={() => setExpanded(true)}
-          onBlur={() => setExpanded(false)}
-          onChange={(e) => setQuery(e.target.value)}
+          onBlur={() => {
+            if (!value || value.trim() === "") {
+              setExpanded(false);
+            }
+          }}
+          onChange={onChange}
         />
         <button
           className="searchIconButton"
-          onClick={handleSearch}
+          onClick={() => console.log("Place search term of the page")}
           type="button"
         >
           <FontAwesomeIcon icon={faSearch} />
@@ -156,10 +167,18 @@ export const SearchBar = ({ placeholder = "Search...", type = "text" }) => {
       </div>
 
       <div className={`bubbles ${expanded ? "show" : ""}`}>
-        <button className="bubble">
+        <button
+          className="bubble"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onSortNameOrId}
+        >
           <FontAwesomeIcon icon={faArrowDownWideShort} />
         </button>
-        <button className="bubble">
+        <button
+          className="bubble"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onSortPrice}
+        >
           <FontAwesomeIcon icon={faSort} />
         </button>
       </div>
