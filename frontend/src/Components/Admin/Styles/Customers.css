@@ -1,63 +1,125 @@
+.customersPage {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
+  gap: 12px;
+  padding: 12px;
+}
 
-.dashBoard {
-    padding: 0 12px;
-    display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
-    justify-content: space-between;
-  }
-  
-  .dashBoard h3 {
-    font-size: 28px;
-    font-weight: 700;
-  }
-  
-  .dashBoard h4 {
-    font-size: 18px;
-    font-weight: 600;
-  }
+.customersContent {
+  background-color: #f0f0f0;
+  padding: 12px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
 
-  .customers {
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    padding: 12px 8px;
-    width: 100%;
-  }
-  
-  .customerHeading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 8px;
-  }
-  
-  .customerTableWrapper {
-    display: grid;
-    grid-template-rows: auto 1fr; /* header + body */
-    width: 100%;
-  }
-  
-  .customerTableHeader {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-  }
-  
-  .customerTableBody {
-    display: grid;
-    padding-top: 16px;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    max-height: 200px;
-    overflow-y: scroll;
-  }
+.customersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-  .customerTableHeader h4 {
-    font-size: 12px;
-    font-weight: 700;
-  }
-  
-  .customerProfile {
-    display: flex;
-    justify-content: flex-start;
-    gap: 8px;
-  }
-    
+.customersHeader h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.addButton {
+  background-color: #0e3062;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.addButton:hover {
+  background-color: #174a89;
+}
+
+.customerTableWrapper {
+  display: grid;
+  grid-template-rows: auto 1fr; /* header + body */
+  width: 100%;
+}
+
+.customerTableHeader {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 5 data columns + 1 actions */
+  background-color: #ddd;
+  padding: 8px 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.customerTableHeader div {
+  padding: 0 4px;
+}
+
+.customerTableHeader h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.customerTableBody {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fafafa;
+  padding: 8px 0;
+  border-radius: 0 0 4px 4px;
+}
+
+.customerProfile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.customerProfile p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.customerAddress p,
+.orderDate p,
+.CustomerStatus p,
+.priceOfGoods p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.actions button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  padding: 2px;
+}
+
+.actions button:hover {
+  color: #0e3062;
+}
+
+.customerTableBody::-webkit-scrollbar {
+  width: 6px;
+}
+
+.customerTableBody::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.customerTableBody::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
