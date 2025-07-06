@@ -33,7 +33,8 @@
 
 .customerTableHeader {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 5 data columns + 1 actions */
+  grid-template-columns: 1fr 1.5fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
+  /* Order ID | Customer | Products | Date/Time | Status | Delivery | Return Req | Total | Actions */
   background-color: #ddd;
   padding: 8px 0;
   border-radius: 4px 4px 0 0;
@@ -41,48 +42,67 @@
 
 .customerTableHeader div {
   padding: 0 4px;
-}
-
-.customerTableHeader h4 {
-  font-size: 12px;
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .customerTableBody {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 1fr 1.5fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
+  align-items: center;
   gap: 6px;
-  max-height: 300px;
+  max-height: 520px;
   overflow-y: auto;
   background-color: #fafafa;
   padding: 8px 0;
   border-radius: 0 0 4px 4px;
 }
 
-.customerProfile {
+.customerTableBody div {
+  padding: 4px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.userInfo {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+
+.userInfo .avatar {
+  background-color: #f0f0f0;
+  align-self: center;
+  justify-self: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  padding: 12px;
+}
+
+.userInfo p {
+  margin: 0;
+}
+
+.customerProfile {
+  display: flex;
+  flex-direction: column;
 }
 
 .customerProfile p {
-  font-size: 14px;
   margin: 0;
 }
 
-.customerAddress p,
-.orderDate p,
-.CustomerStatus p,
-.priceOfGoods p {
-  font-size: 14px;
-  margin: 0;
+.subText {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 6px;
-  justify-content: flex-start;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
 .actions button {
@@ -91,6 +111,7 @@
   cursor: pointer;
   color: #333;
   padding: 2px;
+  font-size: 14px;
 }
 
 .actions button:hover {
@@ -113,7 +134,7 @@
 .button {
   margin-top: 12px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .addButton {
