@@ -33,7 +33,7 @@
 
 .customerTableHeader {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
+  grid-template-columns: 0.5fr 2fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
   /* Order ID | Customer | Products | Date/Time | Status | Delivery | Return Req | Total | Actions */
   background-color: #ddd;
   padding: 8px;
@@ -47,7 +47,7 @@
 
 .customerTableBody {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
+  grid-template-columns: 0.5fr 2fr 2.5fr 1.5fr 1fr 1fr 1fr 1fr 2fr;
   align-items: center;
   gap: 6px;
   max-height: 520px;
