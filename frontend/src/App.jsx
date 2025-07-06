@@ -19,6 +19,7 @@ import Admin from "./Components/Admin/Admin.jsx";
 import Dashboard from "./Components/Admin/Dashboard.jsx";
 import Customers from "./Components/Admin/Customers.jsx";
 import InventoryPage from "./Components/Admin/Inventory.jsx";
+import DynamicCategoryPage from "./Components/DynamicCategory/DynamicCategoryPage.jsx";
 
 function App() {
   return (
@@ -28,6 +29,11 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route
+            path="/category/:categoryName"
+            element={<DynamicCategoryPage />}
+          />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/cart" element={<CartPage />} />
@@ -50,7 +56,6 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="customers" element={<Customers />} />
           <Route path="inventory" element={<InventoryPage />} />
-          
         </Routes>
       </div>
     </CartProvider>

@@ -1,6 +1,7 @@
 import "./Home.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [cars, setCars] = useState([]);
@@ -43,7 +44,6 @@ const Home = () => {
           /> */}
         </div>
       </section>
-
       {/* <!-- CATEGORIES SECTION --> */}
       <section className="categories">
         <div className="leftColumn">
@@ -69,7 +69,6 @@ const Home = () => {
           <div className="rightImage"></div>
         </div>
       </section>
-
       {/* <!-- FEATURED CAR --> */}
       <section className="featured-car">
         <div className="featuredImage"></div>
@@ -86,9 +85,14 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Dynamic view */}
+      <section>
+        <Link to={`/category/SUV`}>SUVs</Link>
+        <Link to={`/category/Sedan`}>Sedans</Link>
+      </section>
+
       {/* <!-- BRAND LOGOS --> */}
       <section className="brands">{/* <!-- Add brand logos --> */}</section>
-
       {/* <!-- POPULAR CARS --> */}
       <section className="popular-cars">
         <h3>Shop Favourite cars</h3>
@@ -96,7 +100,6 @@ const Home = () => {
         {/* <!-- Filter buttons -->
     <!-- Car cards grid --> */}
       </section>
-
       {/* <!-- HIGHLIGHTS --> */}
       <section className="grid">
         <div className="trending">
@@ -128,7 +131,6 @@ const Home = () => {
           <div className="trendingImage"></div>
         </div>
       </section>
-
       <section className="model">
         {cars.map((cardex) => (
           <div className="modelHeading">
@@ -138,7 +140,6 @@ const Home = () => {
           </div>
         ))}
       </section>
-
       {/* <!-- RETURN SPECIAL --> */}
       <section className="return-special">
         <div>
@@ -182,13 +183,11 @@ const Home = () => {
           </p>
         </div>
       </section>
-
       {/* <!-- FAQ --> */}
       <section className="faq">
         <h2>FAQs</h2>
         {/* <!-- FAQ content --> */}
       </section>
-
       {/* <!-- Insert social icons --> */}
     </div>
   );

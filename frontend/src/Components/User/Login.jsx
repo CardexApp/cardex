@@ -9,21 +9,38 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const loginSubmit = async(e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate
+    if (!username.trim() || !password.trim()) {
+      setError("Please enter both username and password.");
+      return;
+    }
+
     try {
-      const res = await axios.post("https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/login",
-        {username, password,}
-      )
+      const res = await axios.post(
+        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/login/",
+        { username, password }
+      );
 
       localStorage.setItem("accessToken", res.data.access);
       localStorage.setItem("refreshToken", res.data.refresh);
-
       navigate("/");
     } catch (err) {
-      setError ("Invalid username or password");
+      if (err.response) {
+        console.log("Server response:", err.response.data);
+        setError(err.response.data.message || "Invalid username or password");
+      } else if (err.request) {
+        console.log("No server response");
+        setError("No response from server");
+      } else {
+        console.log("Error", err.message);
+        setError("An error occurred");
+      }
     }
-  }
+  };
+  
 
 
   return (
