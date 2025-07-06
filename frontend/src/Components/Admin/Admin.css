@@ -122,15 +122,15 @@
 .adminView {
   display: grid;
   grid-template-columns: 1fr auto;
+  align-items: flex-start;
   width: 100%;
   gap: 8px;
 }
 
 .adminDetails {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
   width: 100%;
+  gap: 8px;
 }
 
 .adminStatus {

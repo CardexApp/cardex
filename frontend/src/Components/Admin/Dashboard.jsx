@@ -1,5 +1,4 @@
 import "./Styles/Dashboard.css"
-import { AdminMenu } from "./Admin";
 import { Dock } from "./Admin";
 import { Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -248,10 +247,9 @@ const Dashboard = () => {
   return (
     <div className="dashboard-wrapper">
       <div className="dashBoard">
-        <AdminMenu />
         <div className="dashBoardArea">
           <div className="dashBoardHeading">
-            <h3>Customer Order</h3>
+            <h3>Recent Purchases</h3>
             <FontAwesomeIcon icon={faRotate} />
           </div>
 

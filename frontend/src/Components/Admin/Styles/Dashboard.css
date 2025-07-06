@@ -3,10 +3,10 @@
     flex-direction: column;
     height: 100vh;
   }
-  
+
   .dashBoard {
     display: grid;
-    grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
+    grid-template-columns: 1fr;
     padding: 0 12px;
     flex: 1;
     overflow: hidden;
@@ -37,7 +37,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 8px;
+    padding: 8px 28px 0 0;
+  }
+ 
+  .dashBoardHeading h3{
+   font-size: 20px;
   }
   
   .dashBoardTableWrapper {
@@ -66,7 +70,7 @@
     overflow-y: auto;
     flex: 1;
     padding-top: 8px;
-    max-height: 700px;
+    max-height: 400px;
   }
   
   .dashBoardTableBody .child {

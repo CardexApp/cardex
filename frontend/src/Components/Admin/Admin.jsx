@@ -24,14 +24,14 @@ import {
   faChalkboardUser,
   faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
-import Customers from "./Customers";
+import Dashboard from "./Dashboard";
 
 const icons = [
   {
     id: 1,
     icon: <FontAwesomeIcon icon={faHomeUser} size="2x" />,
     p: "Dashboard",
-    to: "/dashboard",
+    to: "/admin",
   },
   {
     id: 2,
@@ -71,9 +71,6 @@ export const AdminMenu = () => {
     <div>
       {/* Admin Side Menu */}
       <section className="adminMenu">
-        <Link to="/dashboard" className="adminLink">
-          Dashboard
-        </Link>
         <Link to="/inventory" className="adminLink">
           Inventory
         </Link>
@@ -184,8 +181,7 @@ const Admin = () => {
 
           {/* Mid-section Bottom Overview */}
           <div className="adminView">
-            <Customers />
-
+            <Dashboard />
             {/* Admin Details */}
             <div className="adminDetails">
               <PaidInvoice />
