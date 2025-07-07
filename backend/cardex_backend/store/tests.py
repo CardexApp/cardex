@@ -116,3 +116,43 @@ class AddToCartTest(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("id", response.data.get("cart_item", {}))
+
+
+class GetAllCartProductsTest(APITestCase):
+    def setUp(self):
+        self.car_type = CarType.objects.create(name="SUV")
+        self.make = Make.objects.create(name="Toyota")
+
+        self.user = User.objects.create_user(
+            username="cartuser", password="cartpass123"
+        )
+
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}'
+        )
+
+        self.product = Product.objects.create(
+            name="Test Product",
+            price=10.0,
+            description="Test Description",
+            mileage="10000",
+            model_year="2020",
+            transmission="manual",
+            fuel_type="petrol",
+            car_type=self.car_type,
+            make=self.make,
+            condition="new"
+        )
+
+        # Add to cart first
+        self.client.post(reverse('add-to-cart'), {
+            "product_id": self.product.id,
+            "quantity": 2
+        }, format='json')
+
+    def test_get_all_cart_products(self):
+        url = reverse('user-cart')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(len(response.data) > 0)
