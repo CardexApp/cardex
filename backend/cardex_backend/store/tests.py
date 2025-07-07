@@ -156,3 +156,50 @@ class GetAllCartProductsTest(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) > 0)
+
+
+class GetAllProductsTest(APITestCase):
+    def setUp(self):
+        # Setup some CarType and Make to create Products
+        self.car_type = CarType.objects.create(name="Sedan")
+        self.make = Make.objects.create(name="Honda")
+
+        # Create two products
+        self.product1 = Product.objects.create(
+            name="Product 1",
+            price=10000.0,
+            description="Description 1",
+            mileage="5000",
+            model_year="2022",
+            transmission="automatic",
+            fuel_type="diesel",
+            car_type=self.car_type,
+            make=self.make,
+            condition="new"
+        )
+
+        self.product2 = Product.objects.create(
+            name="Product 2",
+            price=8000.0,
+            description="Description 2",
+            mileage="10000",
+            model_year="2021",
+            transmission="manual",
+            fuel_type="petrol",
+            car_type=self.car_type,
+            make=self.make,
+            condition="used"
+        )
+
+    def test_get_all_products(self):
+        url = reverse('product-list')  # name='product-list' in urls.py
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), 2)
+
+        # Check content structure
+        first_product = response.data[0]
+        self.assertIn("id", first_product)
+        self.assertIn("name", first_product)
+        self.assertIn("price", first_product)
