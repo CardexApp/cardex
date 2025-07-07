@@ -299,7 +299,6 @@ const InventoryPage = () => {
   return (
     <div>
       <div className="inventoryOverview">
-        <AdminMenu />
         <div className="inventoryPage">
           <header className="inventoryHeader">
             <h2>Inventory Management</h2>

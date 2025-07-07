@@ -1,8 +1,8 @@
 .customersPage {
-  display: grid;
-  grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
   gap: 12px;
-  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(250px, 5fr);
+  padding: 8px 0;
 }
 
 .customersContent {

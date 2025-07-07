@@ -32,7 +32,6 @@ const ReturnRequests = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
 
       <div className="customersContent">
         <h2>Return Requests</h2>

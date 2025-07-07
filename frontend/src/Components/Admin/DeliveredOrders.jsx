@@ -29,7 +29,6 @@ const DeliveredOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
       <div className="customersContent">
         <h2>Delivered Orders</h2>
 

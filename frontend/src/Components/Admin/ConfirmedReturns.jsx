@@ -30,8 +30,6 @@ const ConfirmedReturns = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
-
       <div className="customersContent">
         <div className="customersHeader">
           <h2>Confirmed Returns</h2>

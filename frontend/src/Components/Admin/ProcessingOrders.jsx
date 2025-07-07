@@ -28,7 +28,6 @@ const ProcessingOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
       <div className="customersContent">
         <h2>Processing Orders</h2>
 

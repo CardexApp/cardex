@@ -12,7 +12,7 @@ import { useOrders } from "../../Context/OrdersContext";
 
 const PendingOrders = () => {
     const {orders} = useOrders();
-    
+
   if (!orders || !Array.isArray(orders)) {
     return (
       <div className="customersPage">
@@ -30,7 +30,6 @@ const PendingOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
       <div className="customersContent">
         <h2>Pending Orders</h2>
 

@@ -29,8 +29,6 @@ const ShippedOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
-
       <div className="customersContent">
         <h2>Shipped Orders</h2>
 

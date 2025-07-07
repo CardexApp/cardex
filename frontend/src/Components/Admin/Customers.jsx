@@ -477,8 +477,6 @@ const Customers = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
-
       <div className="customersContent">
         <div className="customersHeader">
           <h2>Customer Orders</h2>

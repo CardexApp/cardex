@@ -1,7 +1,7 @@
 .inventoryOverview {
   display: grid;
-  grid-template-columns: minmax(100px, 1fr) minmax(250px, 4fr);
-  padding: 8px 48px;
+  grid-template-columns: minmax(250px, 5fr);
+  padding: 8px 0;
 }
 
 .inventoryPage {
