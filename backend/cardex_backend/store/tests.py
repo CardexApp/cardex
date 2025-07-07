@@ -245,3 +245,50 @@ class GuestCheckoutTest(APITestCase):
         response = self.client.post(url, data, format='json')
         print(response.data)  # helpful for debugging if test fails
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class RemoveFromCartTest(APITestCase):
+    def setUp(self):
+        self.car_type = CarType.objects.create(name="SUV")
+        self.make = Make.objects.create(name="Toyota")
+
+        self.user = User.objects.create_user(
+            username="cartuser", password="cartpass123"
+        )
+
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}'
+        )
+
+        self.product = Product.objects.create(
+            name="Test Product",
+            price=10.0,
+            description="Test Description",
+            mileage="10000",
+            model_year="2020",
+            transmission="manual",
+            fuel_type="petrol",
+            car_type=self.car_type,
+            make=self.make,
+            condition="new"
+        )
+
+        # Add to cart first
+        self.client.post(reverse('add-to-cart'), {
+            "product_id": self.product.id,
+            "quantity": 2
+        }, format='json')
+
+    def test_remove_from_cart(self):
+        # Remove product from cart
+        url = reverse('remove-from-cart', args=[self.product.id])
+        response = self.client.delete(url)
+
+        self.assertIn(response.status_code, [200, 204])
+
+        # Debug output
+        cart_response = self.client.get(reverse('user-cart'))
+        print("Cart response data:", cart_response.data)
+
+        self.assertEqual(len(cart_response.data.get('items', [])), 0)
