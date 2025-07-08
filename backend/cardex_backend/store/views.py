@@ -110,7 +110,7 @@ class ContactUsView(generics.GenericAPIView):
             data = serializer.validated_data
 
             send_mail(
-                subject=f"New Contact from {data['name']}",
+                subject=f"New Contact from {data['name']}, phone number: {data['phone']}",
                 message=f"Email: {data['email']}\n\nMessage:\n{data['message']}",
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=['cardexbackend@gmail.com'],

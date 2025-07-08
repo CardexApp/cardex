@@ -149,4 +149,5 @@ class AddToCartSerializer(serializers.Serializer):
 class ContactSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
+    phone = serializers.CharField(max_length=15)
     message = serializers.CharField()
