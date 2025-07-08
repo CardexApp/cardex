@@ -1,6 +1,8 @@
+
+
 import "./Styles/Customers.css";
-import { Fragment, useState } from "react";
-import { AdminMenu, Dock } from "./Admin";
+import { useState } from "react";
+import { Dock } from "./Admin";
 import { SearchBar } from "./Reusables";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,7 +15,7 @@ import {
   faFileInvoice,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { icon } from "@fortawesome/fontawesome-svg-core";
+
 
 const initialData = [
   {
@@ -415,7 +417,7 @@ const initialData = [
 ];
 
 const Customers = () => {
-  const [orders, setOrders] = useState(initialData); // Include isBlocked in initialData
+  const [orders, setOrders] = useState(initialData);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleEdit = (id) => {
@@ -442,13 +444,6 @@ const Customers = () => {
     setOrders(updated);
   };
 
-  const filteredOrders = orders.filter((order) =>
-    `${order.name} ${order.email} ${order.address}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
-
-  //   Order Return Approval/ Decline
   const handleChangeStatus = (id) => {
     const updated = orders.map((o) => {
       if (o.id !== id) return o;
@@ -475,8 +470,15 @@ const Customers = () => {
     setOrders(updated);
   };
 
+  const filteredOrders = orders.filter((order) =>
+    `${order.name} ${order.email} ${order.address}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="customersPage">
+
       <div className="customersContent">
         <div className="customersHeader">
           <h2>Customer Orders</h2>
@@ -496,14 +498,14 @@ const Customers = () => {
             <div>Date/Time</div>
             <div>Status</div>
             <div>Delivery</div>
-            <div>Return Req</div>
+            <div>Return</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
 
           <div className="customerTableBody">
             {filteredOrders.map((order) => (
-              <Fragment key={order.id}>
+              <div className="orderRow" key={order.id}>
                 <div>{order.id}</div>
                 <div className="userInfo">
                   <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -527,8 +529,6 @@ const Customers = () => {
                 <div>{order.delivery}</div>
                 <div>{order.returnRequested ? "Yes" : "No"}</div>
                 <div>{order.totalPrice}</div>
-
-                {/* Actions for Users */}
                 <div className="actions">
                   <button title="View">
                     <FontAwesomeIcon icon={faEye} />
@@ -545,9 +545,6 @@ const Customers = () => {
                   <button title="Invoice">
                     <FontAwesomeIcon icon={faFileInvoice} />
                   </button>
-
-                  {/* Return buttons */}
-
                   <button
                     title="Change Status"
                     onClick={() => handleChangeStatus(order.id)}
@@ -571,7 +568,7 @@ const Customers = () => {
                     </>
                   )}
                 </div>
-              </Fragment>
+              </div>
             ))}
           </div>
         </div>

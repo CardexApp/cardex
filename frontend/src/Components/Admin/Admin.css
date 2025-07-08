@@ -5,11 +5,8 @@
 
 .overview {
   display: grid;
-  padding: 0 48px;
-  grid-template-columns: minmax(100px, 1fr) minmax(250px, 3fr) minmax(
-      150px,
-      1fr
-    );
+  padding: 0 24px;
+  grid-template-columns: minmax(100px, 1fr) minmax(250px, 5fr);
   gap: 8px;
   background-color: #f0f0f0;
 }
@@ -133,10 +130,45 @@
   gap: 8px;
 }
 
-.adminStatus {
-  margin: 4px;
-  background-color: #f0f0f0;
-  padding: 0 8px;
+
+
+.dropdownAdminProfile {
+  position: relative;
+  display: inline-block;
 }
 
+.dropdownContentAdmin {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background-color: white;
+  min-width: 220px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdownAdminProfile:hover .dropdownContentAdmin {
+  display: block;
+}
+
+.adminProfile {
+  text-align: left;
+}
+
+.adminAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #0e3062;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
 

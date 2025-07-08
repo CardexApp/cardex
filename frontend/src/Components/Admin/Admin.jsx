@@ -157,7 +157,20 @@ const Admin = () => {
           </div>
           <div className="notifiers">
             <FontAwesomeIcon className="fontIcon" icon={faBell} />
-            <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
+
+            <div className="dropdownAdminProfile">
+              <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
+              <div className="dropdownContentAdmin">
+                <div className="adminProfile">
+                  <div className="adminAvatar">
+                    <p>Admin</p>
+                  </div>
+                  <h2>Admin name</h2>
+                  <h3>Cars Posted</h3>
+                  <h3>Cars Sold</h3>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -190,7 +203,7 @@ const Admin = () => {
           </div>
         </section>
 
-        <AdminStatus />
+        {/* <AdminStatus /> */}
       </div>
 
       <Dock />
