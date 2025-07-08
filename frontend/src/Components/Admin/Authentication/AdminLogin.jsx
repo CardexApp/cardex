@@ -3,9 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
-
 const AdminLogin = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {

@@ -31,33 +31,23 @@ const NavBar = () => {
       </div>
       <ul className="menuList">
         <NavLink to="/" className="navLink">
-          <p>
-           HOME
-          </p>
+          <p>HOME</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/listings" className="navLink">
-          <p>
-            LISTINGS
-          </p>
+          <p>LISTINGS</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/about" className="navLink">
-          <p>
-            ABOUT
-          </p>
+          <p>ABOUT</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/contact" className="navLink">
-          <p>
-            CONTACT
-          </p>
+          <p>CONTACT</p>
           <hr className="hrTag" />
         </NavLink>
-        <NavLink to="/admin" className="navLink">
-          <p>
-            Admin
-          </p>
+        <NavLink to="/admin/login" className="navLink">
+          <p>Admin</p>
           <hr className="hrTag" />
         </NavLink>
         {/* <NavLink to="/login" className="navLink">
