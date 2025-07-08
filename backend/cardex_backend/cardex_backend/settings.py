@@ -171,3 +171,11 @@ SIMPLE_JWT = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'cardex_backend/media/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cardexbackend@gmail.com'
+EMAIL_HOST_PASSWORD = 'gnex zntj mopr wsuq'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

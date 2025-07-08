@@ -145,3 +145,8 @@ class AddToCartSerializer(serializers.Serializer):
             item.quantity = quantity
         item.save()
         return item
+
+class ContactSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    message = serializers.CharField()

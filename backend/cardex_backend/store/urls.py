@@ -11,6 +11,7 @@ from .views import (
     UserCartView,
     AddToCartView,
     RemoveFromCartView,
+    ContactUsView
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('cart/', UserCartView.as_view(), name='user-cart'),
     path('cart/add/', AddToCartView.as_view(), name='add-to-cart'),
     path('cart/remove/<int:product_id>/', RemoveFromCartView.as_view(), name='remove-from-cart'),
+    path('contact/', ContactUsView.as_view(), name='contact')
 ]
