@@ -1,7 +1,7 @@
 import "./Admin.css";
 import "./Styles/Dock.css";
 import asset from "../../assets/asset";
-import { Link, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
@@ -9,9 +9,9 @@ import {
   faBoxes,
   faUserGroup,
   faTruckFast,
-  faFlagCheckered,
   faBell,
   faChalkboardUser,
+  faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -34,7 +34,6 @@ import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
 
-// Navigation Icons (Dock)
 const icons = [
   {
     id: 1,
@@ -74,7 +73,6 @@ const icons = [
   },
 ];
 
-// 🌐 Dock Navigation
 export const Dock = () => (
   <div className="dock">
     {icons.map((icon) => (
@@ -86,7 +84,6 @@ export const Dock = () => (
   </div>
 );
 
-// Sidebar Navigation
 export const AdminMenu = () => (
   <section className="adminMenu">
     <Link to="/admin" className="adminLink">
@@ -119,12 +116,13 @@ export const AdminMenu = () => (
   </section>
 );
 
-// Main Admin Component
 const Admin = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname === "/admin";
 
   return (
     <div className="landingPage">
-      {/* Header */}
+      {/* Admin Top Bar */}
       <div className="navAdmin">
         <div className="icon">
           <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
@@ -158,29 +156,29 @@ const Admin = () => {
         </div>
       </div>
 
-      {/* Main Layout */}
+      {/* Admin Side and Content */}
       <div className="overview">
         <AdminMenu />
 
         <section className="adminDashBoard">
+          {/* Quick Info and Admin Details only on /admin */}
+          {isDashboard && (
+            <>
+              <div className="quickInfo">
+                <TotalRevenue />
+                <ActiveUsers />
+                <TotalUsers />
+              </div>
+              <div className="adminDetails">
+                <PaidInvoice />
+                <FundsReceived />
+              </div>
+            </>
+          )}
+
+          {/* Admin Routes */}
           <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Dashboard />
-                  <div className="quickInfo">
-                    <TotalRevenue />
-                    <ActiveUsers />
-                    <TotalUsers />
-                  </div>
-                  <div className="adminDetails">
-                    <PaidInvoice />
-                    <FundsReceived />
-                  </div>
-                </>
-              }
-            />
+            <Route path="/" element={<Dashboard />} />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="customers" element={<Customers />} />
             <Route path="orders/pending" element={<PendingOrders />} />
