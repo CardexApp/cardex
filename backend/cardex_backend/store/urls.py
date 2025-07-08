@@ -20,7 +20,8 @@ from .views import (
     PasswordChangeView,
     UserProfileView,
     AdminUserViewSet,
-    ReturnRequestView
+    ReturnRequestView,
+    ContactUsView
 )
 
 urlpatterns = [
@@ -56,4 +57,6 @@ urlpatterns = [
     path('admin/orders/<int:pk>/', OrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
     path('admin/users/', AdminUserViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('admin/users/<int:pk>/', AdminUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'put': 'update', 'delete': 'destroy'})),
+    path('contact/', ContactUsView.as_view(), name='contact')
     ]
+

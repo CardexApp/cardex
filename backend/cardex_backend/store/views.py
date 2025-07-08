@@ -4,8 +4,14 @@ from django.contrib.auth.models import User
 from rest_framework import generics, status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
+from rest_framework.views import APIView
+from django.conf import settings
 
 from .models import Product, CarType, Order, Cart, CartItem
+from django.core.mail import send_mail
+from rest_framework.views import APIView
+from django.conf import settings
 from .serializers import (
     ProductSerializer,
     CarTypeSerializer,
@@ -20,7 +26,8 @@ from .serializers import (
     PasswordChangeSerializer,
     UserProfileSerializer,
     AdminUserSerializer,
-    ReturnRequestSerializer
+    ReturnRequestSerializer,
+    ContactSerializer
 )
 
 from .permissions import IsSuperUser  # import the custom permission
@@ -202,3 +209,23 @@ class AdminUserViewSet(viewsets.ModelViewSet):
     serializer_class = AdminUserSerializer
     permission_classes = [permissions.IsAdminUser]
     # pagination_class = StandardResultsSetPaginationS
+
+
+class ContactUsView(generics.GenericAPIView):
+    serializer_class = ContactSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+
+            send_mail(
+                subject=f"New Contact from {data['name']}, phone number: {data['phone']}",
+                message=f"Email: {data['email']}\n\nMessage:\n{data['message']}",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=['cardexbackend@gmail.com'],
+                fail_silently=False,
+            )
+            return Response({"message": "Message sent"}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
