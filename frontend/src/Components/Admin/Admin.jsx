@@ -34,7 +34,7 @@ import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
 
-// 🚀 Navigation Icons (Dock)
+// Navigation Icons (Dock)
 const icons = [
   {
     id: 1,
@@ -86,7 +86,7 @@ export const Dock = () => (
   </div>
 );
 
-// 🧭 Sidebar Navigation
+// Sidebar Navigation
 export const AdminMenu = () => (
   <section className="adminMenu">
     <Link to="/admin" className="adminLink">
@@ -119,7 +119,7 @@ export const AdminMenu = () => (
   </section>
 );
 
-// 🌟 Main Admin Component
+// Main Admin Component
 const Admin = () => {
 
   return (
