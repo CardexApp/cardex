@@ -33,7 +33,7 @@ const ReturnRequests = () => {
         <h2>Return Requests</h2>
 
         <div className="customerTableWrapper">
-          <div className="customerTableHeader">
+          <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
             <div>Customer</div>
             <div>Products</div>
@@ -43,7 +43,7 @@ const ReturnRequests = () => {
             <div>Actions</div>
           </div>
 
-          <div className="customerTableBody">
+          <div className="customerTableBody shippedGrid">
             {returnRequests.length > 0 ? (
               returnRequests.map((order) => (
                 <div className="orderRow" key={order.id}>

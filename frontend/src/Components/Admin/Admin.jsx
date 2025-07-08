@@ -5,14 +5,13 @@ import { Link, Routes, Route } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
-  faEnvelope,
   faHomeUser,
   faBoxes,
   faUserGroup,
   faTruckFast,
+  faFlagCheckered,
   faBell,
   faChalkboardUser,
-  faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -35,6 +34,7 @@ import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
 
+// 🚀 Navigation Icons (Dock)
 const icons = [
   {
     id: 1,
@@ -74,6 +74,19 @@ const icons = [
   },
 ];
 
+// 🌐 Dock Navigation
+export const Dock = () => (
+  <div className="dock">
+    {icons.map((icon) => (
+      <Link to={icon.to} key={icon.id} className="dock-icon">
+        {icon.icon}
+        <p className="dock-label">{icon.p}</p>
+      </Link>
+    ))}
+  </div>
+);
+
+// 🧭 Sidebar Navigation
 export const AdminMenu = () => (
   <section className="adminMenu">
     <Link to="/admin" className="adminLink">
@@ -106,41 +119,12 @@ export const AdminMenu = () => (
   </section>
 );
 
-export const AdminStatus = () => (
-  <section className="adminStatus">
-    <div className="adminProfile">
-      <div className="adminAvatar">
-        <p>Admin</p>
-      </div>
-      <h2>Admin name</h2>
-      <h3>Cars Posted</h3>
-      <h3>Cars Sold</h3>
-    </div>
-    <div className="userProfile">
-      <div className="userAvatar">
-        <p>User</p>
-      </div>
-      <h2>User name</h2>
-      <h3>Cars Bought</h3>
-      <h3>Cars Returned</h3>
-    </div>
-  </section>
-);
-
-export const Dock = () => (
-  <div className="dock">
-    {icons.map((icon) => (
-      <Link to={icon.to} key={icon.id} className="dock-icon">
-        {icon.icon}
-        <p className="dock-label">{icon.p}</p>
-      </Link>
-    ))}
-  </div>
-);
-
+// 🌟 Main Admin Component
 const Admin = () => {
+
   return (
     <div className="landingPage">
+      {/* Header */}
       <div className="navAdmin">
         <div className="icon">
           <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
@@ -157,7 +141,6 @@ const Admin = () => {
           </div>
           <div className="notifiers">
             <FontAwesomeIcon className="fontIcon" icon={faBell} />
-
             <div className="dropdownAdminProfile">
               <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
               <div className="dropdownContentAdmin">
@@ -175,12 +158,29 @@ const Admin = () => {
         </div>
       </div>
 
+      {/* Main Layout */}
       <div className="overview">
         <AdminMenu />
 
         <section className="adminDashBoard">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Dashboard />
+                  <div className="quickInfo">
+                    <TotalRevenue />
+                    <ActiveUsers />
+                    <TotalUsers />
+                  </div>
+                  <div className="adminDetails">
+                    <PaidInvoice />
+                    <FundsReceived />
+                  </div>
+                </>
+              }
+            />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="customers" element={<Customers />} />
             <Route path="orders/pending" element={<PendingOrders />} />
@@ -190,20 +190,7 @@ const Admin = () => {
             <Route path="returns/requests" element={<ReturnRequests />} />
             <Route path="returns/confirmed" element={<ConfirmedReturns />} />
           </Routes>
-
-          <div className="quickInfo">
-            <TotalRevenue />
-            <ActiveUsers />
-            <TotalUsers />
-          </div>
-
-          <div className="adminDetails">
-            <PaidInvoice />
-            <FundsReceived />
-          </div>
         </section>
-
-        {/* <AdminStatus /> */}
       </div>
 
       <Dock />

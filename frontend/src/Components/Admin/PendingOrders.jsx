@@ -29,12 +29,11 @@ const PendingOrders = () => {
 
   return (
     <div className="customersPage">
-
       <div className="customersContent">
         <h2>Pending Orders</h2>
 
         <div className="customerTableWrapper">
-          <div className="customerTableHeader">
+          <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
             <div>Customer</div>
             <div>Products</div>
@@ -44,7 +43,7 @@ const PendingOrders = () => {
             <div>Actions</div>
           </div>
 
-          <div className="customerTableBody">
+          <div className="customerTableBody shippedGrid">
             {pendingOrders.length > 0 ? (
               pendingOrders.map((order) => (
                 <div className="orderRow" key={order.id}>

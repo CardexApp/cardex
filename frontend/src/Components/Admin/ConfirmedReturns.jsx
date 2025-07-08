@@ -1,6 +1,6 @@
 import "./Styles/Customers.css";
 import { useState } from "react";
-import { AdminMenu, Dock } from "./Admin";
+import {  Dock } from "./Admin";
 import { SearchBar } from "./Reusables";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,7 +42,7 @@ const ConfirmedReturns = () => {
         </div>
 
         <div className="customerTableWrapper">
-          <div className="customerTableHeader">
+          <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
             <div>Customer</div>
             <div>Products</div>
@@ -52,7 +52,7 @@ const ConfirmedReturns = () => {
             <div>Actions</div>
           </div>
 
-          <div className="customerTableBody">
+          <div className="customerTableBody shippedGrid">
             {confirmedReturns.length > 0 ? (
               confirmedReturns.map((order) => (
                 <div className="orderRow" key={order.id}>

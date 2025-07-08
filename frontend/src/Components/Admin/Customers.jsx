@@ -1,5 +1,3 @@
-
-
 import "./Styles/Customers.css";
 import { useState } from "react";
 import { Dock } from "./Admin";

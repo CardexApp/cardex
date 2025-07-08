@@ -28,7 +28,7 @@ const ProcessingOrders = () => {
         <h2>Processing Orders</h2>
 
         <div className="customerTableWrapper">
-          <div className="customerTableHeader">
+          <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
             <div>Customer</div>
             <div>Products</div>
@@ -38,7 +38,7 @@ const ProcessingOrders = () => {
             <div>Actions</div>
           </div>
 
-          <div className="customerTableBody">
+          <div className="customerTableBody shippedGrid">
             {processingOrders.length > 0 ? (
               processingOrders.map((order) => (
                 <div className="orderRow" key={order.id}>
