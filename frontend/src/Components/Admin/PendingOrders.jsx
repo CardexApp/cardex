@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import "./Styles/Customers.css";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +10,7 @@ import {
 import { useOrders } from "../../Context/OrdersContext";
 
 const PendingOrders = () => {
-    const {orders} = useOrders();
+  const { orders } = useOrders();
 
   if (!orders || !Array.isArray(orders)) {
     return (
@@ -30,6 +29,7 @@ const PendingOrders = () => {
 
   return (
     <div className="customersPage">
+
       <div className="customersContent">
         <h2>Pending Orders</h2>
 
@@ -47,7 +47,7 @@ const PendingOrders = () => {
           <div className="customerTableBody">
             {pendingOrders.length > 0 ? (
               pendingOrders.map((order) => (
-                <Fragment key={order.id}>
+                <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -77,7 +77,7 @@ const PendingOrders = () => {
                       <FontAwesomeIcon icon={faTimesCircle} />
                     </button>
                   </div>
-                </Fragment>
+                </div>
               ))
             ) : (
               <p>No pending orders found.</p>
@@ -85,6 +85,7 @@ const PendingOrders = () => {
           </div>
         </div>
       </div>
+
       <Dock />
     </div>
   );

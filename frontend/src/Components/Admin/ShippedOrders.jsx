@@ -1,5 +1,4 @@
 import "./Styles/Customers.css";
-import { Fragment } from "react";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -46,7 +45,7 @@ const ShippedOrders = () => {
           <div className="customerTableBody">
             {shippedOrders.length > 0 ? (
               shippedOrders.map((order) => (
-                <Fragment key={order.id}>
+                <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -73,7 +72,7 @@ const ShippedOrders = () => {
                       <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>
-                </Fragment>
+                </div>
               ))
             ) : (
               <p>No shipped orders found.</p>
@@ -81,7 +80,6 @@ const ShippedOrders = () => {
           </div>
         </div>
       </div>
-
       <Dock />
     </div>
   );

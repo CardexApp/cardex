@@ -1,5 +1,5 @@
 import "./Styles/Customers.css";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { AdminMenu, Dock } from "./Admin";
 import { SearchBar } from "./Reusables";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -55,7 +55,7 @@ const ConfirmedReturns = () => {
           <div className="customerTableBody">
             {confirmedReturns.length > 0 ? (
               confirmedReturns.map((order) => (
-                <Fragment key={order.id}>
+                <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -88,7 +88,7 @@ const ConfirmedReturns = () => {
                       <FontAwesomeIcon icon={faCheckCircle} />
                     </button>
                   </div>
-                </Fragment>
+                </div>
               ))
             ) : (
               <p>No confirmed returns found.</p>

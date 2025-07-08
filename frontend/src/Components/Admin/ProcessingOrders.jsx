@@ -1,15 +1,11 @@
-import { Fragment } from "react";
 import "./Styles/Customers.css";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEye, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
-  
-
 const ProcessingOrders = () => {
-    const { orders } = useOrders();
-
+  const { orders } = useOrders();
 
   if (!orders || !Array.isArray(orders)) {
     return (
@@ -45,7 +41,7 @@ const ProcessingOrders = () => {
           <div className="customerTableBody">
             {processingOrders.length > 0 ? (
               processingOrders.map((order) => (
-                <Fragment key={order.id}>
+                <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -72,7 +68,7 @@ const ProcessingOrders = () => {
                       <FontAwesomeIcon icon={faTruckFast} />
                     </button>
                   </div>
-                </Fragment>
+                </div>
               ))
             ) : (
               <p>No processing orders found.</p>

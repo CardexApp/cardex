@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import "./Styles/Customers.css";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,10 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
-
-
 const ReturnRequests = () => {
-    const { orders } = useOrders();
+  const { orders } = useOrders();
 
   if (!orders || !Array.isArray(orders)) {
     return (
@@ -32,7 +29,6 @@ const ReturnRequests = () => {
 
   return (
     <div className="customersPage">
-
       <div className="customersContent">
         <h2>Return Requests</h2>
 
@@ -50,7 +46,7 @@ const ReturnRequests = () => {
           <div className="customerTableBody">
             {returnRequests.length > 0 ? (
               returnRequests.map((order) => (
-                <Fragment key={order.id}>
+                <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
@@ -80,7 +76,7 @@ const ReturnRequests = () => {
                       <FontAwesomeIcon icon={faTimesCircle} />
                     </button>
                   </div>
-                </Fragment>
+                </div>
               ))
             ) : (
               <p>No return requests found.</p>
@@ -88,7 +84,6 @@ const ReturnRequests = () => {
           </div>
         </div>
       </div>
-
       <Dock />
     </div>
   );
