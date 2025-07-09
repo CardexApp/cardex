@@ -5,6 +5,7 @@ from rest_framework import status
 from django.urls import reverse
 from store.models import Product, CarType, Make
 from rest_framework_simplejwt.tokens import RefreshToken
+from store.models import Order
 
 
 class UserLoginTest(APITestCase):
@@ -292,3 +293,46 @@ class RemoveFromCartTest(APITestCase):
         print("Cart response data:", cart_response.data)
 
         self.assertEqual(len(cart_response.data.get('items', [])), 0)
+
+
+class GetUserOrdersTest(APITestCase):
+    def setUp(self):
+        # Create user
+        self.user = User.objects.create_user(
+            username="orderuser", password="orderpass123")
+
+        # Generate token
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+        # Create some orders for this user
+        self.car_type = CarType.objects.create(name="SUV")
+        self.make = Make.objects.create(name="Toyota")
+        self.product = Product.objects.create(
+            name="Test Product",
+            price=10.0,
+            description="Test Description",
+            mileage="10000",
+            model_year="2020",
+            transmission="manual",
+            fuel_type="petrol",
+            car_type=self.car_type,
+            make=self.make,
+            condition="new"
+        )
+        Order.objects.create(user=self.user, product=self.product)
+        Order.objects.create(user=self.user, product=self.product)
+
+    def test_get_user_orders(self):
+        url = reverse('order-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), 2)
+
+        # Check order content
+        first_order = response.data[0]
+        self.assertIn("id", first_order)
+        self.assertIn("product", first_order)
+        self.assertIn("created_at", first_order)
