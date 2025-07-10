@@ -336,3 +336,23 @@ class GetUserOrdersTest(APITestCase):
         self.assertIn("id", first_order)
         self.assertIn("product", first_order)
         self.assertIn("created_at", first_order)
+
+
+class GetAllCarTypesTest(APITestCase):
+    def setUp(self):
+        # Create some CarTypes
+        CarType.objects.create(name="SUV")
+        CarType.objects.create(name="Sedan")
+        CarType.objects.create(name="Truck")
+
+    def test_get_all_car_types(self):
+        url = reverse('car-types')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), 3)
+
+        # Check structure of first item
+        first_car_type = response.data[0]
+        self.assertIn("id", first_car_type)
+        self.assertIn("name", first_car_type)
