@@ -356,3 +356,28 @@ class GetAllCarTypesTest(APITestCase):
         first_car_type = response.data[0]
         self.assertIn("id", first_car_type)
         self.assertIn("name", first_car_type)
+
+
+class GetUserProfileTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="profileuser", email="profile@example.com", password="profilepass123",
+            first_name="Profile", last_name="User"
+        )
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+    def test_get_user_profile(self):
+        url = reverse('user-profile')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertIn("email", response.data)
+        self.assertEqual(response.data["email"], self.user.email)
+
+        self.assertIn("first_name", response.data)
+        self.assertEqual(response.data["first_name"], self.user.first_name)
+
+        self.assertIn("last_name", response.data)
+        self.assertEqual(response.data["last_name"], self.user.last_name)
