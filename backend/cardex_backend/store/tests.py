@@ -427,3 +427,65 @@ class UpdateUserProfileTest(APITestCase):
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class AuthenticatedCheckoutTest(APITestCase):
+    def setUp(self):
+        # Setup CarType and Make for Product creation
+        self.car_type = CarType.objects.create(name="SUV")
+        self.make = Make.objects.create(name="Toyota")
+
+        # Create user and authenticate
+        self.user = User.objects.create_user(
+            username="checkoutuser", password="checkoutpass123"
+        )
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}'
+        )
+
+        # Create product with quantity > 0 to avoid stock issues
+        self.product = Product.objects.create(
+            name="Checkout Product",
+            price=20.0,
+            description="Checkout Test Product",
+            mileage="15000",
+            model_year="2021",
+            transmission="manual",
+            fuel_type="diesel",
+            car_type=self.car_type,
+            make=self.make,
+            condition="new",
+            quantity=5  # Must have stock
+        )
+
+        # Add product to cart (optional, based on your flow)
+        self.client.post(reverse('add-to-cart'), {
+            "product_id": self.product.id,
+            "quantity": 1
+        }, format='json')
+
+    def test_authenticated_checkout(self):
+        url = reverse('checkout')  # '/checkout/' endpoint
+
+        data = {
+            "product": self.product.id,
+            "address": {
+                "postal_code": "12345",
+                "house_address": "123 Elm Street"
+            },
+            "card_details": {
+                "name_on_card": "Checkout User",
+                "card_number": "4111111111111111",
+                "expiry_date": "12/30",
+                "cvv": "123"
+            }
+        }
+
+        response = self.client.post(url, data, format='json')
+
+        print(response.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn('order', response.data)
+        self.assertEqual(response.data['order']['user'], self.user.id)
