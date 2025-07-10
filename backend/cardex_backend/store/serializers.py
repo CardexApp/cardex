@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
-from .models import Product, CarType, Make, Order, Address, GuestCustomer, CardDetails, CartItem, Cart
+from .models import Product, CarType, Make, Order, Address, CardDetails, CartItem, Cart, Review
 
 # Admin registration serializer
 class AdminRegisterSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            username=validated_data['email'], # we're using email as username
+            username=validated_data['email'],  # we're using email as username
             email=validated_data['email'],
             password=validated_data['password']
         )
@@ -176,22 +176,32 @@ class CarTypeSerializer(serializers.ModelSerializer):
         model = CarType
         fields = ['id', 'name']
 
+
 class MakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Make
         fields = ['id', 'name']
 
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'review', 'rating']
+        read_only_fields = ['id', 'user']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     car_type = serializers.PrimaryKeyRelatedField(queryset=CarType.objects.all()) 
     make = serializers.PrimaryKeyRelatedField(queryset=Make.objects.all())
     status = serializers.SerializerMethodField()
+    reviews = ReviewSerializer(many=True, read_only=True, source='review_set')
 
     class Meta:
         model = Product
         fields = [
             'id', 'image', 'name', 'price', 'description', 'mileage',
             'model_year', 'transmission', 'fuel_type', 'car_type', 'make', 
-            'condition', 'status'
+            'condition', 'reviews', 'status'
         ]
 
     # To show related details when retrieving:
@@ -218,6 +228,26 @@ class ProductAdminSerializer(ProductSerializer):
 
     def get_status(self, obj):
         return obj.stock_status()
+
+
+class ReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['product', 'review', 'rating']
+
+    def validate(self, data):
+        user = self.context['request'].user
+        product = data['product']
+        has_ordered = Order.objects.filter(user=user, product=product).exists()
+        if not has_ordered:
+            raise serializers.ValidationError(
+                "You can only review products you have purchased.")
+        return data
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return Review.objects.create(user=user, **validated_data)
+
 
 class OrderSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -267,6 +297,8 @@ class ReturnRequestSerializer(serializers.ModelSerializer):
 
 
 # CartItem serializer
+
+
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
 
@@ -275,6 +307,8 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'quantity']
 
 # Cart serializer
+
+
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
 
@@ -284,6 +318,8 @@ class CartSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'created_at']
 
 # For adding items to cart
+
+
 class AddToCartSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
     quantity = serializers.IntegerField(min_value=1)
@@ -302,7 +338,8 @@ class AddToCartSerializer(serializers.Serializer):
         cart, created = Cart.objects.get_or_create(user=user)
 
         # Check if item already in cart
-        item, created = CartItem.objects.get_or_create(cart=cart, product_id=product_id)
+        item, created = CartItem.objects.get_or_create(
+            cart=cart, product_id=product_id)
         if not created:
             item.quantity += quantity
         else:
