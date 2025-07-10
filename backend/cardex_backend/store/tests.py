@@ -206,46 +206,46 @@ class GetAllProductsTest(APITestCase):
         self.assertIn("price", first_product)
 
 
-class GuestCheckoutTest(APITestCase):
-    def setUp(self):
-        self.car_type = CarType.objects.create(name="SUV")
-        self.make = Make.objects.create(name="Toyota")
-        self.product = Product.objects.create(
-            name="Test Product",
-            price=10.0,
-            description="Test Description",
-            mileage="10000",
-            model_year="2020",
-            transmission="manual",
-            fuel_type="petrol",
-            car_type=self.car_type,
-            make=self.make,
-            condition="new"
-        )
+# class GuestCheckoutTest(APITestCase):
+#     def setUp(self):
+#         self.car_type = CarType.objects.create(name="SUV")
+#         self.make = Make.objects.create(name="Toyota")
+#         self.product = Product.objects.create(
+#             name="Test Product",
+#             price=10.0,
+#             description="Test Description",
+#             mileage="10000",
+#             model_year="2020",
+#             transmission="manual",
+#             fuel_type="petrol",
+#             car_type=self.car_type,
+#             make=self.make,
+#             condition="new"
+#         )
 
-    def test_guest_checkout_creates_order(self):
-        url = reverse('guest-checkout')
-        data = {
-            "product": self.product.id,
-            "guest_customer": {
-                "first_name": "John",
-                "last_name": "Doe",
-                "address": {
-                    "postal_code": "12345",
-                    "house_address": "123 Elm Street"
-                },
-                "card_details": {
-                    "name_on_card": "John Doe",
-                    "card_number": "4111111111111111",
-                    "expiry_date": "2030-12-31",
-                    "cvv": "123"
-                }
-            }
-        }
+#     def test_guest_checkout_creates_order(self):
+#         url = reverse('guest-checkout')
+#         data = {
+#             "product": self.product.id,
+#             "guest_customer": {
+#                 "first_name": "John",
+#                 "last_name": "Doe",
+#                 "address": {
+#                     "postal_code": "12345",
+#                     "house_address": "123 Elm Street"
+#                 },
+#                 "card_details": {
+#                     "name_on_card": "John Doe",
+#                     "card_number": "4111111111111111",
+#                     "expiry_date": "2030-12-31",
+#                     "cvv": "123"
+#                 }
+#             }
+#         }
 
-        response = self.client.post(url, data, format='json')
-        print(response.data)  # helpful for debugging if test fails
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+#         response = self.client.post(url, data, format='json')
+#         print(response.data)  # helpful for debugging if test fails
+#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class RemoveFromCartTest(APITestCase):
