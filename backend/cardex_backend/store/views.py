@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from rest_framework.views import APIView
 from django.conf import settings
 
-from .models import Product, CarType, Order, Cart, CartItem
+from .models import Product, CarType, Order, Cart, CartItem, Review
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from django.conf import settings
@@ -17,9 +17,11 @@ from .serializers import (
     CarTypeSerializer,
     OrderSerializer,
     RegisterSerializer,
-    CartSerializer, 
+    CartSerializer,
     AddToCartSerializer,
     CartItemSerializer,
+    ReviewCreateSerializer,
+    ReviewSerializer,
     AdminRegisterSerializer,
     ProductAdminSerializer,
     UserProfileUpdateSerializer,
@@ -39,6 +41,8 @@ class AdminRegisterView(generics.CreateAPIView):
 
 
 # /api/register/ POST
+
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -78,26 +82,35 @@ class PasswordChangeView(generics.UpdateAPIView):
 
 
 # /api/products/ GET
+
+
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 # /api/products/<id>/ GET
+
+
 class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'id'
 
 # /api/car-types/ GET
+
+
 class CarTypeListView(generics.ListAPIView):
     queryset = CarType.objects.all()
     serializer_class = CarTypeSerializer
 
 # /api/products/search/ GET
+
+
 class ProductSearchView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = {
         'price': ['exact', 'gte', 'lte'],
         'model_year': ['exact', 'gte', 'lte'],
@@ -105,10 +118,25 @@ class ProductSearchView(generics.ListAPIView):
         'car_type__name': ['exact'],
         'transmission': ['exact'],
     }
-    search_fields = ['name', 'description', 'mileage', 'model_year', 'price', 'car_type__name', 'transmission']
+    search_fields = ['name', 'description', 'mileage',
+                     'model_year', 'price', 'car_type__name', 'transmission']
     ordering_fields = ['price', 'model_year']
 
+
+class ReviewCreateView(generics.CreateAPIView):
+    serializer_class = ReviewCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+class ProductReviewListView(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        product_id = self.kwargs['id']
+        return Review.objects.filter(product_id=product_id)
+
 # # /api/guest-checkout/ POST
+
+
 # class GuestCheckoutView(generics.CreateAPIView):
 #     serializer_class = OrderSerializer
 
@@ -148,6 +176,8 @@ class ReturnRequestView(generics.UpdateAPIView):
 
 
 # View to retrieve the user's cart
+
+
 class UserCartView(generics.RetrieveAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
@@ -157,12 +187,15 @@ class UserCartView(generics.RetrieveAPIView):
         return cart
 
 # View to add product to cart
+
+
 class AddToCartView(generics.CreateAPIView):
     serializer_class = AddToCartSerializer
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer = self.get_serializer(
+            data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         cart_item = serializer.save()
         return Response({
@@ -171,6 +204,8 @@ class AddToCartView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
 
 # View to remove a product from cart
+
+
 class RemoveFromCartView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 

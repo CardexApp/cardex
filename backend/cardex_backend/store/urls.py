@@ -22,6 +22,8 @@ from .views import (
     AdminUserViewSet,
     ReturnRequestView,
     ContactUsView
+    ReviewCreateView,
+    ProductReviewListView,
 )
 
 urlpatterns = [
@@ -33,6 +35,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/<int:id>/', ProductDetailView.as_view(), name='product-detail'),
+    path('products/<int:id>/reviews/', ProductReviewListView.as_view(), name='product-reviews'),
+    path('reviews/', ReviewCreateView.as_view(), name='review-create'),
     path('car-types/', CarTypeListView.as_view(), name='car-types'),
     path('products/search/', ProductSearchView.as_view(), name='product-search'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
