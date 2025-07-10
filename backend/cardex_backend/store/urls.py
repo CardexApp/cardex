@@ -21,7 +21,7 @@ from .views import (
     UserProfileView,
     AdminUserViewSet,
     ReturnRequestView,
-    ContactUsView
+    ContactUsView,
     ReviewCreateView,
     ProductReviewListView,
 )
