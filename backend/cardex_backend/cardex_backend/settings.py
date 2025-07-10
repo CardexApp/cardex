@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     "cardexbackend.eu.pythonanywhere.com",
     "127.0.0.1",
     "sparkling-chelsae-cardex-cd058300.koyeb.app"
-    ]
+]
 
 # Application definition
 
@@ -91,7 +91,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'neondb',
         'USER': 'neondb_owner',  # Same as shown in the psql prompt before
-        'PASSWORD': 'npg_BRJf6e1noMrq',  # Leave empty if using local trust auth (Postgres.app default)
+        # Leave empty if using local trust auth (Postgres.app default)
+        'PASSWORD': 'npg_BRJf6e1noMrq',
         'HOST': 'ep-crimson-truth-ab866ypv-pooler.eu-west-2.aws.neon.tech',
         'PORT': '5432',
     }
