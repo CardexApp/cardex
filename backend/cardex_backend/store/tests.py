@@ -381,3 +381,49 @@ class GetUserProfileTest(APITestCase):
 
         self.assertIn("last_name", response.data)
         self.assertEqual(response.data["last_name"], self.user.last_name)
+
+
+class UpdateUserProfileTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="profileuser",
+            email="oldemail@example.com",
+            password="profilepass123",
+            first_name="OldFirst",
+            last_name="OldLast"
+        )
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+    def test_update_user_profile_success(self):
+        url = reverse('profile-update')
+        data = {
+            "first_name": "NewFirst",
+            "last_name": "NewLast",
+            "email": "newemail@example.com"
+        }
+        response = self.client.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Verify response data reflects update
+        self.assertEqual(response.data['first_name'], data['first_name'])
+        self.assertEqual(response.data['last_name'], data['last_name'])
+        self.assertEqual(response.data['email'], data['email'])
+
+        # Verify database update
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, data['first_name'])
+        self.assertEqual(self.user.last_name, data['last_name'])
+        self.assertEqual(self.user.email, data['email'])
+
+    def test_update_user_profile_unauthenticated(self):
+        self.client.force_authenticate(user=None)  # Remove authentication
+        url = reverse('profile-update')
+        data = {
+            "first_name": "ShouldNotWork",
+            "last_name": "ShouldNotWork",
+            "email": "noaccess@example.com"
+        }
+        response = self.client.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
