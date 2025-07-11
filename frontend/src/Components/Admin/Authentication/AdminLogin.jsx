@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../../Config";
 import { useAuth } from "../../../Context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
@@ -36,16 +37,24 @@ const AdminLogin = () => {
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
 
-      // Step 2: Fetch admin user profile using token
+      // Step 2: Fetch profile from /admin/me/
       const userRes = await axios.get(`${BASE_URL}/admin/me/`, {
         headers: { Authorization: `Bearer ${access}` },
       });
 
-      const userData = userRes.data;
-      console.log("Fetched user:", userData);
+      const userProfile = userRes.data;
+      const decoded = jwtDecode(access); // Decode token for admin flags
 
-      // Step 3: Check admin privileges
-      if (!userData.is_staff && !userData.is_superuser) {
+      const mergedUser = {
+        ...userProfile,
+        is_staff: decoded.is_staff,
+        is_superuser: decoded.is_superuser,
+      };
+
+      console.log("Logged-in user:", mergedUser);
+
+      // Step 3: Check if user is admin
+      if (!mergedUser.is_staff && !mergedUser.is_superuser) {
         setError("Access denied: You are not an admin.");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
@@ -53,10 +62,10 @@ const AdminLogin = () => {
       }
 
       // Step 4: Store user in context and redirect
-      setUser(userData);
+      setUser(mergedUser);
       navigate("/admin");
     } catch (err) {
-      console.error("Login failed:", err);
+      console.error("Login error:", err);
       if (err.response?.status === 401) {
         setError("Invalid username or password.");
       } else {

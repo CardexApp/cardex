@@ -31,7 +31,7 @@ import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
 import AdminLogin from "./Components/Admin/Authentication/AdminLogin.jsx";
 import AdminRegister from "./Components/Admin/Authentication/AdminRegister";
-import AdForgetPass from "./Components/Admin/Authentication/AdForgetPass";
+import AdForgetPass from "./Components/Admin/Authentication/ChangePassword.jsx";
 import AdminRoute from "./Components/Admin/AdminRoute.jsx";
 import ForgotPassword from "./Components/User/Password/ForgotPassword.jsx";
 import UserProfile from "./Components/User/Profile/UserProfile.jsx";
@@ -72,9 +72,10 @@ function App() {
             <Route
               path="/admin/*"
               element={
-                <AdminRoute>
-                  <Admin />
-                </AdminRoute>
+                // <AdminRoute>
+                <Admin />
+
+                // </AdminRoute>
               }
             />
           </Routes>

@@ -26,7 +26,7 @@ const loginSubmit = async (e) => {
       { username, password }
     );
 
-    // ✅ Save access & refresh tokens to localStorage
+    // Save access & refresh tokens to localStorage
     localStorage.setItem("accessToken", res.data.access);
     localStorage.setItem("refreshToken", res.data.refresh);
 

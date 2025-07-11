@@ -86,15 +86,33 @@ const icons = [
 
 export const AdminMenu = () => (
   <section className="adminMenu">
-    <Link to="/admin">Dashboard</Link>
-    <Link to="/admin/inventory">Inventory</Link>
-    <Link to="/admin/customers">Customers</Link>
-    <Link to="/admin/orders/pending">Pending Orders</Link>
-    <Link to="/admin/orders/processing">Processing Orders</Link>
-    <Link to="/admin/orders/shipped">Shipped Orders</Link>
-    <Link to="/admin/orders/delivered">Delivered Orders</Link>
-    <Link to="/admin/returns/requests">Return Requests</Link>
-    <Link to="/admin/returns/confirmed">Confirmed Returns</Link>
+    <Link to="/admin" className="adminLink">
+      Dashboard
+    </Link>
+    <Link to="/admin/inventory" className="adminLink">
+      Inventory
+    </Link>
+    <Link to="/admin/customers" className="adminLink">
+      Customers
+    </Link>
+    <Link to="/admin/orders/pending" className="adminLink">
+      Pending Orders
+    </Link>
+    <Link to="/admin/orders/processing" className="adminLink">
+      Processing Orders
+    </Link>
+    <Link to="/admin/orders/shipped" className="adminLink">
+      Shipped Orders
+    </Link>
+    <Link to="/admin/orders/delivered" className="adminLink">
+      Delivered Orders
+    </Link>
+    <Link to="/admin/returns/requests" className="adminLink">
+      Return Requests
+    </Link>
+    <Link to="/admin/returns/confirmed" className="adminLink">
+      Confirmed Returns
+    </Link>
   </section>
 );
 
