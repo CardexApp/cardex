@@ -6,211 +6,6 @@ import axios from "axios";
 import { BASE_URL } from "../../Config";
 
 const InventoryPage = () => {
-
-  // Test Data
-  // const initialData = [
-  //   {
-  //     id: 1,
-  //     store: "Range Rover",
-  //     category: "Coupes",
-  //     location: "England",
-  //     quantity: 74,
-  //     sold: 10,
-  //     returned: 2,
-  //     stockValue: "343K",
-  //   },
-  //   {
-  //     id: 2,
-  //     store: "Nirmal Trader",
-  //     category: "Marketing",
-  //     location: "Scotland",
-  //     quantity: 142,
-  //     sold: 25,
-  //     returned: 5,
-  //     stockValue: "834K",
-  //   },
-  //   {
-  //     id: 3,
-  //     store: "Shadowfox",
-  //     category: "Design",
-  //     location: "Wales",
-  //     quantity: 231,
-  //     sold: 50,
-  //     returned: 0,
-  //     stockValue: "73K",
-  //   },
-  //   {
-  //     id: 4,
-  //     store: "AutoMaster",
-  //     category: "SUV",
-  //     location: "Northern Ireland",
-  //     quantity: 9,
-  //     sold: 20,
-  //     returned: 1,
-  //     stockValue: "15K",
-  //   },
-  //   {
-  //     id: 5,
-  //     store: "Speedline",
-  //     category: "Sedan",
-  //     location: "England",
-  //     quantity: 0,
-  //     sold: 50,
-  //     returned: 3,
-  //     stockValue: "0",
-  //   },
-  //   {
-  //     id: 6,
-  //     store: "Zen Auto",
-  //     category: "Hatchback",
-  //     location: "Scotland",
-  //     quantity: 40,
-  //     sold: 5,
-  //     returned: 0,
-  //     stockValue: "200K",
-  //   },
-  //   {
-  //     id: 7,
-  //     store: "Eco Cars",
-  //     category: "Electric",
-  //     location: "Wales",
-  //     quantity: 15,
-  //     sold: 8,
-  //     returned: 1,
-  //     stockValue: "450K",
-  //   },
-  //   {
-  //     id: 8,
-  //     store: "Premium Motors",
-  //     category: "Luxury",
-  //     location: "England",
-  //     quantity: 6,
-  //     sold: 2,
-  //     returned: 0,
-  //     stockValue: "1.2M",
-  //   },
-  //   {
-  //     id: 9,
-  //     store: "Urban Drive",
-  //     category: "SUV",
-  //     location: "Northern Ireland",
-  //     quantity: 30,
-  //     sold: 12,
-  //     returned: 2,
-  //     stockValue: "500K",
-  //   },
-  //   {
-  //     id: 10,
-  //     store: "Value Wheels",
-  //     category: "Sedan",
-  //     location: "Scotland",
-  //     quantity: 55,
-  //     sold: 20,
-  //     returned: 0,
-  //     stockValue: "300K",
-  //   },
-  //   {
-  //     id: 11,
-  //     store: "RoadKing",
-  //     category: "Truck",
-  //     location: "Wales",
-  //     quantity: 12,
-  //     sold: 4,
-  //     returned: 1,
-  //     stockValue: "800K",
-  //   },
-  //   {
-  //     id: 12,
-  //     store: "Comet Auto",
-  //     category: "Coupes",
-  //     location: "England",
-  //     quantity: 18,
-  //     sold: 10,
-  //     returned: 0,
-  //     stockValue: "600K",
-  //   },
-  //   {
-  //     id: 13,
-  //     store: "City Auto",
-  //     category: "Hatchback",
-  //     location: "Northern Ireland",
-  //     quantity: 22,
-  //     sold: 9,
-  //     returned: 1,
-  //     stockValue: "250K",
-  //   },
-  //   {
-  //     id: 14,
-  //     store: "Nova Motors",
-  //     category: "Electric",
-  //     location: "Scotland",
-  //     quantity: 11,
-  //     sold: 6,
-  //     returned: 0,
-  //     stockValue: "700K",
-  //   },
-  //   {
-  //     id: 15,
-  //     store: "Titanium Rides",
-  //     category: "SUV",
-  //     location: "England",
-  //     quantity: 17,
-  //     sold: 5,
-  //     returned: 0,
-  //     stockValue: "900K",
-  //   },
-  //   {
-  //     id: 16,
-  //     store: "Express Auto",
-  //     category: "Sedan",
-  //     location: "Wales",
-  //     quantity: 45,
-  //     sold: 15,
-  //     returned: 1,
-  //     stockValue: "400K",
-  //   },
-  //   {
-  //     id: 17,
-  //     store: "Royal Motors",
-  //     category: "Luxury",
-  //     location: "Scotland",
-  //     quantity: 8,
-  //     sold: 3,
-  //     returned: 0,
-  //     stockValue: "1.5M",
-  //   },
-  //   {
-  //     id: 18,
-  //     store: "Fast Track",
-  //     category: "Coupes",
-  //     location: "Northern Ireland",
-  //     quantity: 19,
-  //     sold: 7,
-  //     returned: 0,
-  //     stockValue: "550K",
-  //   },
-  //   {
-  //     id: 19,
-  //     store: "Budget Cars",
-  //     category: "Hatchback",
-  //     location: "England",
-  //     quantity: 60,
-  //     sold: 20,
-  //     returned: 2,
-  //     stockValue: "180K",
-  //   },
-  //   {
-  //     id: 20,
-  //     store: "Velocity Auto",
-  //     category: "Electric",
-  //     location: "Wales",
-  //     quantity: 14,
-  //     sold: 5,
-  //     returned: 0,
-  //     stockValue: "650K",
-  //   },
-  // ];
-
   const [salesData, setSalesData] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [newProduct, setNewProduct] = useState({
@@ -218,44 +13,19 @@ const InventoryPage = () => {
     transmission: "",
     status: "",
     quantity: 0,
-    stockValue: "",
+    price: "",
+    model_year: "",
+    fuel_type: "",
+    image: ""
   });
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortMode, setSortMode] = useState("name"); // "name" | "id" | "priceAsc" | "priceDesc"
-
-  // ------For Saved data
-  // useEffect(() => {
-  //   const lowStock = salesData.filter(
-  //     (item) => item.quantity > 0 && item.quantity <= 10
-  //   );
-  //   const outOfStock = salesData.filter((item) => item.quantity === 0);
-  //   const alertMsgs = [
-  //     ...lowStock.map(
-  //       (item) => `⚠️ Low stock: ${item.store} (${item.quantity})`
-  //     ),
-  //     ...outOfStock.map((item) => `❌ Out of stock: ${item.store}`),
-  //   ];
-  //   setAlerts(alertMsgs);
-  // }, []);
+  const [sortMode, setSortMode] = useState("name");
 
   useEffect(() => {
-    const lowStock = salesData.filter(
-          (item) => item.quantity > 0 && item.quantity <= 10
-        );
-        const outOfStock = salesData.filter((item) => item.quantity === 0);
-        const alertMsgs = [
-          ...lowStock.map(
-            (item) => `⚠️ Low stock: ${item.store} (${item.quantity})`
-          ),
-          ...outOfStock.map((item) => `❌ Out of stock: ${item.store}`),
-        ];
-        setAlerts(alertMsgs);
-
-
     const fetchProducts = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/admin/products/`);
-        setSalesData(res.data); 
+        setSalesData(res.data);
       } catch (err) {
         console.error("Failed to fetch inventory:", err);
       }
@@ -264,55 +34,68 @@ const InventoryPage = () => {
     fetchProducts();
   }, []);
 
-  // -------Add Product Button
-  // const handleAddProduct = () => {
-  //   const newId = salesData.length + 1;
-  //   const newEntry = { id: newId, ...newProduct, sold: 0, returned: 0 };
-  //   setSalesData([...salesData, newEntry]);
-  //   setNewProduct({
-  //     store: "",
-  //     category: "",
-  //     location: "",
-  //     quantity: 0,
-  //     stockValue: "",
-  //   });
-  // };
+  useEffect(() => {
+    const lowStock = salesData.filter((item) => item.quantity > 0 && item.quantity <= 10);
+    const outOfStock = salesData.filter((item) => item.quantity === 0);
+    const alertMsgs = [
+      ...lowStock.map((item) => `⚠️ Low stock: ${item.name} (${item.quantity})`),
+      ...outOfStock.map((item) => `❌ Out of stock: ${item.name}`)
+    ];
+    setAlerts(alertMsgs);
+  }, [salesData]);
 
   const handleAddProduct = async () => {
     try {
-      const res = await axios.post(`${BASE_URL}/admin/products/`, {
-        ...newProduct,
-        sold: 0,
-        returned: 0,
+      const formData = new FormData();
+      formData.append("name", newProduct.name);
+      formData.append("transmission", newProduct.transmission);
+      formData.append("status", newProduct.status);
+      formData.append("quantity", newProduct.quantity);
+      formData.append("price", newProduct.price);
+      formData.append("model_year", newProduct.model_year);
+      formData.append("fuel_type", newProduct.fuel_type);
+      formData.append("image", newProduct.image);
+      formData.append("sold", 0);
+      formData.append("returned", 0);
+
+      const res = await axios.post(`${BASE_URL}/admin/products/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       setSalesData((prev) => [...prev, res.data]);
       setNewProduct({
-        store: "",
-        category: "",
-        location: "",
+        name: "",
+        transmission: "",
+        status: "",
         quantity: 0,
-        stockValue: "",
+        price: "",
+        model_year: "",
+        fuel_type: "",
+        image: ""
       });
     } catch (err) {
       console.error("Error adding product:", err);
     }
   };
-  
-// ------Update Quantity Button
-  // const handleUpdateQuantity = (id, newQuantity) => {
-  //   const updated = salesData.map((item) =>
-  //     item.id === id ? { ...item, quantity: newQuantity } : item
-  //   );
-  //   setSalesData(updated);
-  // };
 
-  const handleUpdateQuantity = async (id, newQuantity) => {
+
+  const handleUpdateQuantity = async (id, deltaQuantity) => {
     const updatedProduct = salesData.find((item) => item.id === id);
+    const newQuantity = updatedProduct.quantity + deltaQuantity;
+
+    if (newQuantity < 0) {
+      alert("Error: Quantity cannot be negative.");
+      return;
+    }
+
     try {
       await axios.put(`${BASE_URL}/admin/products/${id}/`, {
         ...updatedProduct,
         quantity: newQuantity,
       });
+
       setSalesData((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, quantity: newQuantity } : item
@@ -323,11 +106,6 @@ const InventoryPage = () => {
     }
   };
   
-// ----- Delete Product Button
-  // const handleDeleteProduct = (id) => {
-  //   const filtered = salesData.filter((item) => item.id !== id);
-  //   setSalesData(filtered);
-  // };
 
   const handleDeleteProduct = async (id) => {
     try {
@@ -337,7 +115,6 @@ const InventoryPage = () => {
       console.error("Error deleting product:", err);
     }
   };
-  
 
   const handleSortNameOrId = () => {
     setSortMode((prev) => (prev === "name" ? "id" : "name"));
@@ -351,27 +128,23 @@ const InventoryPage = () => {
     .filter((item) => {
       const term = searchTerm.toLowerCase();
       return (
-        item.store.toLowerCase().includes(term) ||
-        item.category.toLowerCase().includes(term) ||
-        item.location.toLowerCase().includes(term)
+        item.name?.toLowerCase().includes(term) ||
+        item.transmission?.toLowerCase().includes(term) ||
+        item.status?.toLowerCase().includes(term) ||
+        item.fuel_type?.toLowerCase().includes(term) ||
+        item.model_year?.toLowerCase().includes(term)
       );
     })
     .sort((a, b) => {
       switch (sortMode) {
         case "name":
-          return a.store.localeCompare(b.store);
+          return a.name.localeCompare(b.name);
         case "id":
           return a.id - b.id;
-        case "priceAsc": {
-          const priceA = Number(a.stockValue.replace(/[^\d]/g, "")) || 0;
-          const priceB = Number(b.stockValue.replace(/[^\d]/g, "")) || 0;
-          return priceA - priceB;
-        }
-        case "priceDesc": {
-          const priceA = Number(a.stockValue.replace(/[^\d]/g, "")) || 0;
-          const priceB = Number(b.stockValue.replace(/[^\d]/g, "")) || 0;
-          return priceB - priceA;
-        }
+        case "priceAsc":
+          return parseFloat(a.price) - parseFloat(b.price);
+        case "priceDesc":
+          return parseFloat(b.price) - parseFloat(a.price);
         default:
           return 0;
       }
@@ -384,7 +157,7 @@ const InventoryPage = () => {
           <header className="inventoryHeader">
             <h2>Inventory Management</h2>
             <SearchBar
-              placeholder="Search by name, category, location"
+              placeholder="Search by name, transmission, status, fuel type, year"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -397,49 +170,15 @@ const InventoryPage = () => {
             <section className="addProduct">
               <h3>Add New Product</h3>
               <div className="inputList">
-              <input
-                type="text"
-                placeholder="Name of Car"
-                value={newProduct.store}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, store: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="transmission"
-                value={newProduct.category}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, category: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Status"
-                value={newProduct.location}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, location: e.target.value })
-                }
-              />
-              <input
-                type="number"
-                placeholder="Quantity"
-                value={newProduct.quantity}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    quantity: Number(e.target.value),
-                  })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Stock Value"
-                value={newProduct.stockValue}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, stockValue: e.target.value })
-                }
-              /></div>
+                <input type="text" placeholder="Car Name" required value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
+                <input type="text" placeholder="Transmission" required value={newProduct.transmission} onChange={(e) => setNewProduct({ ...newProduct, transmission: e.target.value })} />
+                <input type="text" placeholder="Status" required value={newProduct.status} onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })} />
+                <input type="number" placeholder="Quantity" required value={newProduct.quantity} onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })} />
+                <input type="text" placeholder="Price" required value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
+                <input type="text" placeholder="Year" required value={newProduct.model_year} onChange={(e) => setNewProduct({ ...newProduct, model_year: e.target.value })} />
+                <input type="text" placeholder="Fuel Type" required value={newProduct.fuel_type} onChange={(e) => setNewProduct({ ...newProduct, fuel_type: e.target.value })} />
+                <input type="file" accept="image/*" required onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })} />
+              </div>
               <button onClick={handleAddProduct}>Add Product</button>
             </section>
 
@@ -463,13 +202,14 @@ const InventoryPage = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Car Name</th>
+                    <th>Image</th>
+                    <th>Name</th>
                     <th>Transmission</th>
                     <th>Status</th>
+                    <th>Fuel</th>
+                    <th>Year</th>
                     <th>Quantity</th>
-                    <th>Sold</th>
-                    <th>Returned</th>
-                    <th>Stock Value</th>
+                    <th>Price</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -477,29 +217,32 @@ const InventoryPage = () => {
                   {filteredData.map((row) => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td>{row.name}</td>
+                      <td><img src={row.image} alt={row.name} style={{ width: "60px", height: "40px", objectFit: "cover" }} /></td>
+                      <td>{`${row.make?.name || ''} ${row.name}`.trim()}</td>
                       <td>{row.transmission}</td>
                       <td>{row.status}</td>
+                      <td>{row.fuel_type}</td>
+                      <td>{row.model_year}</td>
                       <td>{row.quantity}</td>
-                      <td>{row.sold}</td>
-                      <td>{row.returned}</td>
-                      <td>{row.stockValue}</td>
+                      <td>${parseFloat(row.price).toLocaleString()}</td>
                       <td>
+                        <select id={`action-${row.id}`} defaultValue="add">
+                          <option value="add">Add</option>
+                          <option value="subtract">Subtract</option>
+                        </select>
+                        <input type="number" id={`qty-${row.id}`} defaultValue={0} style={{ width: "50px", marginLeft: "4px" }} />
                         <button
                           onClick={() => {
-                            const qty = prompt(
-                              "Enter new quantity",
-                              row.quantity
-                            );
-                            if (qty !== null)
-                              handleUpdateQuantity(row.id, Number(qty));
+                            const action = document.getElementById(`action-${row.id}`).value;
+                            const inputVal = document.getElementById(`qty-${row.id}`).value;
+                            const qtyChange = Number(inputVal);
+                            if (!isNaN(qtyChange)) {
+                              const delta = action === "add" ? qtyChange : -qtyChange;
+                              handleUpdateQuantity(row.id, delta);
+                            }
                           }}
-                        >
-                          Update Qty
-                        </button>
-                        <button onClick={() => handleDeleteProduct(row.id)}>
-                          Delete
-                        </button>
+                        >Update Qty</button>
+                        <button onClick={() => handleDeleteProduct(row.id)}>Delete</button>
                       </td>
                     </tr>
                   ))}
