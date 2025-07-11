@@ -114,7 +114,7 @@ const PaymentPage = () => {
 
   try {
     const response = await axios.post(
-      "https://cardexbackend.eu.pythonanywhere.com/api/guest-checkout/",
+      "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/checkout",
       payload
     );
 

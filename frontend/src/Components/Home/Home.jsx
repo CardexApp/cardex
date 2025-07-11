@@ -10,7 +10,7 @@ const Home = () => {
     const fetchCars = async () => {
       try {
         const response = await axios.get(
-          "https://cardexbackend.eu.pythonanywhere.com/api/products/"
+          "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/products"
         );
         setCars(response.data);
       } catch (error) {
