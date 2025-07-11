@@ -11,43 +11,37 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const loginSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+const loginSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!username.trim() || !password.trim()) {
-      setError("Please enter both username and password.");
-      return;
+  // Validate input
+  if (!username.trim() || !password.trim()) {
+    setError("Please enter both username and password.");
+    return;
+  }
+
+  try {
+    const res = await axios.post(
+      "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/login/",
+      { username, password }
+    );
+
+    // ✅ Save access & refresh tokens to localStorage
+    localStorage.setItem("accessToken", res.data.access);
+    localStorage.setItem("refreshToken", res.data.refresh);
+
+    // Redirect after successful login
+    navigate("/");
+  } catch (err) {
+    if (err.response) {
+      setError(err.response.data.message || "Invalid username or password");
+    } else if (err.request) {
+      setError("No response from server");
+    } else {
+      setError("An error occurred");
     }
-
-    try {
-      const res = await axios.post(`${BASE_URL}/login/`, {
-        username,
-        password,
-      });
-
-      const { access, refresh } = res.data;
-      localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh);
-
-      const decoded = jwtDecode(access);
-      console.log("Decoded token:", decoded);
-
-      // ✅ Always redirect normal users to homepage
-      navigate("/");
-    } catch (err) {
-      if (err.response) {
-        console.error("Server response:", err.response.data);
-        setError(err.response.data.message || "Invalid username or password");
-      } else if (err.request) {
-        console.error("No server response");
-        setError("No response from server");
-      } else {
-        console.error("Error", err.message);
-        setError("An error occurred. Please try again.");
-      }
-    }
-  };
+  }
+};
 
   return (
     <div className="loginContainer">

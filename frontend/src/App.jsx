@@ -33,6 +33,8 @@ import AdminLogin from "./Components/Admin/Authentication/AdminLogin.jsx";
 import AdminRegister from "./Components/Admin/Authentication/AdminRegister";
 import AdForgetPass from "./Components/Admin/Authentication/AdForgetPass";
 import AdminRoute from "./Components/Admin/AdminRoute.jsx";
+import ForgotPassword from "./Components/User/Password/ForgotPassword.jsx";
+import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 
 function App() {
   return (
@@ -48,16 +50,10 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/user/profile" element={<UserProfile />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/orderDetails" element={<OrderDetails />} />
-            <Route path="/car/:id" element={<CarInfoDetails />} />
-            <Route
-              path="/category/:categoryName"
-              element={<DynamicCategoryPage />}
-            />
-
-            {/* Protected Routes */}
+            <Route path="/user/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/listings"
               element={
