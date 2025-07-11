@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../Config";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -27,9 +28,15 @@ export const AuthProvider = ({ children }) => {
 
         try {
           const res = await getUser(accessToken);
-          setUser(res.data);
+          const decoded = jwtDecode(accessToken); // Decode token for admin flags
+
+          setUser({
+            ...res.data,
+            is_staff: decoded.is_staff,
+            is_superuser: decoded.is_superuser,
+          });
         } catch (err) {
-          // If token expired, try refresh
+          // Token may have expired, attempt refresh
           const refreshRes = await axios.post(`${BASE_URL}/token/refresh/`, {
             refresh: refreshToken,
           });
@@ -38,7 +45,13 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem("accessToken", newAccess);
 
           const retryRes = await getUser(newAccess);
-          setUser(retryRes.data);
+          const decoded = jwtDecode(newAccess); // Decode refreshed token too
+
+          setUser({
+            ...retryRes.data,
+            is_staff: decoded.is_staff,
+            is_superuser: decoded.is_superuser,
+          });
         }
       } catch (err) {
         console.error("Auth failed:", err);
