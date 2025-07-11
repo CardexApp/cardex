@@ -24,8 +24,8 @@ const AdminLogin = () => {
 
       if(res.data.access && res.data.refresh){
 
-        // localStorage.setItem("accessToken", res.data.access);
-        // localStorage.setItem("refreshToken", res.data.refresh);
+        localStorage.setItem("accessToken", res.data.access);
+        localStorage.setItem("refreshToken", res.data.refresh);
 
         alert("Login successful!");
         navigate("/admin");
