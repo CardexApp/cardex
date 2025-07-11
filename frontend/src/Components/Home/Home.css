@@ -188,6 +188,51 @@ body {
   cursor: pointer;
 }
 
+.dynamic-categories {
+  padding: 48px 100px;
+  background-color: #f9f9f9;
+}
+
+.dynamic-categories h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #263238;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.categoryTile {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  color: #263238;
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.categoryTile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.categoryContent h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #0e3062;
+}
+
+.categoryContent p {
+  font-size: 14px;
+  color: #555;
+}
+
 .brands {
   display: flex;
   justify-content: space-around;

@@ -44,18 +44,22 @@ const Products = () => {
     }
 
     axios
-      .get("https://cardexbackend.eu.pythonanywhere.com/api/products/", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      .get(
+        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/products/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        setProducts(res.data);
       })
-        .then((res) => {setProducts(res.data)
-        })
 
-        .catch((err) => {
-          console.error("Error fetching products:", err);
-          toast.error ("Failed to load products. Please log in again")
-});
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        toast.error("Failed to load products. Please log in again");
+      });
 }, []);
 
   // Filter products logic
