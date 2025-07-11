@@ -18,6 +18,7 @@
     "chart.js": "^4.5.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.0",
+    "jwt-decode": "^4.0.0",
     "prime-react": "^1.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.5",
