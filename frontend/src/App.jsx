@@ -20,8 +20,8 @@ import { OrdersProvider } from "./Context/OrdersContext.jsx";
 import AdminLogin from "./Components/Admin/Authentication/AdminLogin.jsx";
 import AdminRegister from "./Components/Admin/Authentication/AdminRegister";
 import AdForgetPass from "./Components/Admin/Authentication/AdForgetPass";
-
-
+import ForgotPassword from "./Components/User/Password/ForgotPassword.jsx";
+import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 
 function App() {
   return (
@@ -39,8 +39,10 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/user/profile" element={<UserProfile />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/user/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/listings"
               element={
