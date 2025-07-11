@@ -2,261 +2,342 @@ import "./Styles/Inventory.css";
 import { AdminMenu, Dock } from "./Admin";
 import { useState, useEffect } from "react";
 import { SearchBar } from "./Reusables";
+import axios from "axios";
+import { BASE_URL } from "../../Config";
 
 const InventoryPage = () => {
-  const initialData = [
-    {
-      id: 1,
-      store: "Range Rover",
-      category: "Coupes",
-      location: "England",
-      quantity: 74,
-      sold: 10,
-      returned: 2,
-      stockValue: "343K",
-    },
-    {
-      id: 2,
-      store: "Nirmal Trader",
-      category: "Marketing",
-      location: "Scotland",
-      quantity: 142,
-      sold: 25,
-      returned: 5,
-      stockValue: "834K",
-    },
-    {
-      id: 3,
-      store: "Shadowfox",
-      category: "Design",
-      location: "Wales",
-      quantity: 231,
-      sold: 50,
-      returned: 0,
-      stockValue: "73K",
-    },
-    {
-      id: 4,
-      store: "AutoMaster",
-      category: "SUV",
-      location: "Northern Ireland",
-      quantity: 9,
-      sold: 20,
-      returned: 1,
-      stockValue: "15K",
-    },
-    {
-      id: 5,
-      store: "Speedline",
-      category: "Sedan",
-      location: "England",
-      quantity: 0,
-      sold: 50,
-      returned: 3,
-      stockValue: "0",
-    },
-    {
-      id: 6,
-      store: "Zen Auto",
-      category: "Hatchback",
-      location: "Scotland",
-      quantity: 40,
-      sold: 5,
-      returned: 0,
-      stockValue: "200K",
-    },
-    {
-      id: 7,
-      store: "Eco Cars",
-      category: "Electric",
-      location: "Wales",
-      quantity: 15,
-      sold: 8,
-      returned: 1,
-      stockValue: "450K",
-    },
-    {
-      id: 8,
-      store: "Premium Motors",
-      category: "Luxury",
-      location: "England",
-      quantity: 6,
-      sold: 2,
-      returned: 0,
-      stockValue: "1.2M",
-    },
-    {
-      id: 9,
-      store: "Urban Drive",
-      category: "SUV",
-      location: "Northern Ireland",
-      quantity: 30,
-      sold: 12,
-      returned: 2,
-      stockValue: "500K",
-    },
-    {
-      id: 10,
-      store: "Value Wheels",
-      category: "Sedan",
-      location: "Scotland",
-      quantity: 55,
-      sold: 20,
-      returned: 0,
-      stockValue: "300K",
-    },
-    {
-      id: 11,
-      store: "RoadKing",
-      category: "Truck",
-      location: "Wales",
-      quantity: 12,
-      sold: 4,
-      returned: 1,
-      stockValue: "800K",
-    },
-    {
-      id: 12,
-      store: "Comet Auto",
-      category: "Coupes",
-      location: "England",
-      quantity: 18,
-      sold: 10,
-      returned: 0,
-      stockValue: "600K",
-    },
-    {
-      id: 13,
-      store: "City Auto",
-      category: "Hatchback",
-      location: "Northern Ireland",
-      quantity: 22,
-      sold: 9,
-      returned: 1,
-      stockValue: "250K",
-    },
-    {
-      id: 14,
-      store: "Nova Motors",
-      category: "Electric",
-      location: "Scotland",
-      quantity: 11,
-      sold: 6,
-      returned: 0,
-      stockValue: "700K",
-    },
-    {
-      id: 15,
-      store: "Titanium Rides",
-      category: "SUV",
-      location: "England",
-      quantity: 17,
-      sold: 5,
-      returned: 0,
-      stockValue: "900K",
-    },
-    {
-      id: 16,
-      store: "Express Auto",
-      category: "Sedan",
-      location: "Wales",
-      quantity: 45,
-      sold: 15,
-      returned: 1,
-      stockValue: "400K",
-    },
-    {
-      id: 17,
-      store: "Royal Motors",
-      category: "Luxury",
-      location: "Scotland",
-      quantity: 8,
-      sold: 3,
-      returned: 0,
-      stockValue: "1.5M",
-    },
-    {
-      id: 18,
-      store: "Fast Track",
-      category: "Coupes",
-      location: "Northern Ireland",
-      quantity: 19,
-      sold: 7,
-      returned: 0,
-      stockValue: "550K",
-    },
-    {
-      id: 19,
-      store: "Budget Cars",
-      category: "Hatchback",
-      location: "England",
-      quantity: 60,
-      sold: 20,
-      returned: 2,
-      stockValue: "180K",
-    },
-    {
-      id: 20,
-      store: "Velocity Auto",
-      category: "Electric",
-      location: "Wales",
-      quantity: 14,
-      sold: 5,
-      returned: 0,
-      stockValue: "650K",
-    },
-  ];
 
-  const [salesData, setSalesData] = useState(initialData);
+  // Test Data
+  // const initialData = [
+  //   {
+  //     id: 1,
+  //     store: "Range Rover",
+  //     category: "Coupes",
+  //     location: "England",
+  //     quantity: 74,
+  //     sold: 10,
+  //     returned: 2,
+  //     stockValue: "343K",
+  //   },
+  //   {
+  //     id: 2,
+  //     store: "Nirmal Trader",
+  //     category: "Marketing",
+  //     location: "Scotland",
+  //     quantity: 142,
+  //     sold: 25,
+  //     returned: 5,
+  //     stockValue: "834K",
+  //   },
+  //   {
+  //     id: 3,
+  //     store: "Shadowfox",
+  //     category: "Design",
+  //     location: "Wales",
+  //     quantity: 231,
+  //     sold: 50,
+  //     returned: 0,
+  //     stockValue: "73K",
+  //   },
+  //   {
+  //     id: 4,
+  //     store: "AutoMaster",
+  //     category: "SUV",
+  //     location: "Northern Ireland",
+  //     quantity: 9,
+  //     sold: 20,
+  //     returned: 1,
+  //     stockValue: "15K",
+  //   },
+  //   {
+  //     id: 5,
+  //     store: "Speedline",
+  //     category: "Sedan",
+  //     location: "England",
+  //     quantity: 0,
+  //     sold: 50,
+  //     returned: 3,
+  //     stockValue: "0",
+  //   },
+  //   {
+  //     id: 6,
+  //     store: "Zen Auto",
+  //     category: "Hatchback",
+  //     location: "Scotland",
+  //     quantity: 40,
+  //     sold: 5,
+  //     returned: 0,
+  //     stockValue: "200K",
+  //   },
+  //   {
+  //     id: 7,
+  //     store: "Eco Cars",
+  //     category: "Electric",
+  //     location: "Wales",
+  //     quantity: 15,
+  //     sold: 8,
+  //     returned: 1,
+  //     stockValue: "450K",
+  //   },
+  //   {
+  //     id: 8,
+  //     store: "Premium Motors",
+  //     category: "Luxury",
+  //     location: "England",
+  //     quantity: 6,
+  //     sold: 2,
+  //     returned: 0,
+  //     stockValue: "1.2M",
+  //   },
+  //   {
+  //     id: 9,
+  //     store: "Urban Drive",
+  //     category: "SUV",
+  //     location: "Northern Ireland",
+  //     quantity: 30,
+  //     sold: 12,
+  //     returned: 2,
+  //     stockValue: "500K",
+  //   },
+  //   {
+  //     id: 10,
+  //     store: "Value Wheels",
+  //     category: "Sedan",
+  //     location: "Scotland",
+  //     quantity: 55,
+  //     sold: 20,
+  //     returned: 0,
+  //     stockValue: "300K",
+  //   },
+  //   {
+  //     id: 11,
+  //     store: "RoadKing",
+  //     category: "Truck",
+  //     location: "Wales",
+  //     quantity: 12,
+  //     sold: 4,
+  //     returned: 1,
+  //     stockValue: "800K",
+  //   },
+  //   {
+  //     id: 12,
+  //     store: "Comet Auto",
+  //     category: "Coupes",
+  //     location: "England",
+  //     quantity: 18,
+  //     sold: 10,
+  //     returned: 0,
+  //     stockValue: "600K",
+  //   },
+  //   {
+  //     id: 13,
+  //     store: "City Auto",
+  //     category: "Hatchback",
+  //     location: "Northern Ireland",
+  //     quantity: 22,
+  //     sold: 9,
+  //     returned: 1,
+  //     stockValue: "250K",
+  //   },
+  //   {
+  //     id: 14,
+  //     store: "Nova Motors",
+  //     category: "Electric",
+  //     location: "Scotland",
+  //     quantity: 11,
+  //     sold: 6,
+  //     returned: 0,
+  //     stockValue: "700K",
+  //   },
+  //   {
+  //     id: 15,
+  //     store: "Titanium Rides",
+  //     category: "SUV",
+  //     location: "England",
+  //     quantity: 17,
+  //     sold: 5,
+  //     returned: 0,
+  //     stockValue: "900K",
+  //   },
+  //   {
+  //     id: 16,
+  //     store: "Express Auto",
+  //     category: "Sedan",
+  //     location: "Wales",
+  //     quantity: 45,
+  //     sold: 15,
+  //     returned: 1,
+  //     stockValue: "400K",
+  //   },
+  //   {
+  //     id: 17,
+  //     store: "Royal Motors",
+  //     category: "Luxury",
+  //     location: "Scotland",
+  //     quantity: 8,
+  //     sold: 3,
+  //     returned: 0,
+  //     stockValue: "1.5M",
+  //   },
+  //   {
+  //     id: 18,
+  //     store: "Fast Track",
+  //     category: "Coupes",
+  //     location: "Northern Ireland",
+  //     quantity: 19,
+  //     sold: 7,
+  //     returned: 0,
+  //     stockValue: "550K",
+  //   },
+  //   {
+  //     id: 19,
+  //     store: "Budget Cars",
+  //     category: "Hatchback",
+  //     location: "England",
+  //     quantity: 60,
+  //     sold: 20,
+  //     returned: 2,
+  //     stockValue: "180K",
+  //   },
+  //   {
+  //     id: 20,
+  //     store: "Velocity Auto",
+  //     category: "Electric",
+  //     location: "Wales",
+  //     quantity: 14,
+  //     sold: 5,
+  //     returned: 0,
+  //     stockValue: "650K",
+  //   },
+  // ];
+
+  const [salesData, setSalesData] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [newProduct, setNewProduct] = useState({
-    store: "",
-    category: "",
-    location: "",
+    name: "",
+    transmission: "",
+    status: "",
     quantity: 0,
     stockValue: "",
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [sortMode, setSortMode] = useState("name"); // "name" | "id" | "priceAsc" | "priceDesc"
 
+  // ------For Saved data
+  // useEffect(() => {
+  //   const lowStock = salesData.filter(
+  //     (item) => item.quantity > 0 && item.quantity <= 10
+  //   );
+  //   const outOfStock = salesData.filter((item) => item.quantity === 0);
+  //   const alertMsgs = [
+  //     ...lowStock.map(
+  //       (item) => `⚠️ Low stock: ${item.store} (${item.quantity})`
+  //     ),
+  //     ...outOfStock.map((item) => `❌ Out of stock: ${item.store}`),
+  //   ];
+  //   setAlerts(alertMsgs);
+  // }, []);
+
   useEffect(() => {
     const lowStock = salesData.filter(
-      (item) => item.quantity > 0 && item.quantity <= 10
-    );
-    const outOfStock = salesData.filter((item) => item.quantity === 0);
-    const alertMsgs = [
-      ...lowStock.map(
-        (item) => `⚠️ Low stock: ${item.store} (${item.quantity})`
-      ),
-      ...outOfStock.map((item) => `❌ Out of stock: ${item.store}`),
-    ];
-    setAlerts(alertMsgs);
-  }, [salesData]);
+          (item) => item.quantity > 0 && item.quantity <= 10
+        );
+        const outOfStock = salesData.filter((item) => item.quantity === 0);
+        const alertMsgs = [
+          ...lowStock.map(
+            (item) => `⚠️ Low stock: ${item.store} (${item.quantity})`
+          ),
+          ...outOfStock.map((item) => `❌ Out of stock: ${item.store}`),
+        ];
+        setAlerts(alertMsgs);
 
-  const handleAddProduct = () => {
-    const newId = salesData.length + 1;
-    const newEntry = { id: newId, ...newProduct, sold: 0, returned: 0 };
-    setSalesData([...salesData, newEntry]);
-    setNewProduct({
-      store: "",
-      category: "",
-      location: "",
-      quantity: 0,
-      stockValue: "",
-    });
-  };
 
-  const handleUpdateQuantity = (id, newQuantity) => {
-    const updated = salesData.map((item) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-    setSalesData(updated);
-  };
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/admin/products/`);
+        setSalesData(res.data); 
+      } catch (err) {
+        console.error("Failed to fetch inventory:", err);
+      }
+    };
 
-  const handleDeleteProduct = (id) => {
-    const filtered = salesData.filter((item) => item.id !== id);
-    setSalesData(filtered);
+    fetchProducts();
+  }, []);
+
+  // -------Add Product Button
+  // const handleAddProduct = () => {
+  //   const newId = salesData.length + 1;
+  //   const newEntry = { id: newId, ...newProduct, sold: 0, returned: 0 };
+  //   setSalesData([...salesData, newEntry]);
+  //   setNewProduct({
+  //     store: "",
+  //     category: "",
+  //     location: "",
+  //     quantity: 0,
+  //     stockValue: "",
+  //   });
+  // };
+
+  const handleAddProduct = async () => {
+    try {
+      const res = await axios.post(`${BASE_URL}/admin/products/`, {
+        ...newProduct,
+        sold: 0,
+        returned: 0,
+      });
+      setSalesData((prev) => [...prev, res.data]);
+      setNewProduct({
+        store: "",
+        category: "",
+        location: "",
+        quantity: 0,
+        stockValue: "",
+      });
+    } catch (err) {
+      console.error("Error adding product:", err);
+    }
   };
+  
+// ------Update Quantity Button
+  // const handleUpdateQuantity = (id, newQuantity) => {
+  //   const updated = salesData.map((item) =>
+  //     item.id === id ? { ...item, quantity: newQuantity } : item
+  //   );
+  //   setSalesData(updated);
+  // };
+
+  const handleUpdateQuantity = async (id, newQuantity) => {
+    const updatedProduct = salesData.find((item) => item.id === id);
+    try {
+      await axios.put(`${BASE_URL}/admin/products/${id}/`, {
+        ...updatedProduct,
+        quantity: newQuantity,
+      });
+      setSalesData((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch (err) {
+      console.error("Error updating quantity:", err);
+    }
+  };
+  
+// ----- Delete Product Button
+  // const handleDeleteProduct = (id) => {
+  //   const filtered = salesData.filter((item) => item.id !== id);
+  //   setSalesData(filtered);
+  // };
+
+  const handleDeleteProduct = async (id) => {
+    try {
+      await axios.delete(`${BASE_URL}/admin/products/${id}/`);
+      setSalesData((prev) => prev.filter((item) => item.id !== id));
+    } catch (err) {
+      console.error("Error deleting product:", err);
+    }
+  };
+  
 
   const handleSortNameOrId = () => {
     setSortMode((prev) => (prev === "name" ? "id" : "name"));
@@ -318,7 +399,7 @@ const InventoryPage = () => {
               <div className="inputList">
               <input
                 type="text"
-                placeholder="Store Name"
+                placeholder="Name of Car"
                 value={newProduct.store}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, store: e.target.value })
@@ -326,7 +407,7 @@ const InventoryPage = () => {
               />
               <input
                 type="text"
-                placeholder="Category"
+                placeholder="transmission"
                 value={newProduct.category}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, category: e.target.value })
@@ -334,7 +415,7 @@ const InventoryPage = () => {
               />
               <input
                 type="text"
-                placeholder="Location"
+                placeholder="Status"
                 value={newProduct.location}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, location: e.target.value })
@@ -382,9 +463,9 @@ const InventoryPage = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Store Name</th>
-                    <th>Category</th>
-                    <th>Location</th>
+                    <th>Car Name</th>
+                    <th>Transmission</th>
+                    <th>Status</th>
                     <th>Quantity</th>
                     <th>Sold</th>
                     <th>Returned</th>
@@ -396,9 +477,9 @@ const InventoryPage = () => {
                   {filteredData.map((row) => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td>{row.store}</td>
-                      <td>{row.category}</td>
-                      <td>{row.location}</td>
+                      <td>{row.name}</td>
+                      <td>{row.transmission}</td>
+                      <td>{row.status}</td>
                       <td>{row.quantity}</td>
                       <td>{row.sold}</td>
                       <td>{row.returned}</td>
