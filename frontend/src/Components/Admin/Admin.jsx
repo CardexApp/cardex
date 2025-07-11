@@ -1,7 +1,13 @@
 import "./Admin.css";
 import "./Styles/Dock.css";
 import asset from "../../assets/asset";
-import { Link, Routes, Route, useLocation } from "react-router-dom";
+import {
+  Link,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
@@ -12,6 +18,7 @@ import {
   faBell,
   faChalkboardUser,
   faFlagCheckered,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -33,6 +40,10 @@ import ProcessingOrders from "./ProcessingOrders";
 import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
+import AdminProfile from "./Authentication/AdminProfile";
+
+
+import { useAuth } from "../../Context/AuthContext";
 
 const icons = [
   {
@@ -73,6 +84,20 @@ const icons = [
   },
 ];
 
+export const AdminMenu = () => (
+  <section className="adminMenu">
+    <Link to="/admin">Dashboard</Link>
+    <Link to="/admin/inventory">Inventory</Link>
+    <Link to="/admin/customers">Customers</Link>
+    <Link to="/admin/orders/pending">Pending Orders</Link>
+    <Link to="/admin/orders/processing">Processing Orders</Link>
+    <Link to="/admin/orders/shipped">Shipped Orders</Link>
+    <Link to="/admin/orders/delivered">Delivered Orders</Link>
+    <Link to="/admin/returns/requests">Return Requests</Link>
+    <Link to="/admin/returns/confirmed">Confirmed Returns</Link>
+  </section>
+);
+
 export const Dock = () => (
   <div className="dock">
     {icons.map((icon) => (
@@ -84,45 +109,22 @@ export const Dock = () => (
   </div>
 );
 
-export const AdminMenu = () => (
-  <section className="adminMenu">
-    <Link to="/admin" className="adminLink">
-      Dashboard
-    </Link>
-    <Link to="/admin/inventory" className="adminLink">
-      Inventory
-    </Link>
-    <Link to="/admin/customers" className="adminLink">
-      Customers
-    </Link>
-    <Link to="/admin/orders/pending" className="adminLink">
-      Pending Orders
-    </Link>
-    <Link to="/admin/orders/processing" className="adminLink">
-      Processing Orders
-    </Link>
-    <Link to="/admin/orders/shipped" className="adminLink">
-      Shipped Orders
-    </Link>
-    <Link to="/admin/orders/delivered" className="adminLink">
-      Delivered Orders
-    </Link>
-    <Link to="/admin/returns/requests" className="adminLink">
-      Return Requests
-    </Link>
-    <Link to="/admin/returns/confirmed" className="adminLink">
-      Confirmed Returns
-    </Link>
-  </section>
-);
-
 const Admin = () => {
   const location = useLocation();
-  const isDashboard = location.pathname === "/admin";
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const isDashboard =
+    location.pathname === "/admin" || location.pathname === "/admin/";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/admin/login");
+  };
 
   return (
     <div className="landingPage">
-      {/* Admin Top Bar */}
+      {/* Top Bar */}
       <div className="navAdmin">
         <div className="icon">
           <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
@@ -144,11 +146,13 @@ const Admin = () => {
               <div className="dropdownContentAdmin">
                 <div className="adminProfile">
                   <div className="adminAvatar">
-                    <p>Admin</p>
+                    <p>{user?.username}</p>
                   </div>
-                  <h2>Admin name</h2>
-                  <h3>Cars Posted</h3>
-                  <h3>Cars Sold</h3>
+                  <h2>{user?.username}</h2>
+                  <h3>{user?.email}</h3>
+                  <button onClick={handleLogout} className="logoutBtn">
+                    <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -156,12 +160,10 @@ const Admin = () => {
         </div>
       </div>
 
-      {/* Admin Side and Content */}
+      {/* Side Menu + Content */}
       <div className="overview">
         <AdminMenu />
-
         <section className="adminDashBoard">
-          {/* Quick Info and Admin Details only on /admin */}
           {isDashboard && (
             <>
               <div className="quickInfo">
@@ -175,8 +177,6 @@ const Admin = () => {
               </div>
             </>
           )}
-
-          {/* Admin Routes */}
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="inventory" element={<InventoryPage />} />
@@ -187,6 +187,8 @@ const Admin = () => {
             <Route path="orders/delivered" element={<DeliveredOrders />} />
             <Route path="returns/requests" element={<ReturnRequests />} />
             <Route path="returns/confirmed" element={<ConfirmedReturns />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="*" element={<p>Page not found</p>} />
           </Routes>
         </section>
       </div>

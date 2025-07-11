@@ -1,63 +1,104 @@
+import React, { useState } from "react";
 import "./AdminAuth.css";
-import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../../Config";
+import { useAuth } from "../../../Context/AuthContext";
 
 const AdminLogin = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const [form, setForm] = useState({ username: "", password: "" });
+  const { setUser } = useAuth();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!username.trim() || !password.trim()) {
+      setError("Username and password are required.");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const res = await axios.post(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/admin/login",
-        {
-          username: form.username,
-          password: form.password,
-        }
-      );
+      // Step 1: Get access and refresh tokens
+      const tokenRes = await axios.post(`${BASE_URL}/login/`, {
+        username,
+        password,
+      });
 
-      if(res.data.access && res.data.refresh){
+      const { access, refresh } = tokenRes.data;
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
 
-        localStorage.setItem("accessToken", res.data.access);
-        localStorage.setItem("refreshToken", res.data.refresh);
+      // Step 2: Fetch admin user profile using token
+      const userRes = await axios.get(`${BASE_URL}/admin/me/`, {
+        headers: { Authorization: `Bearer ${access}` },
+      });
 
-        alert("Login successful!");
-        navigate("/admin");
-      } else {
-        alert("Login response missing tokens")
+      const userData = userRes.data;
+      console.log("Fetched user:", userData);
+
+      // Step 3: Check admin privileges
+      if (!userData.is_staff && !userData.is_superuser) {
+        setError("Access denied: You are not an admin.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        return;
       }
+
+      // Step 4: Store user in context and redirect
+      setUser(userData);
+      navigate("/admin");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed.");
+      console.error("Login failed:", err);
+      if (err.response?.status === 401) {
+        setError("Invalid username or password.");
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="authContainer">
-      <h2>Admin Login</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="loginTitle">Admin Login</h2>
+      <p className="loginSubtitle">
+        Only authorized personnel can access this portal.
+      </p>
+
+      <form className="form" onSubmit={loginSubmit}>
         <input
           type="text"
-          name="username"
-          placeholder="Enter email"
-          value={form.username}
-          onChange={handleChange}
-          required
+          className="loginUser"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          name="password"
+          className="loginPass"
           placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+
+        <div className="loginRecover">
+          <input type="checkbox" /> Remember me
+          <span className="loginForgotPass">Forgot Password?</span>
+        </div>
+
+        {error && <p className="errorText">{error}</p>}
+        <button type="submit" className="button" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );

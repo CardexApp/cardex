@@ -1,27 +1,38 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import NavBar from "./Components/Header/navBar.jsx";
-import Homepage from "./Pages/Homepage.jsx";
-import Products from "./Pages/ProductsPage.jsx";
+
+// Providers
 import { CartProvider } from "./Context/CartContext.jsx";
-import CartPage from "./Pages/CartPage.jsx";
-import CarInfoDetails from "./Components/ProductDetails/CarInfo Container/CarInfoDetails.jsx";
-import PaymentPage from "./Pages/PaymentPage.jsx";
+import { OrdersProvider } from "./Context/OrdersContext.jsx";
+
+// Notifications
 import { ToastContainer } from "react-toastify";
-import OrderDetails from "./Pages/OrderDetails.jsx";
-import LoginPage from "./Pages/LoginPage.jsx";
-import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
+
+// Layout
+import NavBar from "./Components/Header/navBar.jsx";
+
+// Public Pages
+import Homepage from "./Pages/Homepage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
+import Products from "./Pages/ProductsPage.jsx";
+import CartPage from "./Pages/CartPage.jsx";
+import PaymentPage from "./Pages/PaymentPage.jsx";
+import OrderDetails from "./Pages/OrderDetails.jsx";
+import LoginPage from "./Pages/LoginPage.jsx";
 import Register from "./Components/User/Register/Register.jsx";
-import Admin from "./Components/Admin/Admin.jsx";
+import CarInfoDetails from "./Components/ProductDetails/CarInfo Container/CarInfoDetails.jsx";
 import DynamicCategoryPage from "./Components/DynamicCategory/DynamicCategoryPage.jsx";
-import { OrdersProvider } from "./Context/OrdersContext.jsx";
+
+// Auth + Protected Routing
+import ProtectedRoute from "./Pages/ProtectedRoute.jsx";
+
+// Admin
+import Admin from "./Components/Admin/Admin.jsx";
 import AdminLogin from "./Components/Admin/Authentication/AdminLogin.jsx";
 import AdminRegister from "./Components/Admin/Authentication/AdminRegister";
 import AdForgetPass from "./Components/Admin/Authentication/AdForgetPass";
-
-
+import AdminRoute from "./Components/Admin/AdminRoute.jsx";
 
 function App() {
   return (
@@ -31,16 +42,22 @@ function App() {
         <div className="App">
           <NavBar />
           <Routes>
-            {/* Public routes */}
+            {/* Public Routes */}
             <Route path="/" element={<Homepage />} />
-            <Route
-              path="/category/:categoryName"
-              element={<DynamicCategoryPage />}
-            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/orderDetails" element={<OrderDetails />} />
+            <Route path="/car/:id" element={<CarInfoDetails />} />
+            <Route
+              path="/category/:categoryName"
+              element={<DynamicCategoryPage />}
+            />
+
+            {/* Protected Routes */}
             <Route
               path="/listings"
               element={
@@ -49,16 +66,21 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/orderDetails" element={<OrderDetails />} />
-            <Route path="/car/:id" element={<CarInfoDetails />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
 
-            {/* Admin routes handled internally */}
-            <Route path="/admin/*" element={<Admin />} />
+            {/* Admin Auth Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin/forgot-password" element={<AdForgetPass />} />
+
+            {/* Admin Dashboard Routes */}
+            <Route
+              path="/admin/*"
+              element={
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
+              }
+            />
           </Routes>
         </div>
       </CartProvider>
