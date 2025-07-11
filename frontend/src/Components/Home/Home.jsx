@@ -28,7 +28,7 @@ const Home = () => {
         <div className="vertical-text">Shop Cardex</div>
         <div className="hero-content">
           <h1>Perfect Place To Buy And Sell Car</h1>
-          <div class="hero-buttons">
+          <div className="hero-buttons">
             <button className="explore-btn">Explore Car</button>
             <button className="buy-btn">Buy Car</button>
           </div>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../../Config";
 import { toast } from "react-toastify";
 import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,8 +45,7 @@ const Products = () => {
     }
 
     axios
-      .get(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/products/",
+      .get(`${BASE_URL}/products`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
