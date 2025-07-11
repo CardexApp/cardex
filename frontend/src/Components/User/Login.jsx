@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import "./Login.css"
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import "./Login.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -40,29 +40,43 @@ const Login = () => {
       }
     }
   };
-  
-
 
   return (
-    <div className='loginContainer'>
-        <h2 className='loginTitle'>Welcome To Cardex</h2>
-        <p>Please Login to continue or SignUp to create an account</p>
-        <div className='loginInput'>
-            <img src="" alt="user avatar" className='loginAvatar' />
-            <form onSubmit={loginSubmit}>
-              <input type="text" placeholder='Enter Username' className='loginUser' value={username} onChange={(e) => setUsername(e.target.value)} required/>
-              <input type="password" placeholder='Enter password' className='loginPass' value={password} onChange={(e) => setPassword(e.target.value)} required />
-              <div className='loginRecover'><input type="checkbox" /> Remember me
-              <span className='loginForgotPass'>Forgot Password</span>
-              </div>
+    <div className="loginContainer">
+      <h2 className="loginTitle">Welcome To Cardex</h2>
+      <p>Please Login to continue or SignUp to create an account</p>
+      <div className="loginInput">
+        <img src="" alt="user avatar" className="loginAvatar" />
+        <form onSubmit={loginSubmit}>
+          <input
+            type="text"
+            placeholder="Enter Username"
+            className="loginUser"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Enter password"
+            className="loginPass"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <div className="loginRecover">
+            <input type="checkbox" /> Remember me
+            <span className="loginForgotPass">Forgot Password</span>
+          </div>
 
-              {error && <p className='errorText'>{error}</p>}
-              <button type='submit' className='loginSubmit'>Submit</button>
-            </form>
-        </div>
+          {error && <p className="errorText">{error}</p>}
+          <button type="submit" className="loginSubmit">
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
-  )
-  
-}
+  );
+};
 
 export default Login;

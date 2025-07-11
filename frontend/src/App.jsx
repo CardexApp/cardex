@@ -17,6 +17,11 @@ import Register from "./Components/User/Register/Register.jsx";
 import Admin from "./Components/Admin/Admin.jsx";
 import DynamicCategoryPage from "./Components/DynamicCategory/DynamicCategoryPage.jsx";
 import { OrdersProvider } from "./Context/OrdersContext.jsx";
+import AdminLogin from "./Components/Admin/Authentication/AdminLogin.jsx";
+import AdminRegister from "./Components/Admin/Authentication/AdminRegister";
+import AdForgetPass from "./Components/Admin/Authentication/AdForgetPass";
+
+
 
 function App() {
   return (
@@ -51,6 +56,9 @@ function App() {
 
             {/* Admin routes handled internally */}
             <Route path="/admin/*" element={<Admin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/register" element={<AdminRegister />} />
+            <Route path="/admin/forgot-password" element={<AdForgetPass />} />
           </Routes>
         </div>
       </CartProvider>

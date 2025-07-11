@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,25 +16,36 @@ const AdminLogin = () => {
     try {
       const res = await axios.post(
         "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/admin/login",
-        form
+        {
+          username: form.username,
+          password: form.password,
+        }
       );
-      alert("Login successful!");
-      localStorage.setItem("adminToken", res.data.token);
-      navigate("/admin");
+
+      if(res.data.access && res.data.refresh){
+
+        // localStorage.setItem("accessToken", res.data.access);
+        // localStorage.setItem("refreshToken", res.data.refresh);
+
+        alert("Login successful!");
+        navigate("/admin");
+      } else {
+        alert("Login response missing tokens")
+      }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed.");
     }
   };
 
   return (
-    <div className="auth-container">
+    <div className="authContainer">
       <h2>Admin Login</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
+          type="text"
+          name="username"
+          placeholder="Enter email"
+          value={form.username}
           onChange={handleChange}
           required
         />
