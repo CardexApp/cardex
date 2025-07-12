@@ -1,0 +1,182 @@
+.customersPage {
+  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(250px, 5fr);
+  padding: 8px 0;
+}
+
+.customersContent {
+  background-color: #f0f0f0;
+  padding: 12px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.customersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.customersHeader h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.customerTableWrapper {
+  display: grid;
+  /* grid-template-columns: 1fr 2fr 3fr 1.5fr 1fr 1fr 0.8fr 1fr 2.5fr; */
+  grid-template-rows: auto 1fr; /* header + body */
+  width: 100%;
+}
+
+.customerTableHeader {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 0.6fr 2.5fr 3fr 1fr 0.8fr 1fr 0.6fr 1fr 2.5fr;
+  /* Order ID | Customer | Products | Date/Time | Status | Delivery | Return Req | Total | Actions */
+  background-color: #ddd;
+  padding: 8px;
+  border-radius: 8px 8px 0 0;
+}
+
+.customerTableHeader div {
+  padding: 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.customerTableBody {
+  /* display: flex;
+    flex-direction: column; */
+  display: grid;
+  grid-template-columns: 0.6fr 2.5fr 3fr 1fr 0.8fr 1fr 0.6fr 1fr 2.5fr;
+  grid-auto-rows: minmax(50px, auto);
+  max-height: 520px;
+  overflow-y: auto;
+  background-color: #fafafa;
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+.customerTableBody div {
+  padding: 4px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userInfo .avatar {
+  background-color: #f0f0f0;
+  align-self: center;
+  justify-self: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  padding: 12px;
+}
+
+.userInfo p {
+  margin: 0;
+}
+
+.customerProfile {
+  display: flex;
+  flex-direction: column;
+}
+
+.customerProfile p {
+  margin: 0;
+}
+
+.subText {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  padding: 2px;
+  font-size: 14px;
+}
+
+.actions button:hover {
+  color: #0e3062;
+}
+
+.customerTableBody::-webkit-scrollbar {
+  width: 6px;
+}
+
+.customerTableBody::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.customerTableBody::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+.orderRow {
+  display: contents;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.button {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.addButton {
+  background-color: #0e3062;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.addButton:hover {
+  background-color: #174a89;
+}
+
+.blockedTag {
+  display: inline-block;
+  background: #ffcccc;
+  color: #900;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 0px;
+  margin-left: 6px;
+}
+
+/* Shipped Orders & Delivered Orders */
+.shippedGrid {
+  display: grid;
+  grid-template-columns: 0.6fr 2fr 3fr 1.5fr 1fr 1fr 2fr;
+}
+

@@ -1,0 +1,171 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.overview {
+  display: grid;
+  padding: 0 24px;
+  grid-template-columns: minmax(100px, 1fr) minmax(250px, 5fr);
+  gap: 8px;
+  background-color: #f0f0f0;
+}
+
+.navAdmin {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(250px, 3fr) minmax(
+      150px,
+      1fr
+    );
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 48px 8px 48px;
+  background-color: #f0f0f0;
+}
+
+.navAdmin .dashBoard {
+  display: flex;
+  gap: 12px;
+  align-content: center;
+  padding: 0 12px;
+}
+
+.dashBoard h3 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.dashBoard h4 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.navAdmin .services {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 28px;
+}
+
+.notifiers {
+  display: flex;
+  gap: 8px;
+}
+
+.fontIcon {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 100%;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.icon {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.icon .logo {
+  width: 28px;
+  align-self: auto;
+}
+
+.date {
+  display: flex;
+}
+
+.adminMenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #f5f5f5;
+  height: 100vh;
+  align-content: flex-start;
+  border-radius: 4px;
+  padding: 48px 16px;
+  margin: 4px;
+}
+
+.adminLink {
+  text-decoration: none;
+  padding: 12px 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+
+.adminLink:hover {
+  background-color: #0e3062;
+  transition: 0.3s ease-in-out;
+  color: #fafafa;
+}
+
+.adminDashBoard {
+  display: flex;
+  flex-direction: column;
+  margin: 4px;
+  gap: 16px;
+}
+
+.quickInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.adminView {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-start;
+  width: 100%;
+  gap: 8px;
+}
+
+.adminDetails {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+}
+
+.dropdownAdminProfile {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownContentAdmin {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background-color: white;
+  min-width: 220px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdownAdminProfile:hover .dropdownContentAdmin {
+  display: block;
+}
+
+.adminProfile {
+  text-align: left;
+}
+
+.adminAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #0e3062;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+}

@@ -3,14 +3,14 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navBar.css";
 import {
-  faHome,
+  // faHome,
   // faBars,
   faUser,
   faBox,
   faSignOutAlt,
-  faCar,
-  faInfoCircle,
-  faEnvelope,
+  // faCar,
+  // faInfoCircle,
+  // faEnvelope,
   faUserCircle,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
@@ -31,27 +31,23 @@ const NavBar = () => {
       </div>
       <ul className="menuList">
         <NavLink to="/" className="navLink">
-          <p>
-           HOME
-          </p>
+          <p>HOME</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/listings" className="navLink">
-          <p>
-            LISTINGS
-          </p>
+          <p>LISTINGS</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/about" className="navLink">
-          <p>
-            ABOUT
-          </p>
+          <p>ABOUT</p>
           <hr className="hrTag" />
         </NavLink>
         <NavLink to="/contact" className="navLink">
-          <p>
-            CONTACT
-          </p>
+          <p>CONTACT</p>
+          <hr className="hrTag" />
+        </NavLink>
+        <NavLink to="/admin/login" className="navLink">
+          <p>Admin</p>
           <hr className="hrTag" />
         </NavLink>
         {/* <NavLink to="/login" className="navLink">
@@ -65,6 +61,9 @@ const NavBar = () => {
             <Link to="/login">
               <FontAwesomeIcon icon={faUser} /> Login
             </Link>
+            <Link to="/register">
+              <FontAwesomeIcon icon={faUser} /> Register
+            </Link>
             <Link to="/orders">
               <FontAwesomeIcon icon={faBox} /> Orders
             </Link>
@@ -75,7 +74,7 @@ const NavBar = () => {
         </div>
         <Link to="/cart" className="relative">
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
-          <p className="cartContent">10</p>
+          <p className="cartContent">{}</p>
         </Link>
         {/* <<<<<<< HEAD
          <FontAwesomeIcon icon={faBars} size="lg" /> */}

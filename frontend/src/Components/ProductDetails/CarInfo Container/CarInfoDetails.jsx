@@ -11,7 +11,7 @@ const CarInfoDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://cardexbackend.eu.pythonanywhere.com/api/products/${id}/`)
+      .get(`https://sparkling-chelsae-cardex-cd058300.koyeb.app/${id}/`)
       .then((res) => setCarDetails(res.data))
       .catch((err) =>
         console.error("Failed to fetch car details from backend:", err)
