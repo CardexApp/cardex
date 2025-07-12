@@ -72,10 +72,9 @@ function App() {
             <Route
               path="/admin/*"
               element={
-                // <AdminRoute>
-                <Admin />
-
-                // </AdminRoute>
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
               }
             />
           </Routes>
