@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Product, CarType, Make, Order, Address, CardDetails, CartItem, Cart, Review
 
 # Admin registration serializer
@@ -27,6 +28,26 @@ class AdminRegisterSerializer(serializers.ModelSerializer):
         is_staff=True  # Mark as admin
         )
         return user
+    
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Add extra user data
+        data.update({
+            'user': {
+                'id': self.user.id,
+                'email': self.user.email,
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
+                'is_staff': self.user.is_staff,
+                'is_superuser': self.user.is_superuser
+            }
+        })
+
+        return data
+
 
 
 # User registration serializer
@@ -55,8 +76,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
-        read_only_fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_superuser']
+        read_only_fields = ['first_name', 'last_name', 'email', 'is_staff', 'is_superuser']
 
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
