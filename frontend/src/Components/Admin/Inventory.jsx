@@ -16,7 +16,12 @@ const InventoryPage = () => {
     price: "",
     model_year: "",
     fuel_type: "",
-    image: ""
+    image: "",
+    mileage: "",
+    car_type: "",
+    make: "",
+    condition: "",
+    description: "",
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [sortMode, setSortMode] = useState("name");
@@ -30,21 +35,25 @@ const InventoryPage = () => {
         console.error("Failed to fetch inventory:", err);
       }
     };
-
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    const lowStock = salesData.filter((item) => item.quantity > 0 && item.quantity <= 10);
+    const lowStock = salesData.filter(
+      (item) => item.quantity > 0 && item.quantity <= 10
+    );
     const outOfStock = salesData.filter((item) => item.quantity === 0);
     const alertMsgs = [
-      ...lowStock.map((item) => `⚠️ Low stock: ${item.name} (${item.quantity})`),
-      ...outOfStock.map((item) => `❌ Out of stock: ${item.name}`)
+      ...lowStock.map(
+        (item) => `⚠️ Low stock: ${item.name} (${item.quantity})`
+      ),
+      ...outOfStock.map((item) => `❌ Out of stock: ${item.name}`),
     ];
     setAlerts(alertMsgs);
   }, [salesData]);
 
   const handleAddProduct = async () => {
+    const accessToken = localStorage.getItem("accessToken");
     try {
       const formData = new FormData();
       formData.append("name", newProduct.name);
@@ -55,12 +64,18 @@ const InventoryPage = () => {
       formData.append("model_year", newProduct.model_year);
       formData.append("fuel_type", newProduct.fuel_type);
       formData.append("image", newProduct.image);
+      formData.append("mileage", newProduct.mileage);
+      formData.append("car_type", newProduct.car_type);
+      formData.append("make", newProduct.make);
+      formData.append("condition", newProduct.condition);
+      formData.append("description", newProduct.description);
       formData.append("sold", 0);
       formData.append("returned", 0);
 
-      const res = await axios.post(`${BASE_URL}/admin/products/`, formData, {
+      const res = await axios.post(`${BASE_URL}/admin/products`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -73,13 +88,17 @@ const InventoryPage = () => {
         price: "",
         model_year: "",
         fuel_type: "",
-        image: ""
+        image: "",
+        mileage: "",
+        car_type: "",
+        make: "",
+        condition: "",
+        description: "",
       });
     } catch (err) {
       console.error("Error adding product:", err);
     }
   };
-
 
   const handleUpdateQuantity = async (id, deltaQuantity) => {
     const updatedProduct = salesData.find((item) => item.id === id);
@@ -105,7 +124,6 @@ const InventoryPage = () => {
       console.error("Error updating quantity:", err);
     }
   };
-  
 
   const handleDeleteProduct = async (id) => {
     try {
@@ -170,14 +188,117 @@ const InventoryPage = () => {
             <section className="addProduct">
               <h3>Add New Product</h3>
               <div className="inputList">
-                <input type="text" placeholder="Car Name" required value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
-                <input type="text" placeholder="Transmission" required value={newProduct.transmission} onChange={(e) => setNewProduct({ ...newProduct, transmission: e.target.value })} />
-                <input type="text" placeholder="Status" required value={newProduct.status} onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })} />
-                <input type="number" placeholder="Quantity" required value={newProduct.quantity} onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })} />
-                <input type="text" placeholder="Price" required value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
-                <input type="text" placeholder="Year" required value={newProduct.model_year} onChange={(e) => setNewProduct({ ...newProduct, model_year: e.target.value })} />
-                <input type="text" placeholder="Fuel Type" required value={newProduct.fuel_type} onChange={(e) => setNewProduct({ ...newProduct, fuel_type: e.target.value })} />
-                <input type="file" accept="image/*" required onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })} />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Transmission"
+                  value={newProduct.transmission}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      transmission: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Status"
+                  value={newProduct.status}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, status: e.target.value })
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  value={newProduct.quantity}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      quantity: Number(e.target.value),
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Price"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Year"
+                  value={newProduct.model_year}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, model_year: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Fuel Type"
+                  value={newProduct.fuel_type}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, fuel_type: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Mileage"
+                  value={newProduct.mileage}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, mileage: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Car Type"
+                  value={newProduct.car_type}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, car_type: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Make"
+                  value={newProduct.make}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, make: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Condition"
+                  value={newProduct.condition}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, condition: e.target.value })
+                  }
+                />
+                <textarea
+                  placeholder="Description"
+                  value={newProduct.description}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      description: e.target.value,
+                    })
+                  }
+                ></textarea>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, image: e.target.files[0] })
+                  }
+                />
               </div>
               <button onClick={handleAddProduct}>Add Product</button>
             </section>
@@ -217,8 +338,18 @@ const InventoryPage = () => {
                   {filteredData.map((row) => (
                     <tr key={row.id}>
                       <td>{row.id}</td>
-                      <td><img src={row.image} alt={row.name} style={{ width: "60px", height: "40px", objectFit: "cover" }} /></td>
-                      <td>{`${row.make?.name || ''} ${row.name}`.trim()}</td>
+                      <td>
+                        <img
+                          src={row.image}
+                          alt={row.name}
+                          style={{
+                            width: "60px",
+                            height: "40px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </td>
+                      <td>{`${row.make?.name || ""} ${row.name}`.trim()}</td>
                       <td>{row.transmission}</td>
                       <td>{row.status}</td>
                       <td>{row.fuel_type}</td>
@@ -230,19 +361,33 @@ const InventoryPage = () => {
                           <option value="add">Add</option>
                           <option value="subtract">Subtract</option>
                         </select>
-                        <input type="number" id={`qty-${row.id}`} defaultValue={0} style={{ width: "50px", marginLeft: "4px" }} />
+                        <input
+                          type="number"
+                          id={`qty-${row.id}`}
+                          defaultValue={0}
+                          style={{ width: "50px", marginLeft: "4px" }}
+                        />
                         <button
                           onClick={() => {
-                            const action = document.getElementById(`action-${row.id}`).value;
-                            const inputVal = document.getElementById(`qty-${row.id}`).value;
+                            const action = document.getElementById(
+                              `action-${row.id}`
+                            ).value;
+                            const inputVal = document.getElementById(
+                              `qty-${row.id}`
+                            ).value;
                             const qtyChange = Number(inputVal);
                             if (!isNaN(qtyChange)) {
-                              const delta = action === "add" ? qtyChange : -qtyChange;
+                              const delta =
+                                action === "add" ? qtyChange : -qtyChange;
                               handleUpdateQuantity(row.id, delta);
                             }
                           }}
-                        >Update Qty</button>
-                        <button onClick={() => handleDeleteProduct(row.id)}>Delete</button>
+                        >
+                          Update Qty
+                        </button>
+                        <button onClick={() => handleDeleteProduct(row.id)}>
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
