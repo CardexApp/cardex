@@ -1,4 +1,5 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,26 +12,15 @@ import { useOrders } from "../../Context/OrdersContext";
 const DeliveredOrders = () => {
   const { orders } = useOrders();
 
-  if (!orders || !Array.isArray(orders)) {
-    return (
-      <div className="customersPage">
-        <AdminMenu />
-        <div className="customersContent">
-          <h2>Delivered Orders</h2>
-          <p>Loading or no orders available...</p>
-        </div>
-        <Dock />
-      </div>
-    );
-  }
-
-  const deliveredOrders = orders.filter((o) => o.status === "Delivered");
+  const deliveredOrders = (orders || []).filter(
+    (o) => o.status === "Delivered"
+  );
 
   return (
     <div className="customersPage">
+      <AdminMenu />
       <div className="customersContent">
         <h2>Delivered Orders</h2>
-
         <div className="customerTableWrapper">
           <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
@@ -41,7 +31,6 @@ const DeliveredOrders = () => {
             <div>Total</div>
             <div>Actions</div>
           </div>
-
           <div className="customerTableBody shippedGrid">
             {deliveredOrders.length > 0 ? (
               deliveredOrders.map((order) => (
@@ -63,12 +52,15 @@ const DeliveredOrders = () => {
                   </div>
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Invoice">
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
                       <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>

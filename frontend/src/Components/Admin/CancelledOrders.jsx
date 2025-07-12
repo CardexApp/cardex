@@ -9,16 +9,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
-const ReturnRequests = () => {
+const CancelledOrders = () => {
   const { orders } = useOrders();
 
-  const returns = (orders || []).filter((o) => o.returnRequested);
+  const cancelledOrders = (orders || []).filter(
+    (o) => o.status === "Cancelled"
+  );
 
   return (
     <div className="customersPage">
       <AdminMenu />
       <div className="customersContent">
-        <h2>Return Requests</h2>
+        <h2>Cancelled Orders</h2>
         <div className="customerTableWrapper">
           <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
@@ -30,8 +32,8 @@ const ReturnRequests = () => {
             <div>Actions</div>
           </div>
           <div className="customerTableBody shippedGrid">
-            {returns.length > 0 ? (
-              returns.map((order) => (
+            {cancelledOrders.length > 0 ? (
+              cancelledOrders.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
@@ -65,7 +67,7 @@ const ReturnRequests = () => {
                 </div>
               ))
             ) : (
-              <p>No return requests found.</p>
+              <p>No cancelled orders found.</p>
             )}
           </div>
         </div>
@@ -75,4 +77,4 @@ const ReturnRequests = () => {
   );
 };
 
-export default ReturnRequests;
+export default CancelledOrders;

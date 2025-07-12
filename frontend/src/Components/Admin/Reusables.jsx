@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import "./Styles/Reusables.css";
 import { useState } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -184,4 +186,33 @@ export const SearchBar = ({
       </div>
     </div>
   );
+};
+
+export const generateInvoice = (order) => {
+  const doc = new jsPDF();
+  doc.setFontSize(18);
+  doc.text("Invoice", 14, 22);
+
+  doc.setFontSize(12);
+  doc.text(`Order ID: ${order.id}`, 14, 32);
+  doc.text(`Customer: ${order.name}`, 14, 40);
+  doc.text(`Email: ${order.email}`, 14, 46);
+  doc.text(`Date: ${order.dateOfPurchase}`, 14, 52);
+  doc.text(`Total: $${Number(order.totalPrice).toLocaleString()}`, 14, 58);
+
+  const tableRows = order.items.map((item, idx) => [
+    idx + 1,
+    item.productName,
+    item.sku,
+    item.quantity,
+    `$${item.price}`,
+  ]);
+
+  doc.autoTable({
+    head: [["#", "Product", "SKU", "Qty", "Price"]],
+    body: tableRows,
+    startY: 70,
+  });
+
+  doc.save(`Invoice_Order_${order.id}.pdf`);
 };
