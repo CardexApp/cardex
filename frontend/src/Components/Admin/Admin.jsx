@@ -1,6 +1,7 @@
 import "./Admin.css";
 import "./Styles/Dock.css";
 import asset from "../../assets/asset";
+import { toast } from "react-toastify";
 import {
   Link,
   Routes,
@@ -41,7 +42,8 @@ import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
 import AdminProfile from "./Authentication/AdminProfile";
-
+import ChangePassword from "./Authentication/ChangePassword";
+import Analytics from "./Analytics"; 
 
 import { useAuth } from "../../Context/AuthContext";
 
@@ -80,7 +82,7 @@ const icons = [
     id: 6,
     icon: <FontAwesomeIcon icon={faFlagCheckered} size="2x" />,
     p: "Reports",
-    to: "/admin/reports",
+    to: "/admin/analytics",
   },
 ];
 
@@ -113,6 +115,12 @@ export const AdminMenu = () => (
     <Link to="/admin/returns/confirmed" className="adminLink">
       Confirmed Returns
     </Link>
+    <Link to="/admin/analytics" className="adminLink">
+      Analytics
+    </Link>
+    <Link to="/admin/change-password" className="adminLink">
+      Change Password
+    </Link>
   </section>
 );
 
@@ -137,6 +145,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     logout();
+    toast.success("Logged out successfully.");
     navigate("/admin/login");
   };
 
@@ -206,6 +215,8 @@ const Admin = () => {
             <Route path="returns/requests" element={<ReturnRequests />} />
             <Route path="returns/confirmed" element={<ConfirmedReturns />} />
             <Route path="profile" element={<AdminProfile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="*" element={<p>Page not found</p>} />
           </Routes>
         </section>
