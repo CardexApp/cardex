@@ -25,6 +25,7 @@ from .views import (
     ReviewCreateView,
     ProductReviewListView,
     CustomTokenObtainPairView,
+    AdminAnalyticsView,
 )
 
 urlpatterns = [
@@ -62,6 +63,7 @@ urlpatterns = [
     path('admin/orders/<int:pk>/', OrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
     path('admin/users/', AdminUserViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('admin/users/<int:pk>/', AdminUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'put': 'update', 'delete': 'destroy'})),
-    path('contact/', ContactUsView.as_view(), name='contact')
+    path('contact/', ContactUsView.as_view(), name='contact'),
+    path('admin/analytics/', AdminAnalyticsView.as_view(), name='admin-analytics')
     ]
 

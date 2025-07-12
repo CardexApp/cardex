@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from rest_framework.views import APIView
 from django.conf import settings
 
-from .models import Product, CarType, Order, Cart, CartItem, Review
+from .models import Product, CarType, Order, Cart, CartItem, Review, OrderItem
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -33,6 +33,9 @@ from .serializers import (
     ContactSerializer,
     CustomTokenObtainPairSerializer,
 )
+from django.utils import timezone
+from django.db.models import Sum, Count, F
+from datetime import timedelta
 
 from .permissions import IsStaff  # import the custom permission
 
@@ -231,7 +234,7 @@ class RemoveFromCartView(generics.DestroyAPIView):
 class AdminRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = AdminRegisterSerializer
-    permission_classes = [IsAuthenticated, IsStaff]  # only superusers can register admins
+    permission_classes = [IsAuthenticated, IsStaff]  # only superusers and Admin can register admins
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -277,3 +280,54 @@ class ContactUsView(generics.GenericAPIView):
             return Response({"message": "Message sent"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# views.py
+
+class AdminAnalyticsView(APIView):
+    permission_classes = [permissions.IsAdminUser]  # only admin can access this view
+
+    def get(self, request):
+        now = timezone.now()
+        last_30_days = now - timedelta(days=30)
+
+        # Total Revenue: sum of product price * quantity
+        revenue = OrderItem.objects.annotate(
+            item_total=F('product__price') * F('quantity')
+        ).aggregate(total=Sum('item_total'))['total'] or 0
+
+        # Total Orders
+        total_orders = Order.objects.count()
+
+        # Pending Orders (processing or dispatched)
+        pending_orders = Order.objects.filter(status__in=['processing', 'dispatched']).count()
+
+        # Active Users (placed at least 1 order in last 30 days)
+        active_users = Order.objects.filter(created_at__gte=last_30_days).values('user').distinct().count()
+
+        # New Users in the last 30 days
+        new_users = User.objects.filter(date_joined__gte=last_30_days).count()
+
+        # Return Rate (% of orders that are return_* out of total orders)
+        return_orders = Order.objects.filter(status__startswith='return_').count()
+        return_rate = round((return_orders / total_orders) * 100, 1) if total_orders else 0
+
+        # Top Products by units sold
+        top_products = (
+            OrderItem.objects
+            .values('product__name')
+            .annotate(units_sold=Sum('quantity'))
+            .order_by('-units_sold')[:5]
+        )
+
+        data = {
+            "totalRevenue": float(revenue),
+            "totalOrders": total_orders,
+            "pendingOrders": pending_orders,
+            "activeUsers": active_users,
+            "newUsers": new_users,
+            "returnRate": return_rate,
+            "topProducts": list(top_products)
+        }
+
+        return Response(data)
