@@ -16,7 +16,7 @@ const ReturnRequests = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
+      {/* <AdminMenu /> */}
       <div className="customersContent">
         <h2>Return Requests</h2>
         <div className="customerTableWrapper">

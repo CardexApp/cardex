@@ -3,6 +3,8 @@ import "./Styles/Reusables.css";
 import { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
+
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -190,29 +192,37 @@ export const SearchBar = ({
 
 export const generateInvoice = (order) => {
   const doc = new jsPDF();
+  const date = new Date().toLocaleString();
+
   doc.setFontSize(18);
-  doc.text("Invoice", 14, 22);
+  doc.text("INVOICE", 14, 20);
 
-  doc.setFontSize(12);
-  doc.text(`Order ID: ${order.id}`, 14, 32);
-  doc.text(`Customer: ${order.name}`, 14, 40);
-  doc.text(`Email: ${order.email}`, 14, 46);
-  doc.text(`Date: ${order.dateOfPurchase}`, 14, 52);
-  doc.text(`Total: $${Number(order.totalPrice).toLocaleString()}`, 14, 58);
+  doc.setFontSize(11);
+  doc.text(`Order ID: ${order.id}`, 14, 30);
+  doc.text(`Date: ${date}`, 14, 36);
+  doc.text(`Customer: ${order.name}`, 14, 42);
+  doc.text(`Email: ${order.email}`, 14, 48);
+  doc.text(`Address: ${order.address}`, 14, 54);
 
-  const tableRows = order.items.map((item, idx) => [
-    idx + 1,
+  const tableRows = order.items.map((item, index) => [
+    index + 1,
     item.productName,
     item.sku,
     item.quantity,
-    `$${item.price}`,
+    `$${Number(item.price).toFixed(2)}`,
+    `$${(item.quantity * item.price).toFixed(2)}`,
   ]);
 
-  doc.autoTable({
-    head: [["#", "Product", "SKU", "Qty", "Price"]],
+  // 👇 Make sure autoTable is attached here correctly
+  autoTable(doc, {
+    head: [["#", "Product", "SKU", "Qty", "Unit Price", "Total"]],
     body: tableRows,
-    startY: 70,
+    startY: 65,
   });
+
+  const finalY = doc.lastAutoTable.finalY + 10;
+  doc.setFontSize(12);
+  doc.text(`Total: $${Number(order.totalPrice).toFixed(2)}`, 14, finalY);
 
   doc.save(`Invoice_Order_${order.id}.pdf`);
 };
