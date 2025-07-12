@@ -16,7 +16,7 @@ const PendingOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
+      {/* <AdminMenu /> */}
       <div className="customersContent">
         <h2>Pending Orders</h2>
         <div className="customerTableWrapper">
