@@ -18,7 +18,7 @@ const DeliveredOrders = () => {
 
   return (
     <div className="customersPage">
-      <AdminMenu />
+      {/* <AdminMenu /> */}
       <div className="customersContent">
         <h2>Delivered Orders</h2>
         <div className="customerTableWrapper">
