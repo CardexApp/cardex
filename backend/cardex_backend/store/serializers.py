@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Product, CarType, Make, Order, Address, CardDetails, CartItem, Cart, Review
+from .models import Product, CarType, Make, Order, Address, CardDetails, CartItem, Cart, Review, OrderItem
 
 # Admin registration serializer
 class AdminRegisterSerializer(serializers.ModelSerializer):
@@ -259,7 +259,7 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     def validate(self, data):
         user = self.context['request'].user
         product = data['product']
-        has_ordered = Order.objects.filter(user=user, product=product).exists()
+        has_ordered = OrderItem.objects.filter(order__user=user, product=product).exists()
         if not has_ordered:
             raise serializers.ValidationError(
                 "You can only review products you have purchased.")
@@ -270,15 +270,44 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         return Review.objects.create(user=user, **validated_data)
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    address = AddressSerializer()
-    card_details = CardDetailsSerializer(write_only=True)
+class OrderProductInputSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+    def validate_product_id(self, value):
+        if not Product.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Invalid product.")
+        return value
+
+# serializers.py
+class OrderItemSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
 
     class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    address = AddressSerializer()
+    card_details = CardDetailsSerializer(write_only=True)
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
         model = Order
-        fields = ['id', 'product', 'user', 'created_at', 'address', 'status', 'card_details']
-        read_only_fields = ['id', 'created_at', 'user']
+        fields = ['id', 'user', 'created_at', 'address', 'status', 'card_details', 'items']
+        read_only_fields = ['id', 'user', 'created_at', 'status']
+
+    def validate_items(self, value):
+        if not value:
+            raise serializers.ValidationError("You must include at least one product.")
+
+        for item in value:
+            quantity = item.get('quantity', 0)
+            if quantity <= 0:
+                raise serializers.ValidationError("Each item must have a quantity greater than zero.")
+
+        return value
 
     def create(self, validated_data):
         request = self.context['request']
@@ -286,24 +315,57 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if not user or not user.is_authenticated:
             raise serializers.ValidationError("User must be authenticated to place an order.")
-    
+
         address_data = validated_data.pop('address')
         card_data = validated_data.pop('card_details')
-        product = validated_data.pop('product')
-
-        if product.quantity <= 0:
-            raise serializers.ValidationError("This product is out of stock.")
+        items_data = validated_data.pop('items')
 
         with transaction.atomic():
-            # Decrease stock
-            product.quantity -= 1
-            product.save()
-
             address = Address.objects.create(**address_data)
-            order = Order.objects.create(address=address, user=user, product=product, **validated_data)
-        
+            order = Order.objects.create(user=user, address=address, **validated_data)
+
+            for item in items_data:
+                product = item['product']
+                quantity = item['quantity']
+
+                if product.quantity < quantity:
+                    raise serializers.ValidationError(
+                        f"{product.name} is out of stock or doesn't have enough quantity."
+                    )
+
+                product.quantity -= quantity
+                product.save()
+
+                OrderItem.objects.create(order=order, product=product, quantity=quantity)
+
             CardDetails.objects.create(user=user, **card_data)
+
+
+            # 🛒 Reduce or remove items from cart
+            try:
+                cart = Cart.objects.get(user=user)
+                for item in items_data:
+                    product = item['product']
+                    quantity_ordered = item['quantity']
+
+                    try:
+                        cart_item = CartItem.objects.get(cart=cart, product=product)
+                        if cart_item.quantity > quantity_ordered:
+                            cart_item.quantity -= quantity_ordered
+                            cart_item.save()
+                        else:
+                            cart_item.delete()
+                    except CartItem.DoesNotExist:
+                        pass  # Item isn't in the cart, nothing to do
+            except Cart.DoesNotExist:
+                pass  # No cart to update
+
+
         return order
+
+
+
+
     
 # serializers.py
 class ReturnRequestSerializer(serializers.ModelSerializer):
@@ -355,18 +417,32 @@ class AddToCartSerializer(serializers.Serializer):
         product_id = self.validated_data['product_id']
         quantity = self.validated_data['quantity']
 
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            raise serializers.ValidationError("Product does not exist.")
+
+        if product.quantity < quantity:
+            raise serializers.ValidationError(f"Only {product.quantity} of '{product.name}' available in stock.")
+
         # Get or create cart
         cart, created = Cart.objects.get_or_create(user=user)
 
         # Check if item already in cart
-        item, created = CartItem.objects.get_or_create(
-            cart=cart, product_id=product_id)
+        item, created = CartItem.objects.get_or_create(cart=cart, product=product)
         if not created:
-            item.quantity += quantity
+            new_quantity = item.quantity + quantity
+            if product.quantity < new_quantity:
+                raise serializers.ValidationError(
+                    f"Cannot add {quantity}. Cart already has {item.quantity}. Only {product.quantity} in stock."
+                )
+            item.quantity = new_quantity
         else:
             item.quantity = quantity
+
         item.save()
         return item
+
 
 class ContactSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)

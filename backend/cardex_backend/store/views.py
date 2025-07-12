@@ -149,9 +149,11 @@ class CheckoutView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
         return Response({
-            "message": "Order successfully",
+            "message": "Order placed successfully",
             "order": OrderSerializer(order).data
         }, status=status.HTTP_201_CREATED)
+
+
 
 
 # View to retrieve the user's order

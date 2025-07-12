@@ -119,7 +119,6 @@ class Order(models.Model):
         ('return_denied', 'Return request denied'),
     ]
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
@@ -127,6 +126,15 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.id} - {self.get_status_display()}"
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} (Order #{self.order.id})"
+
 
 # Cart model - represents one cart per user
 class Cart(models.Model):
