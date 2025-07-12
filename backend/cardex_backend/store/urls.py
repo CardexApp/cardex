@@ -24,6 +24,7 @@ from .views import (
     ContactUsView,
     ReviewCreateView,
     ProductReviewListView,
+    CustomTokenObtainPairView,
 )
 
 urlpatterns = [
@@ -50,7 +51,7 @@ urlpatterns = [
 
 
     #admin routes
-    path('admin/login/', TokenObtainPairView.as_view(), name='admin-login'),
+    path('admin/login/', CustomTokenObtainPairView.as_view(), name='admin-login'),
     path('admin/register/', AdminRegisterView.as_view(), name='admin-register'),
     path('admin/me/', UserProfileView.as_view(), name='user-profile'),
     path('admin/update-profile/', UserProfileUpdateView.as_view(), name='profile-update'),

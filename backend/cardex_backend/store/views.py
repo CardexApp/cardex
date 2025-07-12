@@ -11,6 +11,7 @@ from django.conf import settings
 from .models import Product, CarType, Order, Cart, CartItem, Review
 from django.core.mail import send_mail
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
 from .serializers import (
     ProductSerializer,
@@ -29,15 +30,12 @@ from .serializers import (
     UserProfileSerializer,
     AdminUserSerializer,
     ReturnRequestSerializer,
-    ContactSerializer
+    ContactSerializer,
+    CustomTokenObtainPairSerializer,
 )
 
-from .permissions import IsSuperUser  # import the custom permission
+from .permissions import IsStaff  # import the custom permission
 
-class AdminRegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = AdminRegisterSerializer
-    permission_classes = [IsAuthenticated, IsSuperUser]  # only superusers can register admins
 
 
 # /api/register/ POST
@@ -219,11 +217,24 @@ class RemoveFromCartView(generics.DestroyAPIView):
         except (Cart.DoesNotExist, CartItem.DoesNotExist):
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
         
+
+
+
 # All viewsets for admin
 
 # class StandardResultsSetPagination(pagination.LimitOffsetPagination):
 #     default_limit = 20
 #     max_limit = 100
+
+class AdminRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminRegisterSerializer
+    permission_classes = [IsAuthenticated, IsStaff]  # only superusers can register admins
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
