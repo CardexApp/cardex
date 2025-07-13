@@ -1,11 +1,25 @@
 import "./Styles/Inventory.css";
-import { AdminMenu, Dock } from "./Admin";
+import { Dock } from "./Admin";
 import { useState, useEffect } from "react";
 import { SearchBar } from "./Reusables";
 import axios from "axios";
 import { BASE_URL } from "../../Config";
 
 const InventoryPage = () => {
+  const carTypeOptions = [
+    { id: 1, name: "sedan" },
+    { id: 2, name: "SUV" },
+    { id: 3, name: "convertible" },
+    { id: 4, name: "minivan" },
+    { id: 5, name: "hatchback" },
+    { id: 6, name: "coupe" },
+    { id: 7, name: "crossover" },
+  ];
+
+  const fuelOptions = ["electric", "hydrogen", "diesel", "petrol"];
+  const conditionOptions = ["new", "used"];
+  const transmissionOptions = ["manual", "automatic"];
+  
   const [salesData, setSalesData] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [newProduct, setNewProduct] = useState({
@@ -18,8 +32,8 @@ const InventoryPage = () => {
     fuel_type: "",
     image: "",
     mileage: "",
-    car_type: "", // ID expected
-    make: "", // ID expected
+    car_type: "", 
+    make: "", 
     condition: "",
     description: "",
   });
@@ -66,25 +80,45 @@ const InventoryPage = () => {
 
   const handleAddProduct = async () => {
     const accessToken = localStorage.getItem("accessToken");
+
+    // Basic validation
+    if (
+      !newProduct.name ||
+      !newProduct.price ||
+      !newProduct.car_type ||
+      !newProduct.make ||
+      !newProduct.image
+    ) {
+      alert(
+        "Please fill in all required fields including image, car type, and make."
+      );
+      return;
+    }
+
+    // Ensure image is a File object
+    if (!(newProduct.image instanceof File)) {
+      alert("Please upload a valid image file.");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("name", newProduct.name);
-      formData.append("transmission", newProduct.transmission);
-      formData.append("status", newProduct.status);
-      formData.append("quantity", newProduct.quantity);
       formData.append("price", newProduct.price);
-      formData.append("model_year", newProduct.model_year);
-      formData.append("fuel_type", newProduct.fuel_type);
+      formData.append("description", newProduct.description || "");
+      formData.append("mileage", newProduct.mileage || "0");
+      formData.append("model_year", newProduct.model_year || "");
+      formData.append("transmission", newProduct.transmission || "");
+      formData.append("fuel_type", newProduct.fuel_type || "");
+      formData.append("condition", newProduct.condition || "");
+      formData.append("quantity", String(parseInt(newProduct.quantity) || 1));
       formData.append("image", newProduct.image);
-      formData.append("mileage", newProduct.mileage);
-      formData.append("car_type", newProduct.car_type);
-      formData.append("make", newProduct.make);
-      formData.append("condition", newProduct.condition);
-      formData.append("description", newProduct.description);
-      formData.append("sold", 0);
-      formData.append("returned", 0);
+      formData.append("car_type", parseInt(newProduct.car_type));
+      formData.append("make", parseInt(newProduct.make));
+      formData.append("sold", "0");
+      formData.append("returned", "0");
 
-      const res = await axios.post(`${BASE_URL}/admin/products`, formData, {
+      const res = await axios.post(`${BASE_URL}/admin/products/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
@@ -92,10 +126,11 @@ const InventoryPage = () => {
       });
 
       setSalesData((prev) => [...prev, res.data]);
+      setSearchTerm(""); // Ensure new product appears in filteredData
+
       setNewProduct({
         name: "",
         transmission: "",
-        status: "",
         quantity: 0,
         price: "",
         model_year: "",
@@ -109,8 +144,11 @@ const InventoryPage = () => {
       });
     } catch (err) {
       console.error("Error adding product:", err);
+      console.log("Server response:", err.response?.data);
+      alert("Failed to add product. Check console for details.");
     }
-  };
+  };  
+  
 
   const handleUpdateQuantity = async (id, deltaQuantity) => {
     const product = salesData.find((item) => item.id === id);
@@ -218,33 +256,125 @@ const InventoryPage = () => {
             <section className="addProduct">
               <h3>Add New Product</h3>
               <div className="inputList">
-                {[
-                  { placeholder: "Name", field: "name" },
-                  { placeholder: "Transmission", field: "transmission" },
-                  { placeholder: "Status", field: "status" },
-                  {
-                    placeholder: "Quantity",
-                    field: "quantity",
-                    type: "number",
-                  },
-                  { placeholder: "Price", field: "price" },
-                  { placeholder: "Year", field: "model_year" },
-                  { placeholder: "Fuel Type", field: "fuel_type" },
-                  { placeholder: "Mileage", field: "mileage" },
-                  { placeholder: "Car Type (ID)", field: "car_type" },
-                  { placeholder: "Make (ID)", field: "make" },
-                  { placeholder: "Condition", field: "condition" },
-                ].map(({ placeholder, field, type }) => (
-                  <input
-                    key={field}
-                    type={type || "text"}
-                    placeholder={placeholder}
-                    value={newProduct[field]}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, [field]: e.target.value })
-                    }
-                  />
-                ))}
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                />
+
+                {/* Transmission Dropdown */}
+                <select
+                  value={newProduct.transmission}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      transmission: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Select Transmission</option>
+                  <option value="manual">manual</option>
+                  <option value="automatic">automatic</option>
+                </select>
+
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  value={newProduct.quantity}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      quantity: Number(e.target.value),
+                    })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="Price"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="Year"
+                  value={newProduct.model_year}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, model_year: e.target.value })
+                  }
+                />
+
+                {/* Fuel Type Dropdown */}
+                <select
+                  value={newProduct.fuel_type}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, fuel_type: e.target.value })
+                  }
+                >
+                  <option value="">Select Fuel Type</option>
+                  <option value="electric">electric</option>
+                  <option value="hydrogen">hydrogen</option>
+                  <option value="diesel">diesel</option>
+                  <option value="petrol">petrol</option>
+                </select>
+
+                <input
+                  type="text"
+                  placeholder="Mileage"
+                  value={newProduct.mileage}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, mileage: e.target.value })
+                  }
+                />
+
+                {/* Car Type Dropdown (ID required) */}
+                <select
+                  value={newProduct.car_type}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      car_type: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  <option value="">Select Car Type</option>
+                  <option value="1">sedan</option>
+                  <option value="2">SUV</option>
+                  <option value="3">convertible</option>
+                  <option value="4">minivan</option>
+                  <option value="5">hatchback</option>
+                  <option value="6">coupe</option>
+                  <option value="7">crossover</option>
+                </select>
+
+                {/* Make Input (ID expected) */}
+                <input
+                  type="text"
+                  placeholder="Make (ID)"
+                  value={newProduct.make}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, make: e.target.value })
+                  }
+                />
+
+                {/* Condition Dropdown */}
+                <select
+                  value={newProduct.condition}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, condition: e.target.value })
+                  }
+                >
+                  <option value="">Select Condition</option>
+                  <option value="new">new</option>
+                  <option value="used">used</option>
+                </select>
+
                 <textarea
                   placeholder="Description"
                   value={newProduct.description}
@@ -255,6 +385,7 @@ const InventoryPage = () => {
                     })
                   }
                 ></textarea>
+
                 <input
                   type="file"
                   accept="image/*"

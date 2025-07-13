@@ -3,12 +3,18 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { CartContext } from "../Context/CartContext";
+import { BASE_URL } from "../Config";
+import { useAuth } from "../Context/AuthContext";
+import { useOrders } from "../Context/OrdersContext";
+
 
 const PaymentPage = () => {
+  const user = useAuth();
   const [step, setStep] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
-  const { cartItems } = useContext(CartContext); // Access cart items
+  const { addOrder } = useOrders();
+  const { cartItems, clearCart } = useContext(CartContext);
 
   const { subtotal, tax, insurance, total } = location.state || {
     subtotal: 0,
@@ -18,13 +24,12 @@ const PaymentPage = () => {
   };
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    postalCode: "",
-    address: "",
+    nameOnCard: "",
     cardNumber: "",
     expiry: "",
     cvv: "",
+    postalCode: "",
+    houseAddress: "",
   });
 
   const handleChange = (e) => {
@@ -51,11 +56,6 @@ const PaymentPage = () => {
     setFormData((prev) => ({ ...prev, [name]: formattedValue }));
   };
 
-  const handleNext = (e) => {
-    e.preventDefault();
-    setStep(2);
-  };
-
   const isExpiryValid = (expiry) => {
     const [month, year] = expiry.split("/").map(Number);
     if (!month || !year || month < 1 || month > 12) return false;
@@ -69,106 +69,120 @@ const PaymentPage = () => {
     );
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!isExpiryValid(formData.expiry)) {
-    toast.error("Card expiry date is invalid or expired (use MM/YY)");
-    return;
-  }
+    if (!isExpiryValid(formData.expiry)) {
+      toast.error("Card expiry date is invalid or expired (use MM/YY)");
+      return;
+    }
 
-  // Convert MM/YY to YYYY-MM-DD format
-  const [month, yearShort] = formData.expiry.split("/");
-  const year = `20${yearShort}`;
-  const formattedExpiry = `${year}-${month.padStart(2, "0")}-01`;
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
 
-  // Assuming you allow only 1 item in cart:
-  if (cartItems.length !== 1) {
-    toast.error("Only one item can be checked out at a time.");
-    return;
-  }
-
-  const selectedProductId = cartItems[0].id;
-
-  const payload = {
-    guest_customer: {
-      first_name: formData.firstName,
-      last_name: formData.lastName,
+    const payload = {
       address: {
-        house_address: formData.address,
         postal_code: formData.postalCode,
+        house_address: formData.houseAddress,
       },
       card_details: {
-        name_on_card: `${formData.firstName} ${formData.lastName}`,
+        name_on_card: formData.nameOnCard,
         card_number: formData.cardNumber.replace(/\s/g, ""),
-        expiry_date: formattedExpiry,
+        expiry_date: formData.expiry,
         cvv: formData.cvv,
       },
-    },
-    product: selectedProductId, // not a list!
-    subtotal,
-    tax,
-    insurance,
-    total,
+      items: cartItems.map((item) => ({
+        product: item.id,
+        quantity: item.quantity || 1, // Default to 1 if quantity is missing
+      })),
+    };
+
+    try {
+      const token = localStorage.getItem("accessToken");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const res = await axios.post(`${BASE_URL}/checkout/`, payload, {
+        headers,
+      });
+
+      toast.success("Payment Successful!");
+
+      // Construct local order object
+      const newOrder = {
+        id: res.data?.order_id || Date.now().toString(),
+        name: user?.user?.username || "Guest",
+        email: user?.user?.email || "N/A",
+        address: formData.houseAddress,
+        dateOfPurchase: new Date().toLocaleString(),
+        status: "Processing",
+        delivery: "Standard",
+        returnRequested: false,
+        items: cartItems.map((item) => ({
+          productName: item.name,
+          sku: item.sku,
+          quantity: item.quantity || 1,
+          price: `£${Number(item.price).toFixed(2)}`,
+        })),
+        totalPrice: `£${total.toFixed(2)}`,
+      };
+
+      addOrder(newOrder); // 🔥 Add it to global context
+
+      clearCart();
+
+      navigate("/orderDetails", {
+        state: {
+          ...formData,
+          subtotal,
+          tax,
+          insurance,
+          total,
+          orderId: res.data?.order_id || null,
+        },
+      });
+    } catch (err) {
+      console.error("Checkout failed:", err.response?.data || err.message);
+      toast.error("Payment failed. Please try again.");
+    }    
   };
-
-  try {
-    const response = await axios.post(
-      "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/checkout",
-      payload
-    );
-
-    toast.success("Payment Successful!");
-
-    navigate("/orderDetails", {
-      state: {
-        ...formData,
-        subtotal,
-        tax,
-        insurance,
-        total,
-        orderId: response.data?.order_id || null,
-      },
-    });
-  } catch (error) {
-    console.error("Checkout failed:", error.response?.data || error.message);
-    toast.error("Payment failed. Please check your details and try again.");
-  }
-};
-
-
-
+  
   return (
     <div style={{ padding: "2rem", maxWidth: "500px", margin: "auto" }}>
       <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>Payment</h2>
 
       {step === 1 ? (
-        <form onSubmit={handleNext} className="border border-3 p-5">
-          <h3 style={{ marginBottom: "1rem" }}>Enter your details</h3>
-          {["firstName", "lastName", "postalCode"].map((field) => (
-            <div key={field}>
-              <label>{field.replace(/([A-Z])/g, " $1")}:</label>
-              <input
-                type="text"
-                name={field}
-                className="form-control"
-                value={formData[field]}
-                onChange={handleChange}
-                required
-                style={{ width: "100%", marginBottom: "1rem" }}
-              />
-            </div>
-          ))}
-          <label>Address:</label>
-          <textarea
-            name="address"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setStep(2);
+          }}
+          className="border border-3 p-5"
+        >
+          <h3 style={{ marginBottom: "1rem" }}>Enter Address Info</h3>
+          <label>Postal Code:</label>
+          <input
+            type="text"
+            name="postalCode"
             className="form-control"
-            value={formData.address}
+            value={formData.postalCode}
             onChange={handleChange}
             required
-            rows="3"
+            style={{ width: "100%", marginBottom: "1rem" }}
+          />
+
+          <label>House Address:</label>
+          <textarea
+            name="houseAddress"
+            className="form-control"
+            value={formData.houseAddress}
+            onChange={handleChange}
+            required
+            rows="2"
             style={{ width: "100%", marginBottom: "1.5rem" }}
           />
+
           <button
             type="submit"
             className="btn btn-primary"
@@ -179,6 +193,19 @@ const PaymentPage = () => {
         </form>
       ) : (
         <form onSubmit={handleSubmit} className="border border-3 p-5">
+          <h3 style={{ marginBottom: "1rem" }}>Card Details</h3>
+
+          <label>Name on Card:</label>
+          <input
+            type="text"
+            name="nameOnCard"
+            value={formData.nameOnCard}
+            onChange={handleChange}
+            required
+            placeholder="Obianuju Ofodu"
+            style={{ width: "100%", marginBottom: "1rem" }}
+          />
+
           <label>Card Number:</label>
           <input
             type="text"
@@ -198,7 +225,7 @@ const PaymentPage = () => {
             value={formData.expiry}
             onChange={handleChange}
             required
-            placeholder="12/25"
+            placeholder="12/26"
             style={{ width: "100%", marginBottom: "1rem" }}
           />
 
@@ -214,20 +241,19 @@ const PaymentPage = () => {
             style={{ width: "100%", marginBottom: "1.5rem" }}
           />
 
-          {/* Price Summary */}
           <hr />
           <p>
             <strong>Subtotal:</strong> £{subtotal.toLocaleString()}
           </p>
           <p>
-            <strong>Tax (20% VAT):</strong> £{tax.toLocaleString()}
+            <strong>Tax:</strong> £{tax.toLocaleString()}
           </p>
           <p>
             <strong>Insurance:</strong> £{insurance.toLocaleString()}
           </p>
-          <h3>
+          <h4>
             <strong>Total:</strong> £{total.toLocaleString()}
-          </h3>
+          </h4>
 
           <button
             type="submit"
