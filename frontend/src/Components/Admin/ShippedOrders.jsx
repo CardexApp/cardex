@@ -1,4 +1,5 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -38,6 +39,8 @@ const ShippedOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -47,6 +50,7 @@ const ShippedOrders = () => {
               shippedOrders.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
+
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
                     <div className="nameEmail">
@@ -54,6 +58,7 @@ const ShippedOrders = () => {
                       <p className="subText">{order.email}</p>
                     </div>
                   </div>
+
                   <div>
                     {order.items.map((item, idx) => (
                       <p key={idx}>
@@ -61,14 +66,21 @@ const ShippedOrders = () => {
                       </p>
                     ))}
                   </div>
+
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
+
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Invoice">
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
                       <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>
@@ -80,6 +92,7 @@ const ShippedOrders = () => {
           </div>
         </div>
       </div>
+
       <Dock />
     </div>
   );

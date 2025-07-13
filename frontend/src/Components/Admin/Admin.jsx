@@ -1,7 +1,13 @@
 import "./Admin.css";
 import "./Styles/Dock.css";
-import asset from "../../assets/asset";
-import { Link, Routes, Route, useLocation } from "react-router-dom";
+import AdminNavBar from "./AdminNavBar";
+import {
+  Link,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
@@ -9,19 +15,16 @@ import {
   faBoxes,
   faUserGroup,
   faTruckFast,
-  faBell,
-  faChalkboardUser,
+
   faFlagCheckered,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
   TotalRevenue,
-  DateDisplay,
   ActiveUsers,
   TotalUsers,
   PaidInvoice,
   FundsReceived,
-  SearchBar,
 } from "./Reusables";
 
 import Dashboard from "./Dashboard";
@@ -33,6 +36,11 @@ import ProcessingOrders from "./ProcessingOrders";
 import PendingOrders from "./PendingOrders";
 import ReturnRequests from "./ReturnRequests";
 import ConfirmedReturns from "./ConfirmedReturns";
+import AdminProfile from "./Authentication/AdminProfile";
+import ChangePassword from "./Authentication/ChangePassword";
+import Analytics from "./Analytics"; 
+
+import { useAuth } from "../../Context/AuthContext";
 
 const icons = [
   {
@@ -69,20 +77,9 @@ const icons = [
     id: 6,
     icon: <FontAwesomeIcon icon={faFlagCheckered} size="2x" />,
     p: "Reports",
-    to: "/admin/reports",
+    to: "/admin/analytics",
   },
 ];
-
-export const Dock = () => (
-  <div className="dock">
-    {icons.map((icon) => (
-      <Link to={icon.to} key={icon.id} className="dock-icon">
-        {icon.icon}
-        <p className="dock-label">{icon.p}</p>
-      </Link>
-    ))}
-  </div>
-);
 
 export const AdminMenu = () => (
   <section className="adminMenu">
@@ -113,55 +110,42 @@ export const AdminMenu = () => (
     <Link to="/admin/returns/confirmed" className="adminLink">
       Confirmed Returns
     </Link>
+    <Link to="/admin/analytics" className="adminLink">
+      Analytics
+    </Link>
+    <Link to="/admin/change-password" className="adminLink">
+      Change Password
+    </Link>
   </section>
+);
+
+export const Dock = () => (
+  <div className="dock">
+    {icons.map((icon) => (
+      <Link to={icon.to} key={icon.id} className="dock-icon">
+        {icon.icon}
+        <p className="dock-label">{icon.p}</p>
+      </Link>
+    ))}
+  </div>
 );
 
 const Admin = () => {
   const location = useLocation();
-  const isDashboard = location.pathname === "/admin";
+  const navigate = useNavigate();
+
+  const isDashboard =
+    location.pathname === "/admin" || location.pathname === "/admin/";
 
   return (
     <div className="landingPage">
-      {/* Admin Top Bar */}
-      <div className="navAdmin">
-        <div className="icon">
-          <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
-        </div>
-        <div className="dashBoard">
-          <h3>Admin Page</h3>
-          <h4>
-            <DateDisplay />
-          </h4>
-        </div>
-        <div className="services">
-          <div className="adminSearch">
-            <SearchBar placeholder="Search Cardex" type="text" />
-          </div>
-          <div className="notifiers">
-            <FontAwesomeIcon className="fontIcon" icon={faBell} />
-            <div className="dropdownAdminProfile">
-              <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
-              <div className="dropdownContentAdmin">
-                <div className="adminProfile">
-                  <div className="adminAvatar">
-                    <p>Admin</p>
-                  </div>
-                  <h2>Admin name</h2>
-                  <h3>Cars Posted</h3>
-                  <h3>Cars Sold</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Top Bar */}
+      <AdminNavBar />
 
-      {/* Admin Side and Content */}
+      {/* Side Menu + Content */}
       <div className="overview">
         <AdminMenu />
-
         <section className="adminDashBoard">
-          {/* Quick Info and Admin Details only on /admin */}
           {isDashboard && (
             <>
               <div className="quickInfo">
@@ -175,8 +159,6 @@ const Admin = () => {
               </div>
             </>
           )}
-
-          {/* Admin Routes */}
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="inventory" element={<InventoryPage />} />
@@ -187,6 +169,10 @@ const Admin = () => {
             <Route path="orders/delivered" element={<DeliveredOrders />} />
             <Route path="returns/requests" element={<ReturnRequests />} />
             <Route path="returns/confirmed" element={<ConfirmedReturns />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="*" element={<p>Page not found</p>} />
           </Routes>
         </section>
       </div>

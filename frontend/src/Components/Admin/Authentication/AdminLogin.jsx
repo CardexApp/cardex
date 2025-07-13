@@ -1,66 +1,78 @@
-import "./AdminAuth.css";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Context/AuthContext";
+import { toast } from "react-toastify";
+import { BASE_URL } from "../../../Config";
+import "./AdminAuth.css";
 
-const AdminLogin = () => {
+export default function AdminLogin() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { setUser } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ username: "", password: "" });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const res = await axios.post(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/admin/login",
-        {
-          username: form.username,
-          password: form.password,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/admin/login/`, {
+        username,
+        password,
+      });
 
-      if(res.data.access && res.data.refresh){
+      const access = res.data.access;
+      const refresh = res.data.refresh;
+      const userData = res.data.user;
 
-        localStorage.setItem("accessToken", res.data.access);
-        localStorage.setItem("refreshToken", res.data.refresh);
+      // Store tokens
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
 
-        alert("Login successful!");
+      // Save user to context
+      setUser(userData);
+
+      // Redirect based on role
+      if (userData.is_staff || userData.is_superuser) {
+        toast.success(`Welcome ${userData.first_name || "Admin"}!`);
         navigate("/admin");
       } else {
-        alert("Login response missing tokens")
+        toast.error("Access denied: You are not an admin.");
+        navigate("/");
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed.");
+      console.error(err);
+      setError("Invalid credentials. Please try again.");
+      toast.error("Login failed");
     }
   };
 
   return (
     <div className="authContainer">
       <h2>Admin Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={loginSubmit}>
         <input
           type="text"
-          name="username"
-          placeholder="Enter email"
-          value={form.username}
-          onChange={handleChange}
+          placeholder="Username or Email"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
+
         <input
           type="password"
-          name="password"
           placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
+
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>
   );
-};
-
-export default AdminLogin;
+}

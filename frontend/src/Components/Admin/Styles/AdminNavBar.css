@@ -1,0 +1,120 @@
+/* === GLOBAL RESET === */
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* === TOP NAVIGATION WRAPPER === */
+  .navAdmin {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(250px, 3fr) minmax(150px, 1fr);
+    align-items: center;
+    justify-content: space-between;
+    padding: 36px 48px 8px 48px;
+    background-color: #f0f0f0;
+  }
+  
+  /* === LOGO SECTION === */
+  .icon {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+  
+  .icon .logo {
+    width: 28px;
+    align-self: auto;
+  }
+  
+  /* === PAGE TITLE + DATE === */
+  .navAdmin .dashBoard {
+    display: flex;
+    gap: 12px;
+    align-content: center;
+    padding: 0 12px;
+  }
+  
+  .dashBoard h3 {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .dashBoard h4 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  /* === SEARCH & NOTIFICATION SECTION === */
+  .navAdmin .services {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 28px;
+  }
+  
+  .adminSearch {
+    display: flex;
+    align-items: center;
+  }
+  
+  .notifiers {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .fontIcon {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 100%;
+    padding: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  /* === DROPDOWN USER PROFILE === */
+  .dropdownAdminProfile {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdownContentAdmin {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background-color: white;
+    min-width: 220px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .dropdownAdminProfile:hover .dropdownContentAdmin {
+    display: block;
+  }
+  
+  .adminProfile {
+    text-align: left;
+  }
+  
+  .adminAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #0e3062;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .day{
+    margin: 0;
+    padding: 0;
+  }

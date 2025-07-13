@@ -6,7 +6,7 @@ const TAX_RATE = 0.2; // 20% VAT
 const INSURANCE_PER_CAR = 500; // Flat estimate
 
 const CartPage = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   // Calculate costs
@@ -25,6 +25,9 @@ const CartPage = () => {
       },
     });
   };
+  const handleremoveFromCart=(index)=>{
+      removeFromCart(index)
+  }
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -89,7 +92,11 @@ const CartPage = () => {
                     <strong>Car Type:</strong> {item.car_type.name}
                   </p>
                 </div>
+                <div>
+                <button type="button" className="btn btn-danger" onClick={()=>handleremoveFromCart(index)}>Delete</button>
               </div>
+              </div>
+              
             </div>
           ))}
 

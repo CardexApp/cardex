@@ -1,4 +1,5 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,20 +12,9 @@ import { useOrders } from "../../Context/OrdersContext";
 const DeliveredOrders = () => {
   const { orders } = useOrders();
 
-  if (!orders || !Array.isArray(orders)) {
-    return (
-      <div className="customersPage">
-        <AdminMenu />
-        <div className="customersContent">
-          <h2>Delivered Orders</h2>
-          <p>Loading or no orders available...</p>
-        </div>
-        <Dock />
-      </div>
-    );
-  }
-
-  const deliveredOrders = orders.filter((o) => o.status === "Delivered");
+  const deliveredOrders = (orders || []).filter(
+    (o) => o.status === "Delivered"
+  );
 
   return (
     <div className="customersPage">
@@ -38,6 +28,8 @@ const DeliveredOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -47,6 +39,7 @@ const DeliveredOrders = () => {
               deliveredOrders.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
+
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
                     <div className="nameEmail">
@@ -54,6 +47,7 @@ const DeliveredOrders = () => {
                       <p className="subText">{order.email}</p>
                     </div>
                   </div>
+
                   <div>
                     {order.items.map((item, idx) => (
                       <p key={idx}>
@@ -61,14 +55,21 @@ const DeliveredOrders = () => {
                       </p>
                     ))}
                   </div>
+
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
+
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Invoice">
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
                       <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>

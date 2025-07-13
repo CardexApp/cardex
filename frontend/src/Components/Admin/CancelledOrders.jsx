@@ -1,32 +1,26 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEye, faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faEye,
+  faFileInvoice,
+} from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
-const ProcessingOrders = () => {
+const CancelledOrders = () => {
   const { orders } = useOrders();
 
-  if (!orders || !Array.isArray(orders)) {
-    return (
-      <div className="customersPage">
-        <AdminMenu />
-        <div className="customersContent">
-          <h2>Processing Orders</h2>
-          <p>Loading or no orders available...</p>
-        </div>
-        <Dock />
-      </div>
-    );
-  }
-
-  const processingOrders = orders.filter((o) => o.status === "Processing");
+  const cancelledOrders = (orders || []).filter(
+    (o) => o.status === "Cancelled"
+  );
 
   return (
     <div className="customersPage">
+      <AdminMenu />
       <div className="customersContent">
-        <h2>Processing Orders</h2>
-
+        <h2>Cancelled Orders</h2>
         <div className="customerTableWrapper">
           <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
@@ -34,15 +28,12 @@ const ProcessingOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
-            <div>Delivery</div>
-            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
-
           <div className="customerTableBody shippedGrid">
-            {processingOrders.length > 0 ? (
-              processingOrders.map((order) => (
+            {cancelledOrders.length > 0 ? (
+              cancelledOrders.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
                   <div className="userInfo">
@@ -61,21 +52,22 @@ const ProcessingOrders = () => {
                   </div>
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.deliveryMethod || "-"}</div>
-                  <div>{order.returnRequested ? "Yes" : "No"}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Mark as Out for Delivery">
-                      <FontAwesomeIcon icon={faTruckFast} />
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
+                      <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>
                 </div>
               ))
             ) : (
-              <p>No processing orders found.</p>
+              <p>No cancelled orders found.</p>
             )}
           </div>
         </div>
@@ -85,4 +77,4 @@ const ProcessingOrders = () => {
   );
 };
 
-export default ProcessingOrders;
+export default CancelledOrders;
