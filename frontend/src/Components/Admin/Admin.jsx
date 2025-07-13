@@ -1,7 +1,6 @@
 import "./Admin.css";
 import "./Styles/Dock.css";
-import asset from "../../assets/asset";
-import { toast } from "react-toastify";
+import AdminNavBar from "./AdminNavBar";
 import {
   Link,
   Routes,
@@ -16,20 +15,16 @@ import {
   faBoxes,
   faUserGroup,
   faTruckFast,
-  faBell,
-  faChalkboardUser,
+
   faFlagCheckered,
-  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
   TotalRevenue,
-  DateDisplay,
   ActiveUsers,
   TotalUsers,
   PaidInvoice,
   FundsReceived,
-  SearchBar,
 } from "./Reusables";
 
 import Dashboard from "./Dashboard";
@@ -138,54 +133,14 @@ export const Dock = () => (
 const Admin = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
 
   const isDashboard =
     location.pathname === "/admin" || location.pathname === "/admin/";
 
-  const handleLogout = () => {
-    logout();
-    toast.success("Logged out successfully.");
-    navigate("/admin/login");
-  };
-
   return (
     <div className="landingPage">
       {/* Top Bar */}
-      <div className="navAdmin">
-        <div className="icon">
-          <img className="logo" src={asset.LOGO} alt="CARDEX logo" />
-        </div>
-        <div className="dashBoard">
-          <h3>Admin Page</h3>
-          <h4>
-            <DateDisplay />
-          </h4>
-        </div>
-        <div className="services">
-          <div className="adminSearch">
-            <SearchBar placeholder="Search Cardex" type="text" />
-          </div>
-          <div className="notifiers">
-            <FontAwesomeIcon className="fontIcon" icon={faBell} />
-            <div className="dropdownAdminProfile">
-              <FontAwesomeIcon className="fontIcon" icon={faChalkboardUser} />
-              <div className="dropdownContentAdmin">
-                <div className="adminProfile">
-                  <div className="adminAvatar">
-                    <p>{user?.username}</p>
-                  </div>
-                  <h2>{user?.username}</h2>
-                  <h3>{user?.email}</h3>
-                  <button onClick={handleLogout} className="logoutBtn">
-                    <FontAwesomeIcon icon={faRightFromBracket} /> Logout
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AdminNavBar />
 
       {/* Side Menu + Content */}
       <div className="overview">
