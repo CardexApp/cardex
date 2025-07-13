@@ -119,22 +119,10 @@ const Home = () => {
       )}
 
       {/* FEATURED STATIC CAR */}
-      <section className="featured-car">
-        <div className="featuredImage"></div>
-        <div className="featuredDetails">
-          <h4>Porsche-2025</h4>
-          <h2>Feel The Power of Porsche</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis
-            unde, quae recusandae ipsam reiciendis molestiae.
-          </p>
-          <button className="read-more">Read More</button>
-        </div>
-      </section>
+      
 
       {/* POPULAR CARS PLACEHOLDER */}
       <section className="popular-cars">
-        <h3>Shop Favourite Cars</h3>
         <h2>Shop Popular New Car</h2>
       </section>
 

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 // Providers
@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 
 // Layout
 import NavBar from "./Components/Header/navBar.jsx";
+import AdminLayout from "./Components/Admin/AdminLayout.jsx";
 
 // Public Pages
 import Homepage from "./Pages/Homepage.jsx";
@@ -38,12 +39,17 @@ import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 
 function App() {
+
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+
   return (
     <OrdersProvider>
       <CartProvider>
         <ToastContainer />
         <div className="App">
-          <NavBar />
+          {!isAdminRoute && <NavBar />}
           <div className="mainContent">
             <Routes>
               {/* Public Routes */}
