@@ -18,8 +18,8 @@ const InventoryPage = () => {
     fuel_type: "",
     image: "",
     mileage: "",
-    car_type: "",
-    make: "",
+    car_type: "", // ID expected
+    make: "", // ID expected
     condition: "",
     description: "",
   });
@@ -28,8 +28,14 @@ const InventoryPage = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
       try {
-        const res = await axios.get(`${BASE_URL}/admin/products/`);
+        const res = await axios.get(`${BASE_URL}/admin/products/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setSalesData(res.data);
       } catch (err) {
         console.error("Failed to fetch inventory:", err);
@@ -40,7 +46,7 @@ const InventoryPage = () => {
 
   useEffect(() => {
     const lowStock = salesData.filter(
-      (item) => item.quantity > 0 && item.quantity <= 10
+      (item) => item.quantity > 0 && item.quantity <= 3
     );
     const outOfStock = salesData.filter((item) => item.quantity === 0);
     const alertMsgs = [
@@ -188,100 +194,33 @@ const InventoryPage = () => {
             <section className="addProduct">
               <h3>Add New Product</h3>
               <div className="inputList">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={newProduct.name}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, name: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Transmission"
-                  value={newProduct.transmission}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      transmission: e.target.value,
-                    })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Status"
-                  value={newProduct.status}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, status: e.target.value })
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="Quantity"
-                  value={newProduct.quantity}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      quantity: Number(e.target.value),
-                    })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Price"
-                  value={newProduct.price}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, price: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Year"
-                  value={newProduct.model_year}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, model_year: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Fuel Type"
-                  value={newProduct.fuel_type}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, fuel_type: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Mileage"
-                  value={newProduct.mileage}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, mileage: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Car Type"
-                  value={newProduct.car_type}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, car_type: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Make"
-                  value={newProduct.make}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, make: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Condition"
-                  value={newProduct.condition}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, condition: e.target.value })
-                  }
-                />
+                {[
+                  { placeholder: "Name", field: "name" },
+                  { placeholder: "Transmission", field: "transmission" },
+                  { placeholder: "Status", field: "status" },
+                  {
+                    placeholder: "Quantity",
+                    field: "quantity",
+                    type: "number",
+                  },
+                  { placeholder: "Price", field: "price" },
+                  { placeholder: "Year", field: "model_year" },
+                  { placeholder: "Fuel Type", field: "fuel_type" },
+                  { placeholder: "Mileage", field: "mileage" },
+                  { placeholder: "Car Type (ID)", field: "car_type" },
+                  { placeholder: "Make (ID)", field: "make" },
+                  { placeholder: "Condition", field: "condition" },
+                ].map(({ placeholder, field, type }) => (
+                  <input
+                    key={field}
+                    type={type || "text"}
+                    placeholder={placeholder}
+                    value={newProduct[field]}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, [field]: e.target.value })
+                    }
+                  />
+                ))}
                 <textarea
                   placeholder="Description"
                   value={newProduct.description}
@@ -340,7 +279,7 @@ const InventoryPage = () => {
                       <td>{row.id}</td>
                       <td>
                         <img
-                          src={row.image}
+                          src={row.image?.trim() || "/LOGO.svg"}
                           alt={row.name}
                           style={{
                             width: "60px",
