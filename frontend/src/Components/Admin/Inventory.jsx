@@ -107,19 +107,26 @@ const InventoryPage = () => {
   };
 
   const handleUpdateQuantity = async (id, deltaQuantity) => {
-    const updatedProduct = salesData.find((item) => item.id === id);
-    const newQuantity = updatedProduct.quantity + deltaQuantity;
+    const product = salesData.find((item) => item.id === id);
+    const newQuantity = product.quantity + deltaQuantity;
 
     if (newQuantity < 0) {
       alert("Error: Quantity cannot be negative.");
       return;
     }
 
+    const accessToken = localStorage.getItem("accessToken");
+
     try {
-      await axios.put(`${BASE_URL}/admin/products/${id}/`, {
-        ...updatedProduct,
-        quantity: newQuantity,
-      });
+      await axios.patch(
+        `${BASE_URL}/admin/products/${id}/`,
+        { quantity: newQuantity },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
       setSalesData((prev) =>
         prev.map((item) =>
@@ -128,17 +135,29 @@ const InventoryPage = () => {
       );
     } catch (err) {
       console.error("Error updating quantity:", err);
+      alert("Failed to update quantity. Check console for details.");
     }
   };
+  
 
   const handleDeleteProduct = async (id) => {
+    const accessToken = localStorage.getItem("accessToken");
+
     try {
-      await axios.delete(`${BASE_URL}/admin/products/${id}/`);
+      await axios.delete(`${BASE_URL}/admin/products/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Update local state after successful delete
       setSalesData((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Error deleting product:", err);
+      alert("Failed to delete product. You may not be authorized.");
     }
   };
+  
 
   const handleSortNameOrId = () => {
     setSortMode((prev) => (prev === "name" ? "id" : "name"));
