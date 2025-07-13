@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../Config";
 import { toast } from "react-toastify";
@@ -35,23 +35,22 @@ const Products = () => {
 
   // use context for product cart
   const { addToCart } = useContext(CartContext);
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
-      navigate("/login"); 
+      navigate("/login");
     }
 
     axios
-      .get(`${BASE_URL}/products`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
+      .get(`${BASE_URL}/products`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         setProducts(res.data);
       })
@@ -60,7 +59,23 @@ const Products = () => {
         console.error("Error fetching products:", err);
         toast.error("Failed to load products. Please log in again");
       });
-}, []);
+  }, []);
+
+  useEffect(() => {
+    if (location.hash && products.length > 0) {
+      const targetId = location.hash.replace("#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.classList.add("highlightCar");
+
+        // Timeout to remove highlight
+        setTimeout(() => {
+          element.classList.remove("highlightCar");
+        }, 3000);
+      }
+    }
+  }, [location, products]);
 
   // Filter products logic
   const filteredProducts = products.filter((car) => {
@@ -150,27 +165,31 @@ const Products = () => {
       </div>
 
       <div className="productGrid">
-        {filteredProducts.length === 0 &&(
+        {filteredProducts.length === 0 && (
           <div>
             <p>No matching products found</p>
           </div>
         )}
         {filteredProducts.map((cardex) => (
-          <div key={cardex.id} className="productCard">
+          <div key={cardex.id} id={`car-${cardex.id}`} className="productCard">
             {/* Top Image */}
-            <div className="productImageContainer">
-              <img
-                src={cardex.image}
-                alt={cardex.name}
-                className="productImage"
-              />
+            <div
+              className="productImageContainer backgroundCard"
+              style={{
+                backgroundImage: `url(${cardex.image?.trim() ? cardex.image : '/LOGO.svg'})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "180px",
+                width: "100%",
+              }}
+            >
               <div className="badge">Great Price</div>
               <div
                 className="bookmark"
                 onClick={() => {
                   console.log("Bookmarked - ID:", cardex.id);
                   addToCart(cardex);
-                  toast.success("Product added to cart")
+                  toast.success("Product added to cart");
                   // navigate("/cart");
                 }}
               >
