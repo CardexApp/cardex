@@ -89,7 +89,7 @@ const Footer = () => {
       </div>
 
       <div className="footerBottom">
-        <p>©2022 CarDex. All rights reserved</p>
+        <p>&copy; CarDex. All rights reserved</p>
         <div className="footerLinks">
           <a href="#">Privacy & Policy</a>
           <a href="#">Terms & Condition</a>
