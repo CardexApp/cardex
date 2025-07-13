@@ -57,7 +57,7 @@ const CarInfoDetails = () => {
         <p>3.5 D5 PowerPulse Momentum 5dr AWD Geartronic Estate</p>
       </div>
 
-      <section className="hero">
+      <section className="hero car">
         <div className="leftSidebar">
           {/* Specifications and CTA's */}
           <div className="banner">
