@@ -44,11 +44,16 @@ const InventoryPage = () => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    const lowStock = salesData.filter(
+    useEffect(() => {
+      updateStockAlerts(salesData);
+    }, [salesData]);
+    
+
+  const updateStockAlerts = (data) => {
+    const lowStock = data.filter(
       (item) => item.quantity > 0 && item.quantity <= 3
     );
-    const outOfStock = salesData.filter((item) => item.quantity === 0);
+    const outOfStock = data.filter((item) => item.quantity === 0);
     const alertMsgs = [
       ...lowStock.map(
         (item) => `⚠️ Low stock: ${item.name} (${item.quantity})`
@@ -56,7 +61,8 @@ const InventoryPage = () => {
       ...outOfStock.map((item) => `❌ Out of stock: ${item.name}`),
     ];
     setAlerts(alertMsgs);
-  }, [salesData]);
+  };
+  
 
   const handleAddProduct = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -133,12 +139,12 @@ const InventoryPage = () => {
           item.id === id ? { ...item, quantity: newQuantity } : item
         )
       );
+        
     } catch (err) {
       console.error("Error updating quantity:", err);
       alert("Failed to update quantity. Check console for details.");
     }
   };
-  
 
   const handleDeleteProduct = async (id) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -157,7 +163,6 @@ const InventoryPage = () => {
       alert("Failed to delete product. You may not be authorized.");
     }
   };
-  
 
   const handleSortNameOrId = () => {
     setSortMode((prev) => (prev === "name" ? "id" : "name"));
