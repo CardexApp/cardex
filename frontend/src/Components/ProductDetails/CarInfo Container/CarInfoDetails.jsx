@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { data } from "../../../assets/Data/Data";
 import { CartContext } from "../../../Context/CartContext";
 import axios from "axios";
+import { BASE_URL } from "../../../Config";
 
 const CarInfoDetails = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const CarInfoDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://sparkling-chelsae-cardex-cd058300.koyeb.app/${id}/`)
+      .get(`${BASE_URL}/products/${id}/`)
       .then((res) => setCarDetails(res.data))
       .catch((err) =>
         console.error("Failed to fetch car details from backend:", err)

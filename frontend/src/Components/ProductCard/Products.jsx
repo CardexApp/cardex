@@ -47,7 +47,7 @@ const Products = () => {
     }
 
     axios
-      .get(`${BASE_URL}/products`, {
+      .get(`${BASE_URL}/products/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

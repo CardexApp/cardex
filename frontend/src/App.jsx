@@ -39,10 +39,8 @@ import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 
 function App() {
-
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-
 
   return (
     <OrdersProvider>
@@ -56,6 +54,7 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/user/profile" element={<UserProfile />} />
@@ -70,6 +69,25 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Products />
+                  </ProtectedRoute>
+                }
+              />
+              {/* Product Details */}
+              <Route
+                path="/car/:id"
+                element={
+                  <ProtectedRoute>
+                    <CarInfoDetails />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Order Details */}
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderDetails />
                   </ProtectedRoute>
                 }
               />
