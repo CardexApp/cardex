@@ -274,12 +274,6 @@ const Home = () => {
           <p>Reliable and stylish daily driver.</p>
         </div>
       </section>
-
-      {/* FAQ */}
-      <section className="faq">
-        <h2>FAQs</h2>
-        {/* FAQ content here */}
-      </section>
     </div>
   );
 };

@@ -35,6 +35,7 @@ import AdForgetPass from "./Components/Admin/Authentication/ChangePassword.jsx";
 import AdminRoute from "./Components/Admin/AdminRoute.jsx";
 import ForgotPassword from "./Components/User/Password/ForgotPassword.jsx";
 import UserProfile from "./Components/User/Profile/UserProfile.jsx";
+import Footer from "./Components/Footer/Footer.jsx";
 
 function App() {
   return (
@@ -43,41 +44,47 @@ function App() {
         <ToastContainer />
         <div className="App">
           <NavBar />
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Homepage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/user/profile" element={<UserProfile />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/user/forgot-password" element={<ForgotPassword />} />
-            <Route
-              path="/listings"
-              element={
-                <ProtectedRoute>
-                  <Products />
-                </ProtectedRoute>
-              }
-            />
+          <div className="mainContent">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Homepage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route
+                path="/user/forgot-password"
+                element={<ForgotPassword />}
+              />
+              <Route
+                path="/listings"
+                element={
+                  <ProtectedRoute>
+                    <Products />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Admin Auth Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/register" element={<AdminRegister />} />
-            <Route path="/admin/forgot-password" element={<AdForgetPass />} />
+              {/* Admin Auth Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/register" element={<AdminRegister />} />
+              <Route path="/admin/forgot-password" element={<AdForgetPass />} />
 
-            {/* Admin Dashboard Routes */}
-            <Route
-              path="/admin/*"
-              element={
-                <AdminRoute>
-                  <Admin />
-                </AdminRoute>
-              }
-            />
-          </Routes>
+              {/* Admin Dashboard Routes */}
+              <Route
+                path="/admin/*"
+                element={
+                  <AdminRoute>
+                    <Admin />
+                  </AdminRoute>
+                }
+              />
+            </Routes>
+          </div>
+          <Footer className="cardexFooter" />
         </div>
       </CartProvider>
     </OrdersProvider>
