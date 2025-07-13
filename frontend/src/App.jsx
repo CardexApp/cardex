@@ -64,6 +64,8 @@ function App() {
                 path="/user/forgot-password"
                 element={<ForgotPassword />}
               />
+              
+              {/* product Listings */}
               <Route
                 path="/listings"
                 element={
