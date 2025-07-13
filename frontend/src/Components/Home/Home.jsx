@@ -1,7 +1,7 @@
 import "./Home.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../Config";
 
 const Home = () => {
@@ -43,6 +43,23 @@ const Home = () => {
 
     fetchCars();
   }, []);
+
+  const RangeRoverCars = cars
+    .filter((car) => car.make.name?.toLowerCase() === "range rover")
+    .slice(0, 5);
+
+  const lexusCars = cars
+    .filter((car) => car.make.name?.toLowerCase() === "lexus")
+    .slice(0, 5);
+
+  const handleView = (id) => {
+    navigate(`/listings#car-${id}`);
+  };
+
+  const getImage = (url) => {
+    return url?.trim() ? url : "/LOGO.svg"; 
+  };
+
 
   return (
     <div className="general">
@@ -145,12 +162,82 @@ const Home = () => {
 
       {/* MODEL GRID */}
       <section className="model">
-        {cars.map((cardex) => (
-          <div key={cardex.id} className="modelHeading">
-            <h2>{`${cardex.make.name} ${cardex.name} ${cardex.model_year}`}</h2>
-            <button>View All</button>
-          </div>
-        ))}
+        <div className="homeContainer">
+          <h1 className="homeTitle">Explore Featured Categories</h1>
+          <section className="brandGrid">
+            {/* Tesla */}
+            <div className="brandColumn">
+              <h2 className="brandTitle">Range Rover</h2>
+              <div className="cardGrid">
+                {RangeRoverCars.map((car) => (
+                  <div key={car.id} className="modelCard">
+                    <div
+                      className="carImageContainer"
+                      style={{ backgroundImage: `url(${getImage(car.image)})` }}
+                    />
+                    <div className="cardBody">
+                      <div className="cardHeader">
+                        <h3>{`${car.make.name} ${car.name}`}</h3>
+                        <span className="modelYear">{car.model_year}</span>
+                      </div>
+                      <div className="cardSpecs">
+                        <span>👥 4 People</span>
+                        <span>🔋 {car.fuel_type}</span>
+                        <span>🛣 6.1km / 1-Litre</span>
+                        <span>⚙️ {car.transmission}</span>
+                      </div>
+                      <div className="cardFooter">
+                        <span className="price">£{car.price}/month</span>
+                        <button
+                          className="rentBtn"
+                          onClick={() => handleView(car.id)}
+                        >
+                          View now
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Lexus */}
+            <div className="brandColumn">
+              <h2 className="brandTitle">Lexus</h2>
+              <div className="cardGrid">
+                {lexusCars.map((car) => (
+                  <div key={car.id} className="modelCard">
+                    <div
+                      className="carImageContainer"
+                      style={{ backgroundImage: `url(${getImage(car.image)})` }}
+                    />
+                    <div className="cardBody">
+                      <div className="cardHeader">
+                        <h3>{`${car.make.name} ${car.name}`}</h3>
+                        <span className="modelYear">{car.model_year}</span>
+                      </div>
+                      <div className="cardSpecs">
+                        <span>👥 4 People</span>
+                        <span>🔋 {car.fuel_type}</span>
+                        <span>🛣 6.1km / 1-Litre</span>
+                        <span>⚙️ {car.transmission}</span>
+                      </div>
+                      <div className="cardFooter">
+                        <span className="price">£{car.price}/month</span>
+                        <button
+                          className="rentBtn"
+                          onClick={() => handleView(car.id)}
+                        >
+                          View Now
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
       </section>
 
       {/* RETURN SPECIAL */}
