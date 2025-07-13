@@ -49,7 +49,7 @@ const loginSubmit = async (e) => {
       <p>Please login to continue or sign up to create an account</p>
 
       <div className="loginInput">
-        <img src="" alt="user avatar" className="loginAvatar" />
+
 
         <form onSubmit={loginSubmit}>
           <input
@@ -70,9 +70,13 @@ const loginSubmit = async (e) => {
           />
 
           <div className="loginRecover">
-            <input type="checkbox" /> Remember me
-            <span className="loginForgotPass">Forgot Password?</span>
-          </div>
+  <label>
+    <input type="checkbox" />
+    Remember me
+  </label>
+  <span className="loginForgotPass">Forgot Password?</span>
+</div>
+
 
           {error && <p className="errorText">{error}</p>}
 
