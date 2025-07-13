@@ -59,6 +59,14 @@ body {
   align-items: center;
   font-size: 13px;
   margin: 10px 0 15px;
+  gap: 10px; /* Add small spacing */
+}
+
+.loginRecover label {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Tighter space between checkbox and text */
+  margin: 0;
 }
 
 .loginRecover input[type="checkbox"] {
