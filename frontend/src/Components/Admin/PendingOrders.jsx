@@ -16,9 +16,9 @@ const PendingOrders = () => {
 
   return (
     <div className="customersPage">
-      {/* <AdminMenu /> */}
       <div className="customersContent">
         <h2>Pending Orders</h2>
+
         <div className="customerTableWrapper">
           <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
@@ -26,9 +26,12 @@ const PendingOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
+
           <div className="customerTableBody shippedGrid">
             {pendingOrders.length > 0 ? (
               pendingOrders.map((order) => (
@@ -50,6 +53,8 @@ const PendingOrders = () => {
                   </div>
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
                   <div>${Number(order.totalPrice).toLocaleString()}</div>
                   <div className="actions">
                     <button title="View">

@@ -16,9 +16,9 @@ const ReturnRequests = () => {
 
   return (
     <div className="customersPage">
-      {/* <AdminMenu /> */}
       <div className="customersContent">
         <h2>Return Requests</h2>
+
         <div className="customerTableWrapper">
           <div className="customerTableHeader shippedGrid">
             <div>Order ID</div>
@@ -26,14 +26,18 @@ const ReturnRequests = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
+
           <div className="customerTableBody shippedGrid">
             {returns.length > 0 ? (
               returns.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
+
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
                     <div className="nameEmail">
@@ -41,6 +45,7 @@ const ReturnRequests = () => {
                       <p className="subText">{order.email}</p>
                     </div>
                   </div>
+
                   <div>
                     {order.items.map((item, idx) => (
                       <p key={idx}>
@@ -48,9 +53,13 @@ const ReturnRequests = () => {
                       </p>
                     ))}
                   </div>
+
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>Yes</div>
                   <div>${Number(order.totalPrice).toLocaleString()}</div>
+
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />

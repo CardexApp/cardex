@@ -39,6 +39,8 @@ const ShippedOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -67,6 +69,8 @@ const ShippedOrders = () => {
 
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
                   <div>${Number(order.totalPrice).toLocaleString()}</div>
 
                   <div className="actions">

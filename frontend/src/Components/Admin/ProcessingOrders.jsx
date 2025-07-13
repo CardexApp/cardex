@@ -34,6 +34,8 @@ const ProcessingOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -59,6 +61,8 @@ const ProcessingOrders = () => {
                   </div>
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
                   <div>{order.totalPrice}</div>
                   <div className="actions">
                     <button title="View">
