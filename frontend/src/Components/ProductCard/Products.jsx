@@ -8,7 +8,8 @@ import {
   faGauge,
   faGasPump,
   faGear,
-  faBookmark,
+  faCartPlus,
+  faArrowTrendUp,
   // faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Products.css";
@@ -176,24 +177,31 @@ const Products = () => {
             <div
               className="productImageContainer backgroundCard"
               style={{
-                backgroundImage: `url(${cardex.image?.trim() ? cardex.image : '/LOGO.svg'})`,
+                backgroundImage: `url(${
+                  cardex.image?.trim() ? cardex.image : "/LOGO.svg"
+                })`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 height: "180px",
                 width: "100%",
+                borderRadius: "8px",
               }}
             >
-              <div className="badge">Great Price</div>
+              {cardex.deal_tag?.trim() && (
+                <div className="badge">
+                  {cardex.deal_tag.length > 13
+                    ? `${cardex.deal_tag.substring(0, 13)}...`
+                    : cardex.deal_tag}
+                </div>
+              )}
               <div
-                className="bookmark"
+                className="addToCartBtn"
                 onClick={() => {
-                  console.log("Bookmarked - ID:", cardex.id);
                   addToCart(cardex);
-                  toast.success("Product added to cart");
-                  // navigate("/cart");
+                  toast.success("Added to cart");
                 }}
               >
-                <FontAwesomeIcon className="bookmarkIcon" icon={faBookmark} />
+                <FontAwesomeIcon className="cartIcon" icon={faCartPlus} />
               </div>
             </div>
 
@@ -206,9 +214,13 @@ const Products = () => {
 
                 {/* <p className="productTitle"> {cardex.name}</p> */}
 
-                <p className="productDescription">{cardex.description}</p>
+                <p className="productDescription">
+                  {cardex.description.length > 56
+                    ? `${cardex.description.substring(0, 56)}...`
+                    : cardex.description}
+                </p>
               </div>
-              <hr />
+              <hr className="lineBreak" />
               <div className="productSpecs">
                 <div className="specItem">
                   <FontAwesomeIcon icon={faGauge} />
@@ -223,11 +235,12 @@ const Products = () => {
                   <span>{cardex.car_type.name}</span>
                 </div>
               </div>
-              <hr />
+              <hr className="lineBreak" />
               <div className="productFooter">
                 <span className="price">£{cardex.price.toLocaleString()}</span>
                 <Link to={`/car/${cardex.id}`} className="viewButton">
-                  View Details
+                  View Details{" "}
+                  <FontAwesomeIcon icon={faArrowTrendUp} className="arrowIcon" />
                 </Link>
               </div>
             </div>
