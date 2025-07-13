@@ -39,6 +39,8 @@ const AdminNavBar = () => {
           <SearchBar placeholder="Search Cardex" type="text" />
         </div>
 
+        <div></div>
+
         <div className="notifiers">
           <FontAwesomeIcon className="fontIcon" icon={faBell} />
 
