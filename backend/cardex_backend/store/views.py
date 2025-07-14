@@ -268,7 +268,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAdminUser]
     # pagination_class = StandardResultsSetPagination
-    filterset_fields = ['status', 'user', 'product']
+    # filterset_fields = ['status', 'user', 'product']
 
 class AdminUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
