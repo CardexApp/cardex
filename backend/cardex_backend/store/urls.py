@@ -15,7 +15,6 @@ from .views import (
     RemoveFromCartView,
     AdminRegisterView,
     ProductViewSet,
-    OrderViewSet,
     UserProfileUpdateView,
     PasswordChangeView,
     UserProfileView,
@@ -29,6 +28,8 @@ from .views import (
     MakeViewSet,
     CarTypeViewSet,
     AdminDashboardStatsView,
+    AdminOrderViewSet
+    
 )
 
 urlpatterns = [
@@ -62,12 +63,12 @@ urlpatterns = [
     path('admin/change-password/', PasswordChangeView.as_view(), name='password-change'),
     path('admin/products/', ProductViewSet.as_view({'get': 'list', 'post': 'create'}), name='admin-products-list'),
     path('admin/products/<int:pk>/', ProductViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-products-detail'),
-    path('admin/orders/', OrderViewSet.as_view({'get': 'list'}), name='admin-orders-list'),
+    path('admin/orders/', AdminOrderViewSet.as_view({'get': 'list'}), name='admin-orders-list'),
     path('admin/makes/', MakeViewSet.as_view({'get': 'list', 'post': 'create'}), name='admin-makes-list'),
     path('admin/makes/<int:pk>/', MakeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='admin-makes-detail'),
     path('admin/car-types/', CarTypeViewSet.as_view({'get': 'list'}), name='admin-car-types-list'),
     # path('admin/car-types/<int:pk>/', CarTypeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='admin-car-types-detail'),
-    path('admin/orders/<int:pk>/', OrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
+    path('admin/orders/<int:pk>/', AdminOrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
     path('admin/users/', AdminUserViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('admin/users/<int:pk>/', AdminUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'put': 'update', 'delete': 'destroy'})),
     path('contact/', ContactUsView.as_view(), name='contact'),
