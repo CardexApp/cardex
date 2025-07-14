@@ -26,6 +26,9 @@ from .views import (
     ProductReviewListView,
     CustomTokenObtainPairView,
     AdminAnalyticsView,
+    MakeViewSet,
+    CarTypeViewSet,
+    AdminDashboardStatsView,
 )
 
 urlpatterns = [
@@ -60,10 +63,15 @@ urlpatterns = [
     path('admin/products/', ProductViewSet.as_view({'get': 'list', 'post': 'create'}), name='admin-products-list'),
     path('admin/products/<int:pk>/', ProductViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-products-detail'),
     path('admin/orders/', OrderViewSet.as_view({'get': 'list'}), name='admin-orders-list'),
+    path('admin/makes/', MakeViewSet.as_view({'get': 'list', 'post': 'create'}), name='admin-makes-list'),
+    path('admin/makes/<int:pk>/', MakeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='admin-makes-detail'),
+    path('admin/car-types/', CarTypeViewSet.as_view({'get': 'list'}), name='admin-car-types-list'),
+    # path('admin/car-types/<int:pk>/', CarTypeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='admin-car-types-detail'),
     path('admin/orders/<int:pk>/', OrderViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='admin-orders-detail'),
     path('admin/users/', AdminUserViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('admin/users/<int:pk>/', AdminUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'put': 'update', 'delete': 'destroy'})),
     path('contact/', ContactUsView.as_view(), name='contact'),
-    path('admin/analytics/', AdminAnalyticsView.as_view(), name='admin-analytics')
+    path('admin/analytics/', AdminAnalyticsView.as_view(), name='admin-analytics'),
+    path('admin/summary/', AdminDashboardStatsView.as_view(), name='admin-dashboard-summary'),
     ]
 
