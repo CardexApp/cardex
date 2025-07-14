@@ -1,6 +1,7 @@
 import "./Home.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../Config";
 
@@ -14,6 +15,13 @@ const Home = () => {
     const userIsLoggedIn = localStorage.getItem("accessToken") !== null;
     navigate(userIsLoggedIn ? "/listings" : "/login");
   };
+=======
+import { Link, useNavigate } from "react-router-dom";
+
+const Home = () => {
+  const [cars, setCars] = useState([]);
+  const navigate = useNavigate();
+>>>>>>> dc291cc (Updated Payment Page)
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -44,6 +52,7 @@ const Home = () => {
     fetchCars();
   }, []);
 
+<<<<<<< HEAD
   const RangeRoverCars = cars
     .filter((car) => car.make.name?.toLowerCase() === "range rover")
     .slice(0, 5);
@@ -60,6 +69,11 @@ const Home = () => {
     return url?.trim() ? url : "/LOGO.svg"; 
   };
 
+=======
+  const handleExploreCar=()=>{
+    navigate("/listings")
+  }
+>>>>>>> dc291cc (Updated Payment Page)
 
   return (
     <div className="general">
@@ -68,6 +82,7 @@ const Home = () => {
         <div className="vertical-text">Shop Cardex</div>
         <div className="hero-content">
           <h1>Perfect Place To Buy And Sell Car</h1>
+<<<<<<< HEAD
           <div className="hero-buttons">
             <button onClick={handleButton} className="explore-btn">
               Explore Car
@@ -75,6 +90,11 @@ const Home = () => {
             <button onClick={handleButton} className="buy-btn">
               Buy Car
             </button>
+=======
+          <div class="hero-buttons">
+            <button className="explore-btn" onClick={handleExploreCar()}>Explore Car</button>
+            <button className="buy-btn">Buy Car</button>
+>>>>>>> dc291cc (Updated Payment Page)
           </div>
           <p>We Are In Social Media:</p>
           <div className="social-icons">{/* Social icons here */}</div>
