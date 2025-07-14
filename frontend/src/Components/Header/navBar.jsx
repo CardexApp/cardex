@@ -1,5 +1,6 @@
 import asset from "../../assets/asset";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "../../Context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navBar.css";
 import {
@@ -22,6 +23,8 @@ const NavBar = () => {
     localStorage.removeItem("refreshToken");
     navigate("/");
   };
+
+  const {user} = useAuth(); 
 
   return (
     <div className="navBar">
@@ -46,10 +49,14 @@ const NavBar = () => {
           <p>CONTACT</p>
           <hr className="hrTag" />
         </NavLink>
-        <NavLink to="/admin/login" className="navLink">
+        {user?.is_staff || user?.is_superuser ?(
+        <NavLink to="/admin" className="navLink">
           <p>Admin</p>
           <hr className="hrTag" />
-        </NavLink>
+        </NavLink>) : null}
+
+
+
         {/* <NavLink to="/login" className="navLink">
           <p>Login</p>
         </NavLink> */}

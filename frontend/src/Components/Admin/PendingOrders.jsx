@@ -1,31 +1,18 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faEye,
-  faCheckCircle,
-  faTimesCircle,
+  faFileInvoice,
 } from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
 const PendingOrders = () => {
   const { orders } = useOrders();
 
-  if (!orders || !Array.isArray(orders)) {
-    return (
-      <div className="customersPage">
-        <AdminMenu />
-        <div className="customersContent">
-          <h2>Pending Orders</h2>
-          <p>Loading or no orders available...</p>
-        </div>
-        <Dock />
-      </div>
-    );
-  }
-
-  const pendingOrders = orders.filter((o) => o.status === "Pending");
+  const pendingOrders = (orders || []).filter((o) => o.status === "Processing");
 
   return (
     <div className="customersPage">
@@ -39,6 +26,8 @@ const PendingOrders = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -64,16 +53,18 @@ const PendingOrders = () => {
                   </div>
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>{order.returnRequested ? "Yes" : "No"}</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Approve">
-                      <FontAwesomeIcon icon={faCheckCircle} />
-                    </button>
-                    <button title="Cancel">
-                      <FontAwesomeIcon icon={faTimesCircle} />
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
+                      <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>
                 </div>
@@ -84,7 +75,6 @@ const PendingOrders = () => {
           </div>
         </div>
       </div>
-
       <Dock />
     </div>
   );

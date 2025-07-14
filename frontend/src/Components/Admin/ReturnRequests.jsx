@@ -1,31 +1,18 @@
 import "./Styles/Customers.css";
+import { generateInvoice } from "../Admin/Reusables";
 import { AdminMenu, Dock } from "./Admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faEye,
-  faCheckCircle,
-  faTimesCircle,
+  faFileInvoice,
 } from "@fortawesome/free-solid-svg-icons";
 import { useOrders } from "../../Context/OrdersContext";
 
 const ReturnRequests = () => {
   const { orders } = useOrders();
 
-  if (!orders || !Array.isArray(orders)) {
-    return (
-      <div className="customersPage">
-        <AdminMenu />
-        <div className="customersContent">
-          <h2>Return Requests</h2>
-          <p>Loading or no orders available...</p>
-        </div>
-        <Dock />
-      </div>
-    );
-  }
-
-  const returnRequests = orders.filter((o) => o.returnRequested);
+  const returns = (orders || []).filter((o) => o.returnRequested);
 
   return (
     <div className="customersPage">
@@ -39,15 +26,18 @@ const ReturnRequests = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
 
           <div className="customerTableBody shippedGrid">
-            {returnRequests.length > 0 ? (
-              returnRequests.map((order) => (
+            {returns.length > 0 ? (
+              returns.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
+
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
                     <div className="nameEmail">
@@ -55,6 +45,7 @@ const ReturnRequests = () => {
                       <p className="subText">{order.email}</p>
                     </div>
                   </div>
+
                   <div>
                     {order.items.map((item, idx) => (
                       <p key={idx}>
@@ -62,18 +53,22 @@ const ReturnRequests = () => {
                       </p>
                     ))}
                   </div>
+
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>Yes</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
+
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button title="Approve Return">
-                      <FontAwesomeIcon icon={faCheckCircle} />
-                    </button>
-                    <button title="Decline Return">
-                      <FontAwesomeIcon icon={faTimesCircle} />
+                    <button
+                      title="Invoice"
+                      onClick={() => generateInvoice(order)}
+                    >
+                      <FontAwesomeIcon icon={faFileInvoice} />
                     </button>
                   </div>
                 </div>

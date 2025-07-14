@@ -1,6 +1,10 @@
 import Home from "../Components/Home/Home";
 
 const Homepage = () => {
-  return <div><Home /></div>;
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 };
 export default Homepage;

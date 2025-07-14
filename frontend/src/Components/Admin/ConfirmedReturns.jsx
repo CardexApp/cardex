@@ -1,6 +1,6 @@
 import "./Styles/Customers.css";
 import { useState } from "react";
-import {  Dock } from "./Admin";
+import { Dock } from "./Admin";
 import { SearchBar } from "./Reusables";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -48,6 +48,8 @@ const ConfirmedReturns = () => {
             <div>Products</div>
             <div>Date/Time</div>
             <div>Status</div>
+            <div>Delivery</div>
+            <div>Return Req</div>
             <div>Total</div>
             <div>Actions</div>
           </div>
@@ -57,6 +59,7 @@ const ConfirmedReturns = () => {
               confirmedReturns.map((order) => (
                 <div className="orderRow" key={order.id}>
                   <div>{order.id}</div>
+
                   <div className="userInfo">
                     <FontAwesomeIcon className="avatar" icon={faUser} />
                     <div className="nameEmail">
@@ -64,6 +67,7 @@ const ConfirmedReturns = () => {
                       <p className="subText">{order.email}</p>
                     </div>
                   </div>
+
                   <div>
                     {order.items.map((item, idx) => (
                       <p key={idx}>
@@ -71,9 +75,13 @@ const ConfirmedReturns = () => {
                       </p>
                     ))}
                   </div>
+
                   <div>{order.dateOfPurchase}</div>
                   <div>{order.status}</div>
-                  <div>{order.totalPrice}</div>
+                  <div>{order.deliveryMethod || "-"}</div>
+                  <div>Yes</div>
+                  <div>${Number(order.totalPrice).toLocaleString()}</div>
+
                   <div className="actions">
                     <button title="View">
                       <FontAwesomeIcon icon={faEye} />

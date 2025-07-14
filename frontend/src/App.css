@@ -1,7 +1,5 @@
-Text-size styles
-{
-
-  --font-family:"Poppins-Bold", Helvetica;
+Text-size styles {
+  --font-family: "Poppins-Bold", Helvetica;
 
   --background-display-large: 96px;
   --background-display-medium: 84px;
@@ -57,7 +55,7 @@ Text-size styles
   --neutral-color: #f5f5f5; /* Gray 100 */
   --accent-color: #ff7043; /* Deep Orange 40 */
   --background-color1: #ffffff; /* White 100 */
-  --background-color2: #F6FAF8; /* White 100 */
+  --background-color2: #f6faf8; /* White 100 */
 
   /* Text colors */
   --text-primary-color: #263238;
@@ -190,4 +188,13 @@ li {
 }
 .Okem__sys__light__bgBlur__100 {
   backdrop-filter: blur(50px);
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
 }

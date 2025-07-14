@@ -1,8 +1,12 @@
 import "./AdminAuth.css";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../../Config";
+import { toast } from "react-toastify";
 
 const AdminRegister = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -10,20 +14,28 @@ const AdminRegister = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const res = await axios.post(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/admin/register",
-        form
-      );
-      alert("Registration successful!");
+      await axios.post(`${BASE_URL}/admin/register/`, form); // trailing slash
+      toast.success("✅ Admin registration successful");
+      navigate("/admin/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed.");
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.detail ||
+        "❌ Registration failed. You must be logged in as a superuser.";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -32,7 +44,6 @@ const AdminRegister = () => {
       <h2>Admin Register</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
           name="first_name"
           placeholder="First Name"
           value={form.first_name}
@@ -40,7 +51,6 @@ const AdminRegister = () => {
           required
         />
         <input
-          type="text"
           name="last_name"
           placeholder="Last Name"
           value={form.last_name}
@@ -48,22 +58,24 @@ const AdminRegister = () => {
           required
         />
         <input
-          type="email"
           name="email"
+          type="email"
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
           required
         />
         <input
-          type="password"
           name="password"
+          type="password"
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
           required
         />
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
     </div>
   );
