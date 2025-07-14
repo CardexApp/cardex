@@ -35,6 +35,7 @@ from .serializers import (
     CustomTokenObtainPairSerializer,
     MakeSerializer,
     CarTypeSerializer,
+    AdminOrderUpdateSerializer,
 )
 from django.utils import timezone
 from django.db.models import Sum, Count, F, FloatField
@@ -226,8 +227,6 @@ class RemoveFromCartView(generics.DestroyAPIView):
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
         
 
-
-
 # All viewsets for admin
 
 # class StandardResultsSetPagination(pagination.LimitOffsetPagination):
@@ -263,12 +262,38 @@ class CarTypeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]  # only admin can access
     # pagination_class = StandardResultsSetPagination
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+# class OrderViewSet(viewsets.ModelViewSet):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+#     permission_classes = [permissions.IsAdminUser]
+#     # pagination_class = StandardResultsSetPagination
+#     # filterset_fields = ['status', 'user', 'product']
+
+
+class AdminOrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all().select_related('user', 'address').order_by('created_at')
     permission_classes = [permissions.IsAdminUser]
-    # pagination_class = StandardResultsSetPagination
-    # filterset_fields = ['status', 'user', 'product']
+
+    def get_serializer_class(self):
+        # Use admin serializer only for admin PATCH/PUT
+        if self.action in ['partial_update', 'update']:
+            return AdminOrderUpdateSerializer
+        return OrderSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        """ Admin updating order status, e.g., from processing → dispatched, etc. """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Order updated successfully", "order": OrderSerializer(instance).data})
+
+    def destroy(self, request, *args, **kwargs):
+        """ Admin deleting an order (if needed) """
+        instance = self.get_object()
+        instance.delete()
+        return Response({"message": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
 
 class AdminUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

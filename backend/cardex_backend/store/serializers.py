@@ -363,21 +363,32 @@ class OrderSerializer(serializers.ModelSerializer):
 
         return order
 
-
-
-
     
-# serializers.py
+
 class ReturnRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['status']  # Only allow updating this field
+        fields = ['status']
 
     def validate_status(self, value):
-        if value != 'Return request initiated':
-            raise serializers.ValidationError("You can only request a return.")
+        if value != 'return_requested':
+            raise serializers.ValidationError("Only 'return_requested' is allowed.")
+        
+        order = self.instance
+        if order.status == 'return_requested':
+            raise serializers.ValidationError("Return request already initiated for this order.")
+        if order.status != 'delivered':
+            raise serializers.ValidationError("You can only request return for delivered orders.")
+    
+        
         return value
 
+
+
+class AdminOrderUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']
 
 # CartItem serializer
 
