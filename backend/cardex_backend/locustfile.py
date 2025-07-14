@@ -5,9 +5,9 @@ class CardexUser(HttpUser):
     wait_time = between(1, 3)
 
     def on_start(self):
-        # Try login and capture token
+
         response = self.client.post("/api/login/", json={
-            "username": "ujua@gmail.com",   # double check that your JWT expects 'username'
+            "username": "ujua@gmail.com",
             "password": "Roseford112"
         })
         if response.status_code == 200:
