@@ -7,18 +7,13 @@ import { BASE_URL } from "../Config";
 import { useAuth } from "../Context/AuthContext";
 import { useOrders } from "../Context/OrdersContext";
 
-
 const PaymentPage = () => {
   const user = useAuth();
   const [step, setStep] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
-<<<<<<< HEAD
   const { addOrder } = useOrders();
   const { cartItems, clearCart } = useContext(CartContext);
-=======
-  const { cartItems } = useContext(CartContext);
->>>>>>> dc291cc (Updated Payment Page)
 
   const { subtotal, tax, insurance, total } = location.state || {
     subtotal: 0,
@@ -28,12 +23,15 @@ const PaymentPage = () => {
   };
 
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    postalCode: "",
+    address: "",
+    houseAddress: "",
     nameOnCard: "",
     cardNumber: "",
     expiry: "",
     cvv: "",
-    postalCode: "",
-    houseAddress: "",
   });
 
   const handleChange = (e) => {
@@ -64,6 +62,16 @@ const PaymentPage = () => {
     return year > currentYear || (year === currentYear && month >= currentMonth);
   };
 
+  const handleNext = (e) => {
+    e.preventDefault();
+    // Basic validation
+    if (!formData.firstName || !formData.lastName || !formData.postalCode || !formData.houseAddress) {
+      toast.error("Please fill out all the required fields.");
+      return;
+    }
+    setStep(2);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,7 +80,6 @@ const PaymentPage = () => {
       return;
     }
 
-<<<<<<< HEAD
     if (cartItems.length === 0) {
       toast.error("Your cart is empty.");
       return;
@@ -91,7 +98,7 @@ const PaymentPage = () => {
       },
       items: cartItems.map((item) => ({
         product: item.id,
-        quantity: item.quantity || 1, // Default to 1 if quantity is missing
+        quantity: item.quantity || 1,
       })),
     };
 
@@ -99,13 +106,10 @@ const PaymentPage = () => {
       const token = localStorage.getItem("accessToken");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      const res = await axios.post(`${BASE_URL}/checkout/`, payload, {
-        headers,
-      });
+      const res = await axios.post(`${BASE_URL}/checkout/`, payload, { headers });
 
       toast.success("Payment Successful!");
 
-      // Construct local order object
       const newOrder = {
         id: res.data?.order_id || Date.now().toString(),
         name: user?.user?.username || "Guest",
@@ -124,71 +128,9 @@ const PaymentPage = () => {
         totalPrice: `£${total.toFixed(2)}`,
       };
 
-      addOrder(newOrder); // 🔥 Add it to global context
-
+      addOrder(newOrder);
       clearCart();
 
-=======
-    if (cartItems.length !== 1) {
-      toast.error("Only one item can be checked out at a time.");
-      return;
-    }
-
-    const product = cartItems[0];
-    if (!product?.id) {
-      toast.error("Product ID is missing.");
-      return;
-    }
-
-    const [month, yearShort] = formData.expiry.split("/");
-    const year = `20${yearShort}`;
-    const formattedExpiry = `${year}-${month.padStart(2, "0")}-01`;
-
-    const payload = {
-      guest_customer: {
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        address: {
-          house_address: formData.address.replace(/\n/g, " "),
-          postal_code: formData.postalCode,
-        },
-        card_details: {
-          name_on_card: `${formData.firstName} ${formData.lastName}`,
-          card_number: formData.cardNumber.replace(/\s/g, ""),
-          expiry_date: formattedExpiry,
-          cvv: formData.cvv.replace(/\D/g, ""),
-        },
-      },
-      product: product.id.toString(),
-      subtotal: subtotal.toString(),
-      tax: tax.toString(),
-      insurance: insurance.toString(),
-      total: total.toString(),
-    };
-
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("You must be logged in to proceed with payment.");
-        return;
-      }
-
-      console.log("Token being used:", token);
-      console.log("Payload:", payload);
-
-      const response = await axios.post(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/checkout",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        }
-      );
-
-      toast.success("Payment Successful!");
->>>>>>> dc291cc (Updated Payment Page)
       navigate("/orderDetails", {
         state: {
           ...formData,
@@ -196,54 +138,25 @@ const PaymentPage = () => {
           tax,
           insurance,
           total,
-<<<<<<< HEAD
           orderId: res.data?.order_id || null,
-        },
-      });
-    } catch (err) {
-      console.error("Checkout failed:", err.response?.data || err.message);
-      toast.error("Payment failed. Please try again.");
-    }    
-  };
-  
-=======
-          orderId: response.data?.order_id || null,
         },
       });
     } catch (error) {
       if (error.response) {
-        console.error("Server responded with error:", error.response.data);
         toast.error(error.response.data?.message || "Payment failed: server error.");
       } else if (error.request) {
-        console.error("No response from server:", error.request);
         toast.error("Payment failed: no response from server.");
       } else {
-        console.error("Error setting up request:", error.message);
         toast.error("Payment failed: request setup error.");
       }
     }
   };
 
->>>>>>> dc291cc (Updated Payment Page)
   return (
     <div style={{ padding: "2rem", maxWidth: "500px", margin: "auto" }}>
       <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>Payment</h2>
 
       {step === 1 ? (
-<<<<<<< HEAD
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setStep(2);
-          }}
-          className="border border-3 p-5"
-        >
-          <h3 style={{ marginBottom: "1rem" }}>Enter Address Info</h3>
-          <label>Postal Code:</label>
-          <input
-            type="text"
-            name="postalCode"
-=======
         <form onSubmit={handleNext} className="border border-3 p-5">
           <h3>Enter your details</h3>
           {["firstName", "lastName", "postalCode"].map((field) => (
@@ -263,9 +176,8 @@ const PaymentPage = () => {
           <label>Address:</label>
           <textarea
             name="address"
->>>>>>> dc291cc (Updated Payment Page)
             className="form-control"
-            value={formData.postalCode}
+            value={formData.address}
             onChange={handleChange}
             required
             style={{ width: "100%", marginBottom: "1rem" }}
@@ -281,17 +193,9 @@ const PaymentPage = () => {
             rows="2"
             style={{ width: "100%", marginBottom: "1.5rem" }}
           />
-<<<<<<< HEAD
 
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: "100%" }}
-          >
-=======
-          <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
->>>>>>> dc291cc (Updated Payment Page)
-            Next
+          <button type="submit" className="btn btn-success" style={{ width: "100%" }}>
+            Continue to Payment
           </button>
         </form>
       ) : (
@@ -345,25 +249,10 @@ const PaymentPage = () => {
           />
 
           <hr />
-<<<<<<< HEAD
-          <p>
-            <strong>Subtotal:</strong> £{subtotal.toLocaleString()}
-          </p>
-          <p>
-            <strong>Tax:</strong> £{tax.toLocaleString()}
-          </p>
-          <p>
-            <strong>Insurance:</strong> £{insurance.toLocaleString()}
-          </p>
-          <h4>
-            <strong>Total:</strong> £{total.toLocaleString()}
-          </h4>
-=======
           <p><strong>Subtotal:</strong> £{subtotal.toLocaleString()}</p>
-          <p><strong>Tax (20% VAT):</strong> £{tax.toLocaleString()}</p>
+          <p><strong>Tax:</strong> £{tax.toLocaleString()}</p>
           <p><strong>Insurance:</strong> £{insurance.toLocaleString()}</p>
-          <h3><strong>Total:</strong> £{total.toLocaleString()}</h3>
->>>>>>> dc291cc (Updated Payment Page)
+          <h4><strong>Total:</strong> £{total.toLocaleString()}</h4>
 
           <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
             Pay Now

@@ -55,8 +55,12 @@ const Home = () => {
   };
 
   const handleExploreCar = () => {
-    navigate("/listings");
-  };
+  const element = document.getElementById("exploreCar");
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 
   return (
     <div className="general">
@@ -67,7 +71,7 @@ const Home = () => {
           <h1>Perfect Place To Buy And Sell Car</h1>
           <div className="hero-buttons">
             <button className="explore-btn" onClick={handleExploreCar}>Explore Car</button>
-            <button className="buy-btn">Buy Car</button>
+            <button className="buy-btn" onClick={()=>navigate('/listings')}>Buy Car</button>
           </div>
           <p>We Are In Social Media:</p>
           <div className="social-icons">{/* Social icons here */}</div>
@@ -114,7 +118,7 @@ const Home = () => {
       {/* POPULAR CARS */}
       <section className="model">
         <div className="homeContainer">
-          <h1 className="homeTitle">Explore Featured Categories</h1>
+          <h1 className="homeTitle" id="exploreCar">Explore Featured Categories</h1>
           <section className="brandGrid">
             <div className="brandColumn">
               <h2 className="brandTitle">Range Rover</h2>

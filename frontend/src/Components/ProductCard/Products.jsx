@@ -40,27 +40,27 @@ const Products = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken");
 
-    if (!accessToken) {
-      navigate("/login");
-    }
+  if (!accessToken) {
+    navigate("/login");
+  }
 
-    axios
-      .get(`${BASE_URL}/products/`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        setProducts(res.data);
-      })
+  axios
+    .get(`${BASE_URL}/products/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      setProducts(res.data);
+    })
+    .catch((err) => {
+      console.error("Error fetching products:", err);
+      toast.error("Failed to load products. Please log in again");
+    });
+}, []);
 
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        toast.error("Failed to load products. Please log in again");
-      });
-  }, []);
 
   useEffect(() => {
     if (location.hash && products.length > 0) {

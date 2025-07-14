@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../../Config";
 
 const Register = () => {
   const [first_name, setFirstName] = useState("");
@@ -25,8 +26,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(
-        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/register",
+      const res =await axios.post(`${BASE_URL}/register/`,
         {
           first_name,
           last_name,
