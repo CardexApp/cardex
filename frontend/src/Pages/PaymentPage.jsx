@@ -131,7 +131,7 @@ const PaymentPage = () => {
       addOrder(newOrder);
       clearCart();
 
-      navigate("/orderDetails", {
+      navigate("/order/:id", {
         state: {
           ...formData,
           subtotal,
