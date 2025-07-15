@@ -1,0 +1,54 @@
+.ordersPage {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.ordersList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.orderItem {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.orderInfo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.carImage {
+  width: 100px;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.carDetails {
+  flex-grow: 1;
+}
+
+.orderItem button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.orderItem button:hover {
+  background-color: #0056b3;
+}
+
+.returnInfo {
+  margin-top: 1rem;
+  background-color: #f2f2f2;
+  padding: 1rem;
+  border-radius: 4px;
+}

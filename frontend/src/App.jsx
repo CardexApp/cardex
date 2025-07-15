@@ -37,6 +37,8 @@ import AdminRoute from "./Components/Admin/AdminRoute.jsx";
 import ForgotPassword from "./Components/User/Password/ForgotPassword.jsx";
 import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
+import RatingsAndReviews from "./Components/User/Ratings/RatingsAndReviews.jsx";
+import OrdersPage from "./Components/User/Orders/OrdersPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -60,6 +62,8 @@ function App() {
               <Route path="/user/profile" element={<UserProfile />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/reviews" element={<RatingsAndReviews />} />
+              <Route path="/orders" element={<OrdersPage />} />
               <Route
                 path="/user/forgot-password"
                 element={<ForgotPassword />}
