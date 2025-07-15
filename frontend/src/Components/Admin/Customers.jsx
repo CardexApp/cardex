@@ -1,125 +1,23 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import "./Styles/Customers.css";
-// import { BASE_URL } from "../../Config";
-
-// const Customers = () => {
-//   const [orders, setOrders] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const fetchOrders = async () => {
-//       try {
-//         const token = localStorage.getItem("accessToken");
-//         if (!token) {
-//           setError("No token found. Please login.");
-//           setLoading(false);
-//           return;
-//         }
-
-//         const response = await axios.get(`${BASE_URL}/admin/orders/`, {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-
-//         console.log("Admin orders response:", response.data);
-
-
-//         setOrders(
-//           Array.isArray(response.data)
-//             ? response.data
-//             : response.data.results || []
-//         );
-//       } catch (err) {
-//         console.error(
-//           "Error fetching orders:",
-//           err.response || err.message || err
-//         );
-//         setError("Failed to fetch orders");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchOrders();
-//   }, []);
-
-//   return (
-//     <div className="customersPage">
-//       <div className="customersContent">
-//         <h2>Customer Orders</h2>
-
-//         {loading ? (
-//           <p>Loading orders...</p>
-//         ) : error ? (
-//           <p className="error">{error}</p>
-//         ) : orders.length === 0 ? (
-//           <p>No orders found.</p>
-//         ) : (
-//           <div className="customerTableWrapper">
-//             <div className="customerTableHeader shippedGrid">
-//               <div>Order ID</div>
-//               <div>User ID</div>
-//               <div>Products</div>
-//               <div>Date</div>
-//               <div>Status</div>
-//               <div>Delivery</div>
-//               <div>Return Req</div>
-//               <div>Total</div>
-//               <div>Actions</div>
-//             </div>
-
-//             <div className="customerTableBody shippedGrid">
-//               {orders.map((order) => (
-//                 <div className="orderRow" key={order.id}>
-//                   <div>{order.id}</div>
-//                   <div>{order.user}</div>
-
-//                   <div>
-//                     <ul className="itemList">
-//                       {order.items?.map((item, idx) => (
-//                         <li key={idx}>
-//                           Product ID: {item.product}, Qty: {item.quantity}
-//                         </li>
-//                       ))}
-//                     </ul>
-//                   </div>
-
-//                   <div>{new Date(order.created_at).toLocaleString()}</div>
-//                   <div>{order.status}</div>
-//                   <div>{order.deliveryMethod || "-"}</div>
-//                   <div>{order.returnRequested ? "Yes" : "No"}</div>
-//                   <div>{order.items?.length || 0}</div>
-
-//                   <div className="actions">
-//                     <button className="viewBtn">View</button>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Customers;
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Styles/Customers.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileInvoice, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../Config";
+import { generateInvoice } from "./Reusables";
 
 const Customers = () => {
   const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState({});
+  const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("accessToken");
         if (!token) {
@@ -128,38 +26,55 @@ const Customers = () => {
           return;
         }
 
-        const response = await axios.get(`${BASE_URL}/orders/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const [orderRes, productRes, userRes] = await Promise.all([
+          axios.get(`${BASE_URL}/admin/orders/`, { headers }),
+          axios.get(`${BASE_URL}/admin/products/`, { headers }),
+          axios.get(`${BASE_URL}/admin/users/`, { headers }),
+        ]);
+
+        const ordersData = Array.isArray(orderRes.data)
+          ? orderRes.data
+          : orderRes.data.results || [];
+
+        const productMap = {};
+        productRes.data.forEach((p) => {
+          productMap[p.id] = { name: p.name, price: p.price };
         });
 
-        setOrders(
-          Array.isArray(response.data)
-            ? response.data
-            : response.data.results || []
-        );
+        const userMap = {};
+        userRes.data.forEach((u) => {
+          userMap[u.id] = { username: u.username, email: u.email };
+        });
+
+        setOrders(ordersData);
+        setProducts(productMap);
+        setUsers(userMap);
       } catch (err) {
-        console.error(
-          "Error fetching orders:",
-          err.response || err.message || err
-        );
-        setError("Failed to fetch orders");
+        console.error("Fetch error:", err);
+        setError("Failed to fetch data.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrders();
+    fetchData();
   }, []);
+
+  const getUserInfo = (userId) =>
+    users[userId] || { username: "Unknown", email: "Unknown" };
+
+  const getProductInfo = (productId) =>
+    products[productId] || { name: "Unknown", price: 0 };
 
   return (
     <div className="customersPage">
       <div className="customersContent">
-        <h2>Your Orders</h2>
+        <h2>Customer Orders</h2>
 
         {loading ? (
-          <p>Loading orders...</p>
+          <p>Loading...</p>
         ) : error ? (
           <p className="error">{error}</p>
         ) : orders.length === 0 ? (
@@ -168,7 +83,7 @@ const Customers = () => {
           <div className="customerTableWrapper">
             <div className="customerTableHeader shippedGrid">
               <div>Order ID</div>
-              <div>User ID</div>
+              <div>Customer</div>
               <div>Products</div>
               <div>Date</div>
               <div>Status</div>
@@ -179,57 +94,84 @@ const Customers = () => {
             </div>
 
             <div className="customerTableBody shippedGrid">
-              {orders.map((order) => (
-                <div className="orderRow" key={order.id}>
-                  {/* Order ID */}
-                  <div>{order?.id ?? "N/A"}</div>
+              {orders.map((order) => {
+                const user = getUserInfo(order.user);
+                return (
+                  <div className="orderRow" key={order.id}>
+                    <div>{order?.id ?? "N/A"}</div>
 
-                  {/* User ID */}
-                  <div>{order?.user ?? "N/A"}</div>
+                    <div>
+                      {user.username}
+                      <br />
+                      <span className="customerEmail">{user.email}</span>
+                    </div>
 
-                  {/* Product Items */}
-                  <div>
-                    {Array.isArray(order.items) && order.items.length > 0 ? (
-                      <ul className="itemList">
-                        {order.items.map((item, idx) => (
-                          <li key={idx}>
-                            Product ID: {item?.product ?? "?"}, Qty:{" "}
-                            {item?.quantity ?? "-"}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span>No items</span>
-                    )}
+                    <div>
+                      {Array.isArray(order.items) && order.items.length > 0 ? (
+                        <ul className="itemList">
+                          {order.items.map((item, idx) => {
+                            const product = getProductInfo(item.product);
+                            return (
+                              <li key={idx}>
+                                {product.name} (x{item.quantity}) – ₦
+                                {product.price}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <span>No items</span>
+                      )}
+                    </div>
+
+                    <div>
+                      {order?.created_at
+                        ? new Date(order.created_at).toLocaleString()
+                        : "N/A"}
+                    </div>
+
+                    <div>{order?.status || "Pending"}</div>
+
+                    <div>
+                      {order?.address?.house_address
+                        ? `${order.address.house_address}, ${order.address.postal_code}`
+                        : "No address"}
+                    </div>
+
+                    <div>
+                      {order.returnRequested === true
+                        ? "Yes"
+                        : order.returnRequested === false
+                        ? "No"
+                        : "-"}
+                    </div>
+
+                    <div>{order?.deliveryMethod || "-"}</div>
+
+                    <div className="actions">
+                      {/* 📄 Generate Invoice */}
+                      <button
+                        className="iconBtn"
+                        title="Generate Invoice"
+                        onClick={() => generateInvoice(order, users, products)}
+                      >
+                        <FontAwesomeIcon icon={faFileInvoice} />
+                      </button>
+
+                      {/* ⏩ Go to Processing Page */}
+                      <button
+                        className="iconBtn"
+                        title="Mark as Processing"
+                        onClick={() =>
+                          navigate(`/admin/orders/processing#order-${order.id}`)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faArrowRight} />
+                      </button>
+                    </div>
                   </div>
-
-                  {/* Created At */}
-                  <div>
-                    {order?.created_at
-                      ? new Date(order.created_at).toLocaleString()
-                      : "N/A"}
-                  </div>
-
-                  {/* Status */}
-                  <div>{order?.status || "Pending"}</div>
-
-                  {/* Address */}
-                  <div>
-                    {order?.address?.house_address
-                      ? `${order.address.house_address}, ${order.address.postal_code}`
-                      : "No address"}
-                  </div>
-
-                  {/* Not in API */}
-                  <div>-</div>
-                  <div>-</div>
-
-                  {/* Actions */}
-                  <div className="actions">
-                    <button className="viewBtn">View</button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

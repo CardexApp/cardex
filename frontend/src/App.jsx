@@ -39,6 +39,7 @@ import UserProfile from "./Components/User/Profile/UserProfile.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import RatingsAndReviews from "./Components/User/Ratings/RatingsAndReviews.jsx";
 import OrdersPage from "./Components/User/Orders/OrdersPage.jsx";
+import Orders from "./Components/Admin/Orders.jsx";
 
 function App() {
   const location = useLocation();
@@ -68,7 +69,7 @@ function App() {
                 path="/user/forgot-password"
                 element={<ForgotPassword />}
               />
-              
+
               {/* product Listings */}
               <Route
                 path="/listings"
@@ -104,11 +105,21 @@ function App() {
               <Route path="/admin/forgot-password" element={<AdForgetPass />} />
 
               {/* Admin Dashboard Routes */}
+              {/* Admin Dashboard Routes */}
               <Route
                 path="/admin/*"
                 element={
                   <AdminRoute>
                     <Admin />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/orders"
+                element={
+                  <AdminRoute>
+                    <Orders />
                   </AdminRoute>
                 }
               />
