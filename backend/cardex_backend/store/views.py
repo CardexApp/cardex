@@ -7,8 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from django.conf import settings
+from .models import Order, OrderItem, Product, User
 
-from .models import Product, CarType, Order, Cart, CartItem, Review, OrderItem
+from .models import Product, CarType, Order, Cart, CartItem, Review, OrderItem, Make, CarType
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -32,10 +33,13 @@ from .serializers import (
     ReturnRequestSerializer,
     ContactSerializer,
     CustomTokenObtainPairSerializer,
+    MakeSerializer,
+    CarTypeSerializer,
+    AdminOrderUpdateSerializer,
 )
 from django.utils import timezone
-from django.db.models import Sum, Count, F
-from datetime import timedelta
+from django.db.models import Sum, Count, F, FloatField
+from datetime import timedelta, datetime
 
 from .permissions import IsStaff  # import the custom permission
 
@@ -223,8 +227,6 @@ class RemoveFromCartView(generics.DestroyAPIView):
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
         
 
-
-
 # All viewsets for admin
 
 # class StandardResultsSetPagination(pagination.LimitOffsetPagination):
@@ -248,12 +250,50 @@ class ProductViewSet(viewsets.ModelViewSet):
     # pagination_class = StandardResultsSetPagination
     filterset_fields = ['condition', 'fuel_type']
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAdminUser]
+class MakeViewSet(viewsets.ModelViewSet):
+    queryset = Make.objects.all()
+    serializer_class = MakeSerializer
+    permission_classes = [permissions.IsAdminUser]  # only admin can access
     # pagination_class = StandardResultsSetPagination
-    filterset_fields = ['status', 'user', 'product']
+
+class CarTypeViewSet(viewsets.ModelViewSet):
+    queryset = CarType.objects.all()
+    serializer_class = CarTypeSerializer
+    permission_classes = [permissions.IsAdminUser]  # only admin can access
+    # pagination_class = StandardResultsSetPagination
+
+# class OrderViewSet(viewsets.ModelViewSet):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+#     permission_classes = [permissions.IsAdminUser]
+#     # pagination_class = StandardResultsSetPagination
+#     # filterset_fields = ['status', 'user', 'product']
+
+
+class AdminOrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all().select_related('user', 'address').order_by('created_at')
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_serializer_class(self):
+        # Use admin serializer only for admin PATCH/PUT
+        if self.action in ['partial_update', 'update']:
+            return AdminOrderUpdateSerializer
+        return OrderSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        """ Admin updating order status, e.g., from processing → dispatched, etc. """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Order updated successfully", "order": OrderSerializer(instance).data})
+
+    def destroy(self, request, *args, **kwargs):
+        """ Admin deleting an order (if needed) """
+        instance = self.get_object()
+        instance.delete()
+        return Response({"message": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
 
 class AdminUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -331,3 +371,116 @@ class AdminAnalyticsView(APIView):
         }
 
         return Response(data)
+    
+
+
+class AdminDashboardStatsView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        now = timezone.now()
+        last_30_days = now - timedelta(days=30)
+
+        # Summary stats
+        revenue = OrderItem.objects.aggregate(
+        total_revenue=Sum(F('product__price') * F('quantity'), output_field=FloatField())
+        )['total_revenue'] or 0
+
+        total_orders = Order.objects.count()
+        pending_orders = Order.objects.filter(status__in=['processing', 'dispatched']).count()
+        active_users = Order.objects.filter(created_at__gte=last_30_days).values('user').distinct().count()
+        new_users = User.objects.filter(date_joined__gte=last_30_days).count()
+        return_orders = Order.objects.filter(status__startswith='return_').count()
+
+        return_rate = round((return_orders / total_orders) * 100, 1) if total_orders else 0
+
+        # Top products
+        top_products = (
+            OrderItem.objects
+            .values(name=F('product__name'))
+            .annotate(unitsSold=Sum('quantity'))
+            .order_by('-unitsSold')[:5]
+        )
+
+        # Orders & revenue by month (last 6 months)
+        months = []
+        orders_by_month = []
+        revenue_by_month = []
+        for i in range(5, -1, -1):
+            month = timezone.make_aware(datetime.combine(
+            (now - timedelta(days=30*i)).date().replace(day=1),
+            datetime.min.time()
+        ))
+            next_month = timezone.make_aware(datetime.combine(
+            (month + timedelta(days=32)).date().replace(day=1),
+            datetime.min.time()
+        ))
+            months.append(month.strftime('%B'))
+
+            monthly_orders = Order.objects.filter(created_at__gte=month, created_at__lt=next_month).count()
+            monthly_revenue = OrderItem.objects.filter(
+                order__created_at__gte=month,
+                order__created_at__lt=next_month
+            ).aggregate(
+            total=Sum(F('product__price') * F('quantity'), output_field=FloatField())
+            )['total'] or 0
+
+            orders_by_month.append(monthly_orders)
+            revenue_by_month.append(float(monthly_revenue))
+
+        # Weekly sales (past 7 days)
+        weekly_sales = []
+        for i in range(6, -1, -1):
+            day = now.date() - timedelta(days=i)
+            sales = Order.objects.filter(created_at__date=day).count()
+            weekly_sales.append({"day": day.strftime('%A'), "orders": sales})
+
+        # User growth (last 6 months)
+        user_growth = []
+        for i in range(5, -1, -1):
+            month = timezone.make_aware(datetime.combine(
+            (now - timedelta(days=30*i)).date().replace(day=1),
+            datetime.min.time()
+            ))  
+
+            next_month = timezone.make_aware(datetime.combine(
+            (month + timedelta(days=32)).date().replace(day=1),
+            datetime.min.time()
+        ))
+            count = User.objects.filter(date_joined__gte=month, date_joined__lt=next_month).count()
+            user_growth.append({"month": month.strftime('%B'), "count": count})
+
+        # Recent orders
+        recent_orders = (
+            Order.objects.select_related('user')
+            .order_by('-created_at')[:5]
+            .values('id', 'user__first_name', 'user__last_name', 'status', 'created_at')
+        )
+
+        # Inventory summary
+        inventory_summary = list(
+            Product.objects.annotate(
+                stockStatus=F('quantity')
+            ).values('name', 'quantity')
+        )
+
+        data = {
+            "summary": {
+                "totalRevenue": float(revenue),
+                "totalOrders": total_orders,
+                "pendingOrders": pending_orders,
+                "activeUsers": active_users,
+                "newUsers": new_users,
+                "returnRate": return_rate,
+            },
+            "topProducts": list(top_products),
+            "ordersByMonth": orders_by_month,
+            "revenueByMonth": revenue_by_month,
+            "weeklySales": weekly_sales,
+            "userGrowth": user_growth,
+            "recentOrders": list(recent_orders),
+            "inventorySummary": inventory_summary
+        }
+
+        return Response(data)
+
