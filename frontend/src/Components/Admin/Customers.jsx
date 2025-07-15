@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileInvoice, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../Config";
 import { generateInvoice } from "./Reusables";
+import jsPDF from "jspdf";
+import "jspdf-autotable"; 
+
 
 const Customers = () => {
   const [orders, setOrders] = useState([]);
@@ -149,7 +152,7 @@ const Customers = () => {
                     <div>{order?.deliveryMethod || "-"}</div>
 
                     <div className="actions">
-                      {/* 📄 Generate Invoice */}
+                      {/* Generate Invoice */}
                       <button
                         className="iconBtn"
                         title="Generate Invoice"
@@ -158,7 +161,7 @@ const Customers = () => {
                         <FontAwesomeIcon icon={faFileInvoice} />
                       </button>
 
-                      {/* ⏩ Go to Processing Page */}
+                      {/* Go to Processing Page */}
                       <button
                         className="iconBtn"
                         title="Mark as Processing"

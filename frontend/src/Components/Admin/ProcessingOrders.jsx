@@ -7,6 +7,9 @@ import { BASE_URL } from "../../Config";
 import { generateInvoice } from "./Reusables";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faFileInvoice } from "@fortawesome/free-solid-svg-icons";
+import jsPDF from "jspdf";
+import "jspdf-autotable"; 
+
 
 const ProcessingOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -181,7 +184,7 @@ const ProcessingOrders = () => {
                     <div>{order?.deliveryMethod || "-"}</div>
 
                     <div className="actions">
-                      {/* ✅ Confirm Processing → Dispatched */}
+                      {/* Confirm Processing → Dispatched */}
                       <button
                         className="iconBtn"
                         title="Confirm Processing"
@@ -190,7 +193,7 @@ const ProcessingOrders = () => {
                         <FontAwesomeIcon icon={faCheck} />
                       </button>
 
-                      {/* 📄 Generate Invoice */}
+                      {/* Generate Invoice */}
                       <button
                         className="iconBtn"
                         title="Invoice"
