@@ -1,21 +1,23 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
-import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-export default function AdminRoute({ children }) {
-  const { user, loading } = useAuth();
+const AdminRoute = ({ children }) => {
+  const { user } = useAuth(); // Already decoded and stored
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
-  if (loading) return <p>Loading...</p>;
+  useEffect(() => {
+    if (user?.is_staff || user?.is_superuser) {
+      setAuthorized(true);
+    }
+    setLoading(false);
+  }, [user]);
 
-  if (!user) {
-    toast.warn("Please log in to access the admin panel.");
-    return <Navigate to="/admin/login" />;
-  }
-
-  if (!user.is_staff && !user.is_superuser) {
-    toast.error("Access denied: Not an admin.");
-    return <Navigate to="/" />;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (!authorized) return <Navigate to="/unauthorized" />;
 
   return children;
-}
+};
+
+export default AdminRoute;

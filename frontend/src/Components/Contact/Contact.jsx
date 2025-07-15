@@ -1,7 +1,8 @@
 import "./Contact.css";
-import {useState} from "react"
+import { useState } from "react";
 import axios from "axios";
-import {BASE_URL} from "../../Config"
+import { BASE_URL } from "../../Config";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,13 +24,14 @@ const Contact = () => {
 
     try {
       await axios.post(`${BASE_URL}/contact/`, formData);
-      alert("Message sent successfully!");
+      toast.success("Message sent successfully!");
+      setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
       console.error("Failed to send message:", error);
       alert("There was an error sending your message.");
     }
   };
-  
+
   return (
     <section className="contact-section">
       <div className="contact-header">

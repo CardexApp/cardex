@@ -1,90 +1,82 @@
-import { useState } from "react";
 import "./Login.css";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "../../Config";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
-const loginSubmit = async (e) => {
-  e.preventDefault();
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
-  // Validate input
-  if (!username.trim() || !password.trim()) {
-    setError("Please enter both username and password.");
-    return;
-  }
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await axios.post(
-      "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/login/",
-      { username, password }
-    );
-
-    // Save access & refresh tokens to localStorage
-    localStorage.setItem("accessToken", res.data.access);
-    localStorage.setItem("refreshToken", res.data.refresh);
-
-    // Redirect after successful login
-    navigate("/");
-  } catch (err) {
-    if (err.response) {
-      setError(err.response.data.message || "Invalid username or password");
-    } else if (err.request) {
-      setError("No response from server");
-    } else {
-      setError("An error occurred");
+    try {
+      const response = await axios.post(
+        "https://sparkling-chelsae-cardex-cd058300.koyeb.app/api/token/",
+        credentials
+      );
+      const token = response.data?.access || response.data?.token;
+      if (token) {
+        localStorage.setItem("accessToken", token);
+        toast.success("Login successful!");
+        navigate("/listings");
+      } else {
+        toast.error("Token not received.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      toast.error("Invalid credentials or server error.");
     }
-  }
-};
+  };
 
   return (
     <div className="loginContainer">
       <h2 className="loginTitle">Welcome To Cardex</h2>
       <p>Please login to continue or sign up to create an account</p>
 
-      <div className="loginInput">
+      <form
+        onSubmit={handleLogin}
+        style={{ maxWidth: "400px", margin: "auto", padding: "2rem" }}
+      >
+        <h2>Login</h2>
+        <label>Username:</label>
+        <input
+          type="text"
+          name="username"
+          onChange={handleChange}
+          required
+          className="form-control"
+          style={{ marginBottom: "1rem" }}
+        />
 
+        <label>Password:</label>
+        <input
+          type="password"
+          name="password"
+          onChange={handleChange}
+          required
+          className="form-control"
+          style={{ marginBottom: "1rem" }}
+        />
 
-        <form onSubmit={loginSubmit}>
-          <input
-            type="text"
-            placeholder="Enter Username"
-            className="loginUser"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Enter Password"
-            className="loginPass"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <div className="loginRecover">
-  <label>
-    <input type="checkbox" />
-    Remember me
-  </label>
-  <span className="loginForgotPass">Forgot Password?</span>
-</div>
-
-
-          {error && <p className="errorText">{error}</p>}
-
-          <button type="submit" className="loginSubmit">
-            Submit
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{ width: "100%" }}
+        >
+          Login
+        </button>
+      </form>
     </div>
   );
 };

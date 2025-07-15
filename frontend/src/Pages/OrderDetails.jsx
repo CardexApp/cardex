@@ -17,11 +17,10 @@ const OrderDetails = () => {
   }
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
-      <h2 style={{ marginBottom: "1.5rem" }}>Order Confirmation</h2>
+    <div style={{ padding: "2rem", maxWidth: "600px", margin: "20px auto", fontFamily: "Arial, sans-serif", border:"2px solid grey",borderRadius:"10px"}} className="shadow-lg">
+      <h2 style={{ marginBottom: "1.5rem" }} className="text-center">Order Confirmation</h2>
       <p><strong>Name:</strong> {state.firstName} {state.lastName}</p>
       <p><strong>Postal Code:</strong> {state.postalCode}</p>
-      <p><strong>Address:</strong> {state.address}</p>
       <hr style={{ margin: "1rem 0" }} />
       <p><strong>Payment Method:</strong> Card</p>
       <p><strong>Card (Last 4 digits):</strong> **** **** **** {state.cardNumber.slice(-4)}</p>

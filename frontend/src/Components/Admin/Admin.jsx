@@ -39,6 +39,7 @@ import ConfirmedReturns from "./ConfirmedReturns";
 import AdminProfile from "./Authentication/AdminProfile";
 import ChangePassword from "./Authentication/ChangePassword";
 import Analytics from "./Analytics"; 
+import Orders from "./Orders";
 
 import { useAuth } from "../../Context/AuthContext";
 
@@ -173,6 +174,7 @@ const Admin = () => {
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="*" element={<p>Page not found</p>} />
+            <Route path="orders" element={<Orders />} />
           </Routes>
         </section>
       </div>

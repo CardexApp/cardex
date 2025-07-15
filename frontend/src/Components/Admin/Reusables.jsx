@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import "./Styles/Reusables.css";
 import { useState } from "react";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
-import autoTable from "jspdf-autotable";
+import "jspdf-autotable"; 
+
 
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -190,39 +190,63 @@ export const SearchBar = ({
   );
 };
 
-export const generateInvoice = (order) => {
+
+export const generateInvoice = (order, userMap, productMap) => {
   const doc = new jsPDF();
-  const date = new Date().toLocaleString();
+  const margin = 14;
 
-  doc.setFontSize(18);
-  doc.text("INVOICE", 14, 20);
+  const user = userMap[order.user] || {};
+  const username = user.username || "N/A";
+  const email = user.email || "N/A";
 
-  doc.setFontSize(11);
-  doc.text(`Order ID: ${order.id}`, 14, 30);
-  doc.text(`Date: ${date}`, 14, 36);
-  doc.text(`Customer: ${order.name}`, 14, 42);
-  doc.text(`Email: ${order.email}`, 14, 48);
-  doc.text(`Address: ${order.address}`, 14, 54);
+  const title = `Invoice for Order #${order.id}`;
+  doc.setFontSize(16);
+  doc.text(title, margin, 20);
 
-  const tableRows = order.items.map((item, index) => [
-    index + 1,
-    item.productName,
-    item.sku,
-    item.quantity,
-    `$${Number(item.price).toFixed(2)}`,
-    `$${(item.quantity * item.price).toFixed(2)}`,
-  ]);
+  doc.setFontSize(12);
+  doc.text(`Customer ID: ${order.user}`, margin, 30);
+  doc.text(`Username: ${username}`, margin, 36);
+  doc.text(`Email: ${email}`, margin, 42);
+  doc.text(
+    `Order Date: ${new Date(order.created_at).toLocaleString()}`,
+    margin,
+    52
+  );
+  doc.text(`Status: ${order.status}`, margin, 58);
 
-  // 👇 Make sure autoTable is attached here correctly
-  autoTable(doc, {
-    head: [["#", "Product", "SKU", "Qty", "Unit Price", "Total"]],
-    body: tableRows,
-    startY: 65,
+  const tableRows = [];
+  let total = 0;
+
+  order.items.forEach((item, index) => {
+    const product = productMap[item.product] || {};
+    const name = product.name || `Product #${item.product}`;
+    const price = parseFloat(product.price) || 0;
+    const qty = item.quantity || 0;
+    const subtotal = price * qty;
+
+    total += subtotal;
+
+    tableRows.push([
+      index + 1,
+      name,
+      `₦${price.toFixed(2)}`,
+      qty,
+      `₦${subtotal.toFixed(2)}`,
+    ]);
   });
 
-  const finalY = doc.lastAutoTable.finalY + 10;
-  doc.setFontSize(12);
-  doc.text(`Total: $${Number(order.totalPrice).toFixed(2)}`, 14, finalY);
+  // Call as a method on doc
+  doc.autoTable({
+    head: [["#", "Product", "Unit Price", "Quantity", "Subtotal"]],
+    body: tableRows,
+    startY: 70,
+    theme: "striped",
+  });
 
-  doc.save(`Invoice_Order_${order.id}.pdf`);
+  doc.text(
+    `Total: ₦${total.toFixed(2)}`,
+    margin,
+    doc.lastAutoTable.finalY + 10
+  );
+  doc.save(`invoice_order_${order.id}.pdf`);
 };
