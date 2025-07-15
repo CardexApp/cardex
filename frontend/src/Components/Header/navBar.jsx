@@ -63,22 +63,37 @@ const NavBar = () => {
       </ul>
       <div className="userStatus">
         <div className="dropdown">
-          <FontAwesomeIcon icon={faUserCircle} size="lg" />
-          <div className="dropdownContent">
-            <Link to="/login">
-              <FontAwesomeIcon icon={faUser} /> Login
-            </Link>
-            <Link to="/register">
-              <FontAwesomeIcon icon={faUser} /> Register
-            </Link>
-            <Link to="/orders">
-              <FontAwesomeIcon icon={faBox} /> Orders
-            </Link>
-            <button onClick={logoutSubmit}>
-              <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-            </button>
-          </div>
-        </div>
+  <FontAwesomeIcon icon={faUserCircle} size="lg" />
+  <div className="dropdownContent">
+    {!user ? (
+      <>
+        <Link to="/login">
+          <FontAwesomeIcon icon={faUser} /> Login
+        </Link>
+        <Link to="/register">
+          <FontAwesomeIcon icon={faUser} /> Register
+        </Link>
+      </>
+    ) : (
+      <>
+        <p style={{ margin: "0.5rem 0", fontWeight: "bold" }}>
+          👋 {user.username}
+        </p>
+        <Link to="/user/profile">
+  <FontAwesomeIcon icon={faUser} /> Profile
+</Link>
+
+        <Link to="/orders">
+          <FontAwesomeIcon icon={faBox} /> Orders
+        </Link>
+        <button onClick={logoutSubmit}>
+          <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+        </button>
+      </>
+    )}
+  </div>
+</div>
+
         <Link to="/cart" className="relative">
           <FontAwesomeIcon icon={faCartShopping} size="lg" />
           <p className="cartContent">{}</p>
