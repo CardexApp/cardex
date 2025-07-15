@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Styles/Customers.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileInvoice, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../Config";
 import { generateInvoice } from "./Reusables";
-import { toast } from "react-toastify";
 
 const Customers = () => {
   const [orders, setOrders] = useState([]);
@@ -11,8 +14,8 @@ const Customers = () => {
   const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  // Fetch orders
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,11 +26,8 @@ const Customers = () => {
           return;
         }
 
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+        const headers = { Authorization: `Bearer ${token}` };
 
-        // Fetch everything in parallel
         const [orderRes, productRes, userRes] = await Promise.all([
           axios.get(`${BASE_URL}/admin/orders/`, { headers }),
           axios.get(`${BASE_URL}/admin/products/`, { headers }),
@@ -38,30 +38,22 @@ const Customers = () => {
           ? orderRes.data
           : orderRes.data.results || [];
 
-        // Map product ID to { name, price }
         const productMap = {};
-        productRes.data.forEach((product) => {
-          productMap[product.id] = {
-            name: product.name,
-            price: product.price,
-          };
+        productRes.data.forEach((p) => {
+          productMap[p.id] = { name: p.name, price: p.price };
         });
 
-        // Map user ID to { username, email }
         const userMap = {};
-        userRes.data.forEach((user) => {
-          userMap[user.id] = {
-            username: user.username,
-            email: user.email,
-          };
+        userRes.data.forEach((u) => {
+          userMap[u.id] = { username: u.username, email: u.email };
         });
 
         setOrders(ordersData);
         setProducts(productMap);
         setUsers(userMap);
       } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to fetch admin orders or data");
+        console.error("Fetch error:", err);
+        setError("Failed to fetch data.");
       } finally {
         setLoading(false);
       }
@@ -71,17 +63,18 @@ const Customers = () => {
   }, []);
 
   const getUserInfo = (userId) =>
-    users[userId] || { username: "N/A", email: "N/A" };
+    users[userId] || { username: "Unknown", email: "Unknown" };
+
   const getProductInfo = (productId) =>
-    products[productId] || { name: "N/A", price: "N/A" };
+    products[productId] || { name: "Unknown", price: 0 };
 
   return (
     <div className="customersPage">
       <div className="customersContent">
-        <h2>Your Orders</h2>
+        <h2>Customer Orders</h2>
 
         {loading ? (
-          <p>Loading orders...</p>
+          <p>Loading...</p>
         ) : error ? (
           <p className="error">{error}</p>
         ) : orders.length === 0 ? (
@@ -105,16 +98,14 @@ const Customers = () => {
                 const user = getUserInfo(order.user);
                 return (
                   <div className="orderRow" key={order.id}>
-                    {/* Order ID */}
                     <div>{order?.id ?? "N/A"}</div>
 
-                    {/* User Info */}
                     <div>
-                      {user.username} <br />
+                      {user.username}
+                      <br />
                       <span className="customerEmail">{user.email}</span>
                     </div>
 
-                    {/* Product Items */}
                     <div>
                       {Array.isArray(order.items) && order.items.length > 0 ? (
                         <ul className="itemList">
@@ -122,7 +113,7 @@ const Customers = () => {
                             const product = getProductInfo(item.product);
                             return (
                               <li key={idx}>
-                                {product.name} (x{item.quantity}) – $
+                                {product.name} (x{item.quantity}) – ₦
                                 {product.price}
                               </li>
                             );
@@ -133,24 +124,20 @@ const Customers = () => {
                       )}
                     </div>
 
-                    {/* Created At */}
                     <div>
                       {order?.created_at
                         ? new Date(order.created_at).toLocaleString()
                         : "N/A"}
                     </div>
 
-                    {/* Status */}
                     <div>{order?.status || "Pending"}</div>
 
-                    {/* Address */}
                     <div>
                       {order?.address?.house_address
                         ? `${order.address.house_address}, ${order.address.postal_code}`
                         : "No address"}
                     </div>
 
-                    {/* Return Request – placeholder if missing */}
                     <div>
                       {order.returnRequested === true
                         ? "Yes"
@@ -159,16 +146,27 @@ const Customers = () => {
                         : "-"}
                     </div>
 
-                    {/* Delivery Method – optional */}
-                    <div>{order?.deliveryMethod ?? "-"}</div>
+                    <div>{order?.deliveryMethod || "-"}</div>
 
-                    {/* Actions */}
                     <div className="actions">
+                      {/* 📄 Generate Invoice */}
                       <button
-                        className="viewBtn"
+                        className="iconBtn"
+                        title="Generate Invoice"
                         onClick={() => generateInvoice(order, users, products)}
                       >
-                        Invoice
+                        <FontAwesomeIcon icon={faFileInvoice} />
+                      </button>
+
+                      {/* ⏩ Go to Processing Page */}
+                      <button
+                        className="iconBtn"
+                        title="Mark as Processing"
+                        onClick={() =>
+                          navigate(`/admin/orders/processing#order-${order.id}`)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faArrowRight} />
                       </button>
                     </div>
                   </div>
